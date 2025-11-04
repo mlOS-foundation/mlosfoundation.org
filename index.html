@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MLOS Foundation - Machine Learning Operating System</title>
-    <meta name="description" content="MLOS Foundation is building the future of machine learning operating systems through open source collaboration.">
+    <meta name="description" content="MLOS Foundation provides kernel-level machine learning infrastructure for production AI systems. Open source, enterprise-ready MLOS platform.">
     
     <style>
         * {
@@ -16,9 +16,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            color: #2c3e50;
+            background: #ffffff;
         }
         
         .container {
@@ -28,15 +27,15 @@
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
+            background: #ffffff;
+            padding: 1.2rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e8ecef;
         }
         
         .nav {
@@ -47,21 +46,23 @@
         
         .logo {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
             color: #667eea;
+            text-decoration: none;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
         }
         
         .nav-links a {
             text-decoration: none;
-            color: #333;
+            color: #495057;
             font-weight: 500;
             transition: color 0.3s;
+            font-size: 0.95rem;
         }
         
         .nav-links a:hover {
@@ -70,23 +71,37 @@
         
         .hero {
             text-align: center;
-            padding: 8rem 0 4rem;
+            padding: 10rem 0 6rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            margin-top: 0;
         }
         
         .hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-weight: 700;
+            line-height: 1.2;
         }
         
-        .hero p {
-            font-size: 1.25rem;
+        .hero .tagline {
+            font-size: 1.5rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 600px;
+            opacity: 0.95;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            font-weight: 300;
+        }
+        
+        .hero .description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
         }
         
         .cta-buttons {
@@ -94,16 +109,16 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 2rem;
         }
         
         .btn {
-            padding: 12px 30px;
-            border-radius: 50px;
+            padding: 14px 32px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
             border: 2px solid transparent;
+            font-size: 1rem;
         }
         
         .btn-primary {
@@ -114,6 +129,7 @@
         .btn-primary:hover {
             background: #f8f9ff;
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .btn-secondary {
@@ -130,72 +146,149 @@
         
         .main-content {
             background: white;
-            margin-top: -2rem;
-            border-radius: 20px 20px 0 0;
-            position: relative;
-            z-index: 10;
         }
         
         .section {
-            padding: 4rem 0;
+            padding: 5rem 0;
+        }
+        
+        .section.dark {
+            background: #f8f9fa;
         }
         
         .section h2 {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .section .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            line-height: 1.6;
         }
         
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
             margin-top: 3rem;
         }
         
         .feature-card {
-            background: #f8f9ff;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e8ecef;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
         }
         
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
         }
         
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .use-case {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+        
+        .use-case h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+        }
+        
+        .use-case p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .ecosystem-preview {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 3rem;
+        }
+        
+        .ecosystem-preview h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .ecosystem-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .ecosystem-item {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e8ecef;
+        }
+        
+        .ecosystem-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
             color: #667eea;
         }
         
-        .stats {
-            background: #667eea;
-            color: white;
-            text-align: center;
+        .ecosystem-item p {
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+        .ecosystem-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
         
-        .stat-item h3 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
+        .ecosystem-item a:hover {
+            text-decoration: underline;
         }
         
         .footer {
-            background: #333;
+            background: #2c3e50;
             color: white;
             text-align: center;
             padding: 3rem 0;
@@ -213,10 +306,12 @@
             color: white;
             text-decoration: none;
             transition: color 0.3s;
+            opacity: 0.9;
         }
         
         .footer-links a:hover {
             color: #667eea;
+            opacity: 1;
         }
         
         @media (max-width: 768px) {
@@ -224,13 +319,17 @@
                 font-size: 2.5rem;
             }
             
-            .nav-links {
-                display: none;
+            .hero .tagline {
+                font-size: 1.2rem;
             }
             
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.9rem;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -238,23 +337,29 @@
 <body>
     <header class="header">
         <nav class="nav container">
-            <div class="logo">MLOS Foundation</div>
+            <a href="/" class="logo">MLOS Foundation</a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
+                <li><a href="#ecosystem">Ecosystem</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
                 <li><a href="#community">Community</a></li>
-                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="hero">
         <div class="container">
-            <h1>MLOS Foundation</h1>
-            <p>Building the future of Machine Learning Operating Systems through open source collaboration and innovation</p>
+            <h1>Machine Learning Operating System</h1>
+            <p class="tagline">Kernel-Level ML Infrastructure for Production AI</p>
+            <p class="description">
+                MLOS Foundation provides enterprise-grade machine learning infrastructure 
+                that integrates directly with the operating system kernel. Our platform enables 
+                high-performance model inference, efficient resource management, and seamless 
+                deployment of AI workloads at scale.
+            </p>
             <div class="cta-buttons">
-                <a href="https://github.com/mlOS-foundation" class="btn btn-primary">Explore GitHub</a>
-                <a href="https://mlosfoundation.dev" class="btn btn-secondary">Developer Portal</a>
+                <a href="https://github.com/mlOS-foundation" class="btn btn-primary">Explore on GitHub</a>
+                <a href="architecture.html" class="btn btn-secondary">View Architecture</a>
             </div>
         </div>
     </section>
@@ -262,64 +367,188 @@
     <main class="main-content">
         <section class="section" id="about">
             <div class="container">
-                <h2>About MLOS</h2>
-                <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto; color: #666;">
-                    The MLOS Foundation is dedicated to advancing machine learning operating systems through 
-                    open source development, research collaboration, and community building. We believe in 
-                    creating accessible, efficient, and scalable ML infrastructure for everyone.
+                <h2>Why MLOS?</h2>
+                <p class="subtitle">
+                    Traditional ML deployments face performance bottlenecks, resource inefficiency, 
+                    and complex orchestration. MLOS solves these challenges by operating at the 
+                    kernel level, providing native OS integration for machine learning workloads.
                 </p>
                 
                 <div class="features">
                     <div class="feature-card">
-                        <div class="feature-icon">🚀</div>
-                        <h3>Open Source First</h3>
-                        <p>All our projects are open source, fostering transparency and community collaboration in ML infrastructure development.</p>
+                        <div class="feature-icon">⚡</div>
+                        <h3>Kernel-Level Performance</h3>
+                        <p>
+                            Direct operating system integration eliminates overhead and enables 
+                            sub-millisecond inference latencies. Our kernel-level optimizations 
+                            provide performance comparable to native applications.
+                        </p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">🧠</div>
-                        <h3>AI-Optimized</h3>
-                        <p>Purpose-built operating systems and tools optimized for machine learning workloads and AI applications.</p>
+                        <div class="feature-icon">🔧</div>
+                        <h3>Production-Ready</h3>
+                        <p>
+                            Built for enterprise deployments with multi-protocol APIs (HTTP, gRPC, IPC), 
+                            comprehensive resource management, and robust error handling. Ready for 
+                            mission-critical AI applications.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔌</div>
+                        <h3>Plugin Architecture</h3>
+                        <p>
+                            Framework-agnostic design supports PyTorch, TensorFlow, ONNX, and more. 
+                            Hot-swappable plugins enable dynamic model loading without system restarts.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>Model Lifecycle Management</h3>
+                        <p>
+                            Complete model lifecycle from discovery to deployment. Integrated package 
+                            management, versioning, and distribution through our ecosystem tools.
+                        </p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🌐</div>
-                        <h3>Community Driven</h3>
-                        <p>Building a global community of developers, researchers, and organizations advancing ML infrastructure.</p>
+                        <h3>Scalable & Distributed</h3>
+                        <p>
+                            Horizontal scaling across multiple nodes with intelligent resource allocation. 
+                            Automatic load balancing and efficient GPU memory sharing for optimal utilization.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure & Isolated</h3>
+                        <p>
+                            Process isolation and sandboxing for plugins. Resource limits, network 
+                            restrictions, and comprehensive security controls protect your infrastructure.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section stats" id="projects">
+        <section class="section dark" id="use-cases">
             <div class="container">
-                <h2>Our Impact</h2>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <h3>∞</h3>
-                        <p>Getting Started</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>🔧</h3>
-                        <p>In Development</p>
-                    </div>
-                    <div class="stat-item">
-                        <h3>🌟</h3>
-                        <p>Growing Community</p>
-                    </div>
-                </div>
-                <div style="margin-top: 3rem;">
-                    <a href="https://github.com/mlOS-foundation" class="btn btn-primary">View All Projects</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="community">
-            <div class="container">
-                <h2>Join Our Community</h2>
-                <p style="text-align: center; font-size: 1.1rem; max-width: 600px; margin: 0 auto 3rem; color: #666;">
-                    Connect with developers, researchers, and organizations building the future of ML infrastructure.
+                <h2>Use Cases</h2>
+                <p class="subtitle">
+                    MLOS powers production AI systems across industries, from real-time inference 
+                    to large-scale model serving.
                 </p>
                 
-                <div class="cta-buttons">
+                <div class="use-cases">
+                    <div class="use-case">
+                        <h3>Real-Time Inference</h3>
+                        <p>
+                            Ultra-low latency inference for applications requiring sub-millisecond 
+                            response times. Ideal for autonomous systems, financial trading, and 
+                            interactive applications.
+                        </p>
+                    </div>
+                    <div class="use-case">
+                        <h3>High-Throughput Serving</h3>
+                        <p>
+                            Serve thousands of models simultaneously with efficient resource utilization. 
+                            Perfect for multi-tenant platforms and model marketplaces.
+                        </p>
+                    </div>
+                    <div class="use-case">
+                        <h3>Edge Computing</h3>
+                        <p>
+                            Lightweight runtime optimized for edge devices with limited resources. 
+                            Enable AI capabilities on IoT devices and embedded systems.
+                        </p>
+                    </div>
+                    <div class="use-case">
+                        <h3>Model Development</h3>
+                        <p>
+                            Streamlined model packaging, distribution, and versioning. Integrated 
+                            toolchain for model developers and researchers.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="ecosystem">
+            <div class="container">
+                <h2>MLOS Ecosystem</h2>
+                <p class="subtitle">
+                    A comprehensive toolchain for building, deploying, and managing ML models at scale.
+                </p>
+                
+                <div class="ecosystem-preview">
+                    <h3>Core Components</h3>
+                    <div class="ecosystem-items">
+                        <div class="ecosystem-item">
+                            <h4>MLOS Core</h4>
+                            <p>
+                                Kernel-level ML runtime with plugin architecture. Multi-protocol 
+                                APIs and comprehensive resource management.
+                            </p>
+                            <a href="architecture.html">Learn more →</a>
+                        </div>
+                        <div class="ecosystem-item">
+                            <h4>Axon</h4>
+                            <p>
+                                Neural pathway for ML models. Package manager and distribution 
+                                system for model lifecycle management.
+                            </p>
+                            <a href="ecosystem.html#axon">Learn more →</a>
+                        </div>
+                        <div class="ecosystem-item">
+                            <h4>SMI Spec</h4>
+                            <p>
+                                Standard Model Interface specification for framework interoperability. 
+                                Unified interface across ML frameworks.
+                            </p>
+                            <a href="ecosystem.html#smi">Learn more →</a>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="ecosystem.html" class="btn btn-primary">Explore Full Ecosystem</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section dark" id="community">
+            <div class="container">
+                <h2>Open Source Community</h2>
+                <p class="subtitle">
+                    MLOS Foundation is built by the community, for the community. 
+                    Join us in building the future of ML infrastructure.
+                </p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">💻</div>
+                        <h3>Open Source</h3>
+                        <p>
+                            All MLOS projects are open source under permissive licenses. 
+                            Contribute, fork, and build upon our foundation.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Collaborative</h3>
+                        <p>
+                            Active development community with contributors from industry and academia. 
+                            RFCs, discussions, and transparent decision-making.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Well Documented</h3>
+                        <p>
+                            Comprehensive documentation, examples, and guides. Architecture docs, 
+                            API references, and best practices for developers.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons" style="margin-top: 3rem;">
                     <a href="https://github.com/mlOS-foundation" class="btn btn-primary">GitHub Organization</a>
                     <a href="mailto:info@mlosfoundation.org" class="btn btn-secondary">Get in Touch</a>
                 </div>
@@ -327,13 +556,13 @@
         </section>
     </main>
 
-    <footer class="footer" id="contact">
+    <footer class="footer">
         <div class="container">
             <div class="footer-links">
                 <a href="https://github.com/mlOS-foundation">GitHub</a>
-                <a href="https://mlosfoundation.dev">Developer Portal</a>
+                <a href="ecosystem.html">Ecosystem</a>
+                <a href="architecture.html">Architecture</a>
                 <a href="mailto:info@mlosfoundation.org">Contact</a>
-                <a href="mailto:dev@mlosfoundation.org">Developer Relations</a>
             </div>
             <p>&copy; 2025 MLOS Foundation. Building the future of ML infrastructure.</p>
         </div>

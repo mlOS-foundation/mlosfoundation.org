@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLOS Ecosystem - MLOS Foundation</title>
+    <meta name="description" content="Explore the MLOS ecosystem: Axon package manager, MLOS Core runtime, SMI specification, and the complete toolchain for ML infrastructure.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: #ffffff;
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e8ecef;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #495057;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #667eea;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 4rem 0;
+        }
+        
+        .component {
+            margin-bottom: 5rem;
+            padding: 3rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .component h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+        
+        .component h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #495057;
+        }
+        
+        .component p {
+            color: #6c757d;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        
+        .component ul {
+            margin-left: 2rem;
+            color: #6c757d;
+            line-height: 1.8;
+        }
+        
+        .component li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e8ecef;
+        }
+        
+        .feature-item h4 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">MLOS Foundation</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>MLOS Ecosystem</h1>
+            <p>Complete toolchain for machine learning infrastructure</p>
+        </div>
+    </section>
+
+    <main class="content">
+        <div class="container">
+            <div class="component" id="axon">
+                <h2>Axon - The Neural Pathway for ML Models</h2>
+                <p>
+                    Axon is the transmission layer for ML models in MLOS. It's not just a package manager—it's 
+                    the neural pathway that connects models to your operating system, optimized at the kernel 
+                    level for maximum performance.
+                </p>
+                
+                <h3>What is Axon?</h3>
+                <p>
+                    Axon provides model lifecycle management, distribution, versioning, and deployment capabilities. 
+                    It follows a neural metaphor where models are neurons, Axon CLI is the transmission pathway, 
+                    and kernel optimizations are the myelin sheath that speeds up signal propagation.
+                </p>
+                
+                <h3>Key Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <h4>Model Discovery</h4>
+                        <p>Search and discover models from the registry with semantic search capabilities.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Package Management</h4>
+                        <p>Install, update, and manage model versions with dependency resolution.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Local Caching</h4>
+                        <p>Intelligent local caching with checksum verification for integrity.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Version Control</h4>
+                        <p>Semantic versioning and multiple version support for models.</p>
+                    </div>
+                </div>
+                
+                <h3>Basic Usage</h3>
+                <div class="code-block">
+# Initialize the axon pathway
+axon init
+
+# Search for models
+axon search resnet
+axon search "image classification"
+
+# Get model information
+axon info vision/resnet50
+
+# Install models
+axon install vision/resnet50
+axon install vision/resnet50@2.0.0
+
+# List installed models
+axon list
+
+# Update models
+axon update vision/resnet50
+
+# Remove models
+axon uninstall vision/resnet50
+                </div>
+                
+                <h3>Status</h3>
+                <p>
+                    <strong>MVP Complete</strong> - Axon has achieved MVP status with core functionality implemented:
+                </p>
+                <ul>
+                    <li>✅ Manifest system with YAML parser and validator</li>
+                    <li>✅ Cache manager for local model storage</li>
+                    <li>✅ Registry client for model discovery</li>
+                    <li>✅ CLI commands for model lifecycle management</li>
+                    <li>✅ Comprehensive testing and CI/CD pipeline</li>
+                </ul>
+                
+                <p style="margin-top: 1.5rem;">
+                    <a href="https://github.com/mlOS-foundation/axon" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                        View Axon on GitHub →
+                    </a>
+                </p>
+            </div>
+
+            <div class="component" id="core">
+                <h2>MLOS Core</h2>
+                <p>
+                    MLOS Core is the kernel-level machine learning runtime that provides the foundation for 
+                    high-performance ML inference. It implements a plugin-based architecture supporting multiple 
+                    ML frameworks through the Standard Model Interface (SMI).
+                </p>
+                
+                <h3>Architecture</h3>
+                <p>
+                    MLOS Core consists of several key components:
+                </p>
+                <ul>
+                    <li><strong>Core Engine</strong>: Plugin registry, model registry, and resource manager</li>
+                    <li><strong>API Layer</strong>: Multi-protocol support (HTTP, gRPC, IPC)</li>
+                    <li><strong>SMI Interface</strong>: Standardized interface for ML framework plugins</li>
+                    <li><strong>Resource Management</strong>: Intelligent allocation and sharing of compute resources</li>
+                </ul>
+                
+                <h3>Performance</h3>
+                <p>
+                    Kernel-level optimizations enable ultra-low latency inference:
+                </p>
+                <ul>
+                    <li>Sub-millisecond inference for small models (IPC API)</li>
+                    <li>Zero-copy operations for large tensors</li>
+                    <li>Efficient GPU memory and compute sharing</li>
+                    <li>Automatic batching for throughput optimization</li>
+                </ul>
+                
+                <p style="margin-top: 1.5rem;">
+                    <a href="architecture.html" style="color: #667eea; text-decoration: none; font-weight: 600;">
+                        View Architecture Details →
+                    </a>
+                </p>
+            </div>
+
+            <div class="component" id="smi">
+                <h2>Standard Model Interface (SMI)</h2>
+                <p>
+                    The Standard Model Interface specification provides a unified interface for ML frameworks, 
+                    enabling framework-agnostic model deployment and management.
+                </p>
+                
+                <h3>Benefits</h3>
+                <ul>
+                    <li><strong>Framework Interoperability</strong>: Deploy models from any supported framework</li>
+                    <li><strong>Plugin System</strong>: Hot-swappable framework plugins</li>
+                    <li><strong>Resource Declaration</strong>: Declarative resource requirements</li>
+                    <li><strong>Multi-language Support</strong>: C, Python, Go, JavaScript bindings</li>
+                </ul>
+                
+                <h3>Supported Frameworks</h3>
+                <p>
+                    SMI enables plugins for:
+                </p>
+                <ul>
+                    <li>PyTorch</li>
+                    <li>TensorFlow</li>
+                    <li>ONNX Runtime</li>
+                    <li>Custom frameworks (via plugin API)</li>
+                </ul>
+            </div>
+
+            <div class="component" id="future">
+                <h2>Future Components</h2>
+                <p>
+                    The MLOS ecosystem continues to evolve with additional components planned:
+                </p>
+                <ul>
+                    <li><strong>MLOS Kernel</strong>: Kernel-level ML runtime optimizations</li>
+                    <li><strong>MLOS Scheduler</strong>: ML workload scheduling and orchestration</li>
+                    <li><strong>Axon Registry</strong>: Model registry and discovery service</li>
+                    <li><strong>Axon Hub</strong>: Web UI for model discovery and management</li>
+                    <li><strong>Axon SDK</strong>: Python SDK for model packaging</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/mlOS-foundation">GitHub</a>
+                <a href="index.html">Home</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="mailto:info@mlosfoundation.org">Contact</a>
+            </div>
+            <p>&copy; 2025 MLOS Foundation. Building the future of ML infrastructure.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

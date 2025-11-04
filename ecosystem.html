@@ -132,8 +132,20 @@
             border-radius: 8px;
             overflow-x: auto;
             margin: 1.5rem 0;
-            font-family: 'Courier New', monospace;
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre;
+            tab-size: 4;
+        }
+        
+        code {
+            background: #f1f3f5;
+            color: #667eea;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
         }
         
         .feature-grid {
@@ -240,8 +252,7 @@
                 </div>
                 
                 <h3>Basic Usage</h3>
-                <div class="code-block">
-# Initialize the axon pathway
+                <div class="code-block"><pre># Initialize the axon pathway
 axon init
 
 # Search for models
@@ -262,8 +273,7 @@ axon list
 axon update vision/resnet50
 
 # Remove models
-axon uninstall vision/resnet50
-                </div>
+axon uninstall vision/resnet50</pre></div>
                 
                 <h3>Status</h3>
                 <p>

@@ -256,6 +256,15 @@
             background: #f8f9fa;
         }
         
+        code {
+            background: #f1f3f5;
+            color: #667eea;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+        }
+        
         .footer {
             background: #2c3e50;
             color: white;
@@ -341,51 +350,55 @@
                         <rect x="50" y="50" width="200" height="80" class="component-box" />
                         <text x="150" y="90" class="text">Client Applications</text>
                         
-                        <!-- API Layer -->
+                        <!-- API Layer - centered with proper spacing -->
                         <rect x="350" y="50" width="500" height="80" class="api-box" />
                         <text x="600" y="75" class="text">API Layer</text>
                         <text x="450" y="100" class="text" style="font-size: 12px;">HTTP REST</text>
                         <text x="600" y="100" class="text" style="font-size: 12px;">gRPC</text>
                         <text x="750" y="100" class="text" style="font-size: 12px;">IPC (Unix Socket)</text>
                         
-                        <!-- MLOS Core Engine -->
-                        <rect x="350" y="200" width="500" height="120" class="component-box" />
-                        <text x="600" y="230" class="text">MLOS Core Engine</text>
-                        <text x="450" y="260" class="text" style="font-size: 11px;">Plugin Registry</text>
-                        <text x="600" y="260" class="text" style="font-size: 11px;">Model Registry</text>
-                        <text x="750" y="260" class="text" style="font-size: 11px;">Resource Manager</text>
-                        <text x="600" y="290" class="text" style="font-size: 11px;">SMI Interface</text>
+                        <!-- MLOS Core Engine - aligned with API Layer -->
+                        <rect x="350" y="180" width="500" height="120" class="component-box" />
+                        <text x="600" y="210" class="text">MLOS Core Engine</text>
+                        <text x="450" y="240" class="text" style="font-size: 11px;">Plugin Registry</text>
+                        <text x="600" y="240" class="text" style="font-size: 11px;">Model Registry</text>
+                        <text x="750" y="240" class="text" style="font-size: 11px;">Resource Manager</text>
+                        <text x="600" y="270" class="text" style="font-size: 11px;">SMI Interface</text>
                         
-                        <!-- Plugins -->
-                        <rect x="50" y="400" width="200" height="80" class="plugin-box" />
-                        <text x="150" y="440" class="text">PyTorch Plugin</text>
+                        <!-- Plugins - evenly spaced and aligned -->
+                        <rect x="100" y="360" width="200" height="80" class="plugin-box" />
+                        <text x="200" y="400" class="text">PyTorch Plugin</text>
                         
-                        <rect x="300" y="400" width="200" height="80" class="plugin-box" />
-                        <text x="400" y="440" class="text">TensorFlow Plugin</text>
+                        <rect x="350" y="360" width="200" height="80" class="plugin-box" />
+                        <text x="450" y="400" class="text">TensorFlow Plugin</text>
                         
-                        <rect x="550" y="400" width="200" height="80" class="plugin-box" />
-                        <text x="650" y="440" class="text">ONNX Plugin</text>
+                        <rect x="600" y="360" width="200" height="80" class="plugin-box" />
+                        <text x="700" y="400" class="text">ONNX Plugin</text>
                         
-                        <rect x="800" y="400" width="200" height="80" class="plugin-box" />
-                        <text x="900" y="440" class="text">Custom Plugin</text>
+                        <rect x="850" y="360" width="200" height="80" class="plugin-box" />
+                        <text x="950" y="400" class="text">Custom Plugin</text>
                         
-                        <!-- Kernel Layer -->
-                        <rect x="50" y="550" width="950" height="60" class="component-box" style="fill: #2c3e50; stroke: #1a202c;" />
-                        <text x="525" y="580" class="text">Operating System Kernel</text>
+                        <!-- Kernel Layer - full width, aligned -->
+                        <rect x="50" y="500" width="1100" height="60" class="component-box" style="fill: #2c3e50; stroke: #1a202c;" />
+                        <text x="600" y="530" class="text">Operating System Kernel</text>
                         
-                        <!-- Arrows -->
+                        <!-- Arrows - properly aligned -->
                         <line x1="250" y1="90" x2="350" y2="90" class="arrow" />
-                        <line x1="850" y1="90" x2="950" y2="300" class="arrow" />
                         
-                        <line x1="600" y1="320" x2="150" y2="400" class="arrow" />
-                        <line x1="600" y1="320" x2="400" y2="400" class="arrow" />
-                        <line x1="600" y1="320" x2="650" y2="400" class="arrow" />
-                        <line x1="600" y1="320" x2="900" y2="400" class="arrow" />
+                        <!-- API Layer to Core Engine -->
+                        <line x1="600" y1="130" x2="600" y2="180" class="arrow" />
                         
-                        <line x1="150" y1="480" x2="150" y2="550" class="arrow" />
-                        <line x1="400" y1="480" x2="400" y2="550" class="arrow" />
-                        <line x1="650" y1="480" x2="650" y2="550" class="arrow" />
-                        <line x1="900" y1="480" x2="900" y2="550" class="arrow" />
+                        <!-- Core Engine to Plugins - centered -->
+                        <line x1="600" y1="300" x2="200" y2="360" class="arrow" />
+                        <line x1="600" y1="300" x2="450" y2="360" class="arrow" />
+                        <line x1="600" y1="300" x2="700" y2="360" class="arrow" />
+                        <line x1="600" y1="300" x2="950" y2="360" class="arrow" />
+                        
+                        <!-- Plugins to Kernel - centered on each plugin -->
+                        <line x1="200" y1="440" x2="200" y2="500" class="arrow" />
+                        <line x1="450" y1="440" x2="450" y2="500" class="arrow" />
+                        <line x1="700" y1="440" x2="700" y2="500" class="arrow" />
+                        <line x1="950" y1="440" x2="950" y2="500" class="arrow" />
                     </svg>
                 </div>
             </div>
@@ -559,6 +572,146 @@
                         Multiple MLOS Core nodes can be deployed behind a load balancer or service mesh. 
                         Enables horizontal scaling and high availability for production workloads.
                     </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Axon Architecture - Data Flow Diagram</h2>
+                <p>
+                    Axon provides the neural pathway for ML models, managing the complete lifecycle from 
+                    discovery to deployment. The following diagram illustrates the data flow through the Axon system:
+                </p>
+                
+                <div class="diagram-container">
+                    <svg class="diagram" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="axon-arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+                            </marker>
+                        </defs>
+                        
+                        <!-- User/CLI -->
+                        <rect x="50" y="50" width="180" height="70" class="component-box" />
+                        <text x="140" y="85" class="text">User / CLI</text>
+                        
+                        <!-- Axon CLI -->
+                        <rect x="300" y="50" width="200" height="70" class="component-box" style="fill: #764ba2;" />
+                        <text x="400" y="85" class="text">Axon CLI</text>
+                        
+                        <!-- Config Manager -->
+                        <rect x="50" y="180" width="180" height="70" class="api-box" />
+                        <text x="140" y="215" class="text">Config Manager</text>
+                        
+                        <!-- Registry Client -->
+                        <rect x="300" y="180" width="200" height="70" class="api-box" />
+                        <text x="400" y="215" class="text">Registry Client</text>
+                        
+                        <!-- Manifest Parser -->
+                        <rect x="550" y="180" width="200" height="70" class="plugin-box" />
+                        <text x="650" y="215" class="text">Manifest Parser</text>
+                        
+                        <!-- Cache Manager -->
+                        <rect x="800" y="180" width="200" height="70" class="plugin-box" />
+                        <text x="900" y="215" class="text">Cache Manager</text>
+                        
+                        <!-- Model Registry (External) -->
+                        <rect x="550" y="50" width="200" height="70" class="component-box" style="fill: #48bb78; stroke: #38a169;" />
+                        <text x="650" y="85" class="text">Model Registry</text>
+                        <text x="650" y="105" class="text" style="font-size: 11px;">(External)</text>
+                        
+                        <!-- Local Cache -->
+                        <rect x="800" y="50" width="200" height="70" class="component-box" style="fill: #ed8936; stroke: #dd6b20;" />
+                        <text x="900" y="85" class="text">Local Cache</text>
+                        <text x="900" y="105" class="text" style="font-size: 11px;">(~/.axon/cache)</text>
+                        
+                        <!-- File System -->
+                        <rect x="50" y="310" width="950" height="60" class="component-box" style="fill: #2c3e50; stroke: #1a202c;" />
+                        <text x="525" y="340" class="text">Local File System</text>
+                        
+                        <!-- Data Stores -->
+                        <rect x="50" y="420" width="300" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
+                        <text x="200" y="455" class="text">Config Store</text>
+                        <text x="200" y="475" class="text" style="font-size: 11px;">(~/.axon/config.yaml)</text>
+                        
+                        <rect x="400" y="420" width="300" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
+                        <text x="550" y="455" class="text">Manifest Store</text>
+                        <text x="550" y="475" class="text" style="font-size: 11px;">(manifest.yaml files)</text>
+                        
+                        <rect x="750" y="420" width="250" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
+                        <text x="875" y="455" class="text">Model Packages</text>
+                        <text x="875" y="475" class="text" style="font-size: 11px;">(.axon packages)</text>
+                        
+                        <!-- Arrows: User to CLI -->
+                        <line x1="230" y1="85" x2="300" y2="85" class="arrow" />
+                        
+                        <!-- CLI to Components -->
+                        <line x1="400" y1="120" x2="140" y2="180" class="arrow" />
+                        <line x1="400" y1="120" x2="400" y2="180" class="arrow" />
+                        <line x1="500" y1="85" x2="550" y2="85" class="arrow" />
+                        <line x1="400" y1="120" x2="650" y2="180" class="arrow" />
+                        <line x1="400" y1="120" x2="900" y2="180" class="arrow" />
+                        
+                        <!-- Registry Client to Model Registry -->
+                        <line x1="500" y1="215" x2="550" y2="120" class="arrow" />
+                        
+                        <!-- Registry Client to Manifest Parser -->
+                        <line x1="500" y1="215" x2="550" y2="215" class="arrow" />
+                        
+                        <!-- Manifest Parser to Cache Manager -->
+                        <line x1="750" y1="215" x2="800" y2="215" class="arrow" />
+                        
+                        <!-- Cache Manager to Local Cache -->
+                        <line x1="900" y1="250" x2="900" y2="120" class="arrow" />
+                        
+                        <!-- Components to File System -->
+                        <line x1="140" y1="250" x2="140" y2="310" class="arrow" />
+                        <line x1="400" y1="250" x2="400" y2="310" class="arrow" />
+                        <line x1="650" y1="250" x2="650" y2="310" class="arrow" />
+                        <line x1="900" y1="250" x2="900" y2="310" class="arrow" />
+                        
+                        <!-- File System to Data Stores -->
+                        <line x1="200" y1="370" x2="200" y2="420" class="arrow" />
+                        <line x1="550" y1="370" x2="550" y2="420" class="arrow" />
+                        <line x1="875" y1="370" x2="875" y2="420" class="arrow" />
+                        
+                        <!-- Labels for data flow -->
+                        <text x="265" y="80" class="text" style="font-size: 10px; fill: #667eea;">Commands</text>
+                        <text x="350" y="100" class="text" style="font-size: 10px; fill: #667eea;">Config</text>
+                        <text x="350" y="145" class="text" style="font-size: 10px; fill: #667eea;">Search/Download</text>
+                        <text x="525" y="145" class="text" style="font-size: 10px; fill: #667eea;">Manifest</text>
+                        <text x="675" y="145" class="text" style="font-size: 10px; fill: #667eea;">Cache</text>
+                        <text x="450" y="160" class="text" style="font-size: 10px; fill: #667eea;">HTTP Request</text>
+                        <text x="525" y="160" class="text" style="font-size: 10px; fill: #667eea;">Parse YAML</text>
+                        <text x="675" y="160" class="text" style="font-size: 10px; fill: #667eea;">Store Model</text>
+                    </svg>
+                </div>
+                
+                <div class="component-details" style="margin-top: 2rem;">
+                    <h3>Data Flow Components</h3>
+                    <ul>
+                        <li><strong>User / CLI</strong>: User interacts with Axon through command-line interface</li>
+                        <li><strong>Axon CLI</strong>: Main command processor that routes operations to appropriate components</li>
+                        <li><strong>Config Manager</strong>: Manages local configuration (registry URLs, cache settings, etc.)</li>
+                        <li><strong>Registry Client</strong>: HTTP client for communicating with remote model registry</li>
+                        <li><strong>Manifest Parser</strong>: Parses and validates YAML manifest files</li>
+                        <li><strong>Cache Manager</strong>: Manages local model storage, metadata, and cache operations</li>
+                        <li><strong>Model Registry</strong>: External service providing model discovery and distribution</li>
+                        <li><strong>Local Cache</strong>: On-disk storage for downloaded models and metadata</li>
+                    </ul>
+                </div>
+                
+                <div class="component-details">
+                    <h3>Typical Data Flow: Model Installation</h3>
+                    <ol style="margin-left: 2rem; color: #6c757d; line-height: 1.8;">
+                        <li>User executes <code>axon install vision/resnet50</code></li>
+                        <li>CLI loads configuration from Config Manager</li>
+                        <li>Registry Client queries Model Registry for manifest</li>
+                        <li>Manifest Parser validates the returned YAML manifest</li>
+                        <li>Cache Manager checks if model already exists locally</li>
+                        <li>If not cached, Registry Client downloads package from registry</li>
+                        <li>Cache Manager stores model package and metadata in Local Cache</li>
+                        <li>Model files are extracted and stored in file system</li>
+                    </ol>
                 </div>
             </div>
 

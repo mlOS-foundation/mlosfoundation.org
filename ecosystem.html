@@ -126,63 +126,150 @@
         }
         
         .code-block {
-            background: #2c3e50;
-            color: #f8f9fa;
-            padding: 1.5rem;
+            background: #1e1e1e;
+            border: 1px solid #3c3c3c;
             border-radius: 8px;
-            overflow-x: auto;
             margin: 1.5rem 0;
-            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .code-block-header {
+            background: #2d2d2d;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #3c3c3c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-block-header h4 {
+            color: #d4d4d4;
+            margin: 0;
             font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .code-copy-btn {
+            background: #3c3c3c;
+            color: #d4d4d4;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .code-copy-btn:hover {
+            background: #4c4c4c;
+            color: white;
+        }
+        
+        .code-copy-btn.copied {
+            background: #10b981;
+            color: white;
+        }
+        
+        .code-block pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            margin: 0;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+            font-size: 0.875rem;
             line-height: 1.6;
             white-space: pre;
             tab-size: 4;
         }
         
-        .code-block h4 {
-            color: #f8f9fa;
-            margin-top: 0;
-            margin-bottom: 1rem;
+        .code-block pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            border-radius: 0;
+            font-family: inherit;
+            font-size: inherit;
         }
         
-        code {
+        code:not(.code-block code) {
             background: #f1f3f5;
             color: #667eea;
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
-            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
             font-size: 0.9em;
         }
         
         .feature-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #ffffff;
+            border: 2px solid #667eea;
+            border-left: 6px solid #667eea;
+            color: #2c3e50;
             padding: 2rem;
             border-radius: 12px;
             margin: 2rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
         
         .feature-highlight h3 {
             margin-top: 0;
-            color: white;
+            color: #667eea;
+            font-size: 1.5rem;
         }
         
         .feature-highlight ul {
             margin: 1rem 0;
+            list-style: none;
+            padding-left: 0;
         }
         
         .feature-highlight li {
-            margin: 0.5rem 0;
+            margin: 1rem 0;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .feature-highlight li strong {
+            color: #2c3e50;
+        }
+        
+        .adapter-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .adapter-status.available {
+            background: #10b981;
+            color: white;
+        }
+        
+        .adapter-status.coming {
+            background: #f59e0b;
+            color: white;
         }
         
         .stat-highlight {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
             border-radius: 8px;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             text-align: center;
-            font-size: 1.1em;
+            font-size: 1.2em;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
         }
         
         .architecture-note {
@@ -190,12 +277,29 @@
             border-left: 4px solid #667eea;
             padding: 1.5rem;
             margin: 2rem 0;
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .architecture-note h4 {
             margin-top: 0;
             color: #667eea;
+            font-size: 1.2rem;
+        }
+        
+        .architecture-note ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .architecture-note ol li {
+            margin: 0.75rem 0;
+            color: #495057;
+            line-height: 1.7;
+        }
+        
+        .architecture-note ol li strong {
+            color: #2c3e50;
         }
         
         .highlight-box {
@@ -282,17 +386,35 @@
                 
                 <div class="feature-highlight">
                     <h3>🔄 Plug-and-Play Repository Adapters</h3>
-                    <p>Axon automatically detects and uses the right adapter for each model:</p>
+                    <p style="color: #6c757d; margin-bottom: 1.5rem;">Axon automatically detects and uses the right adapter for each model. No configuration needed - just install from any supported repository!</p>
                     <ul>
-                        <li><strong>✅ Hugging Face Hub</strong> - Available now (100,000+ models, 60%+ of ML practitioners)</li>
-                        <li><strong>🚧 ONNX Model Zoo</strong> - Coming in Phase 1 (15%+ coverage)</li>
-                        <li><strong>🚧 PyTorch Hub</strong> - Coming in Phase 1 (5%+ coverage)</li>
+                        <li>
+                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
+                            <strong>Hugging Face Hub</strong>
+                            <span class="adapter-status available">Available</span>
+                            <div style="font-size: 0.9em; color: #6c757d; margin-top: 0.25rem;">100,000+ models • 60%+ of ML practitioners</div>
+                        </li>
+                        <li>
+                            <span style="font-size: 1.2em; color: #f59e0b;">→</span>
+                            <strong>ONNX Model Zoo</strong>
+                            <span class="adapter-status coming">Phase 1</span>
+                            <div style="font-size: 0.9em; color: #6c757d; margin-top: 0.25rem;">Production-ready ONNX models • 15%+ coverage</div>
+                        </li>
+                        <li>
+                            <span style="font-size: 1.2em; color: #f59e0b;">→</span>
+                            <strong>PyTorch Hub</strong>
+                            <span class="adapter-status coming">Phase 1</span>
+                            <div style="font-size: 0.9em; color: #6c757d; margin-top: 0.25rem;">PyTorch pre-trained models • 5%+ coverage</div>
+                        </li>
                     </ul>
-                    <p class="stat-highlight"><strong>Total Coverage: 80%+ of ML model user base</strong></p>
+                    <p class="stat-highlight">Total Coverage: 80%+ of ML model user base</p>
                 </div>
                 
                 <div class="code-block">
-                    <h4>Install from Any Repository</h4>
+                    <div class="code-block-header">
+                        <h4>Install from Any Repository</h4>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
                     <pre><code># Hugging Face (available now)
 axon install hf/bert-base-uncased@latest
 
@@ -334,7 +456,12 @@ axon install pytorch/alexnet@latest</code></pre>
                 </div>
                 
                 <h3>Basic Usage</h3>
-                <div class="code-block"><pre># Initialize the axon pathway
+                <div class="code-block">
+                    <div class="code-block-header">
+                        <h4>Quick Start Commands</h4>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># Initialize the axon pathway
 axon init
 
 # Install any model directly from Hugging Face (no setup needed!)
@@ -355,7 +482,8 @@ axon list
 axon update vision/resnet50
 
 # Remove models
-axon uninstall vision/resnet50</pre></div>
+axon uninstall vision/resnet50</code></pre>
+                </div>
                 
                 <h3>Status</h3>
                 <p>

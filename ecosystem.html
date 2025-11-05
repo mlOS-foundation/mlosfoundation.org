@@ -139,6 +139,12 @@
             tab-size: 4;
         }
         
+        .code-block h4 {
+            color: #f8f9fa;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        
         code {
             background: #f1f3f5;
             color: #667eea;
@@ -146,6 +152,58 @@
             border-radius: 4px;
             font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 0.9em;
+        }
+        
+        .feature-highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-highlight h3 {
+            margin-top: 0;
+            color: white;
+        }
+        
+        .feature-highlight ul {
+            margin: 1rem 0;
+        }
+        
+        .feature-highlight li {
+            margin: 0.5rem 0;
+        }
+        
+        .stat-highlight {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .architecture-note {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+        
+        .architecture-note h4 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        
+        .highlight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
         }
         
         .feature-grid {
@@ -217,12 +275,33 @@
     <main class="content">
         <div class="container">
             <div class="component" id="axon">
-                <h2>Axon - The Neural Pathway for ML Models</h2>
+                <h2>Axon - Universal Model Installer</h2>
                 <p>
-                    Axon is the transmission layer for ML models in MLOS. It's not just a package manager—it's 
-                    the neural pathway that connects models to your operating system, optimized at the kernel 
-                    level for maximum performance.
+                    Axon is a universal CLI tool with a <strong>pluggable adapter architecture</strong> that enables installation from any model repository. No vendor lock-in, no configuration needed.
                 </p>
+                
+                <div class="feature-highlight">
+                    <h3>🔄 Plug-and-Play Repository Adapters</h3>
+                    <p>Axon automatically detects and uses the right adapter for each model:</p>
+                    <ul>
+                        <li><strong>✅ Hugging Face Hub</strong> - Available now (100,000+ models, 60%+ of ML practitioners)</li>
+                        <li><strong>🚧 ONNX Model Zoo</strong> - Coming in Phase 1 (15%+ coverage)</li>
+                        <li><strong>🚧 PyTorch Hub</strong> - Coming in Phase 1 (5%+ coverage)</li>
+                    </ul>
+                    <p class="stat-highlight"><strong>Total Coverage: 80%+ of ML model user base</strong></p>
+                </div>
+                
+                <div class="code-block">
+                    <h4>Install from Any Repository</h4>
+                    <pre><code># Hugging Face (available now)
+axon install hf/bert-base-uncased@latest
+
+# ONNX Model Zoo (Phase 1)
+axon install onnx/resnet50@latest
+
+# PyTorch Hub (Phase 1)
+axon install pytorch/alexnet@latest</code></pre>
+                </div>
                 
                 <h3>What is Axon?</h3>
                 <p>
@@ -232,39 +311,42 @@
                 </p>
                 
                 <h3>Key Features</h3>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <h4>Model Discovery</h4>
-                        <p>Search and discover models from the registry with semantic search capabilities.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Package Management</h4>
-                        <p>Install, update, and manage model versions with dependency resolution.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Local Caching</h4>
-                        <p>Intelligent local caching with checksum verification for integrity.</p>
-                    </div>
-                    <div class="feature-item">
-                        <h4>Version Control</h4>
-                        <p>Semantic versioning and multiple version support for models.</p>
-                    </div>
+                <ul>
+                    <li><strong>Universal Installer</strong> - Works with any model repository via pluggable adapters</li>
+                    <li><strong>Real-time Downloads</strong> - No pre-packaging needed, manifests created on-the-fly</li>
+                    <li><strong>Model Discovery</strong> - Search across all configured repositories</li>
+                    <li><strong>Version Management</strong> - Semantic versioning with latest tag support</li>
+                    <li><strong>Checksum Verification</strong> - Automatic integrity checking</li>
+                    <li><strong>Local Caching</strong> - Intelligent caching for offline access</li>
+                    <li><strong>Zero Configuration</strong> - Works out of the box with Hugging Face</li>
+                </ul>
+                
+                <div class="architecture-note">
+                    <h4>Architecture: Pluggable Adapter System</h4>
+                    <p>Axon's adapter architecture allows it to work with any model repository. The system automatically:</p>
+                    <ol>
+                        <li><strong>Detects</strong> the model source (namespace-based)</li>
+                        <li><strong>Selects</strong> the appropriate adapter (Hugging Face, ONNX, PyTorch Hub, etc.)</li>
+                        <li><strong>Downloads</strong> and packages models in real-time</li>
+                        <li><strong>Caches</strong> locally for future use</li>
+                    </ol>
+                    <p>This design enables Axon to support new repositories without changing core code - just add a new adapter!</p>
                 </div>
                 
                 <h3>Basic Usage</h3>
                 <div class="code-block"><pre># Initialize the axon pathway
 axon init
 
+# Install any model directly from Hugging Face (no setup needed!)
+axon install hf/bert-base-uncased@latest
+axon install hf/gpt2@latest
+
 # Search for models
 axon search resnet
 axon search "image classification"
 
 # Get model information
-axon info vision/resnet50
-
-# Install models
-axon install vision/resnet50
-axon install vision/resnet50@2.0.0
+axon info hf/bert-base-uncased@latest
 
 # List installed models
 axon list

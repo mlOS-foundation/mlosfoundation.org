@@ -290,7 +290,7 @@
         .section-subtitle {
             text-align: center;
             font-size: 1.2rem;
-            color: var(--color-text-muted);
+            color: var(--color-text);
             max-width: 700px;
             margin: 0 auto var(--spacing-lg);
             line-height: 1.6;
@@ -325,10 +325,11 @@
             font-size: 1.3rem;
             margin-bottom: var(--spacing-xs);
             color: var(--color-primary);
+            font-weight: 600;
         }
         
         .problem-card p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             line-height: 1.6;
         }
         
@@ -375,7 +376,7 @@
         }
         
         .diagram-layer p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             font-size: 0.9rem;
         }
         
@@ -508,7 +509,7 @@
         }
         
         .highlight-card p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             line-height: 1.6;
             margin-bottom: var(--spacing-sm);
         }
@@ -556,7 +557,7 @@
         }
         
         .use-case-card p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             line-height: 1.6;
         }
         
@@ -635,7 +636,7 @@
         }
         
         .open-source-card p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             line-height: 1.6;
         }
         
@@ -676,7 +677,7 @@
         }
         
         .doc-card p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             font-size: 0.9rem;
             line-height: 1.5;
         }
@@ -704,7 +705,7 @@
         }
         
         .trust-item p {
-            color: var(--color-text-muted);
+            color: var(--color-text);
             font-size: 0.9rem;
         }
         
@@ -855,15 +856,15 @@
                         <div class="terminal-dot green"></div>
                     </div>
                     <div class="terminal-content">
-                        <div><span class="prompt">$</span> mlos deploy model --framework pytorch --optimize gpu</div>
-                        <div class="output">✓ Model deployed: 2.3ms average latency</div>
-                        <div class="output">✓ GPU utilization: 94%</div>
-                        <div class="output">✓ Throughput: 15,000 req/s</div>
+                        <div><span class="prompt">$</span> axon install hf/bert-base-uncased@latest</div>
+                        <div class="output">✓ Model downloaded from Hugging Face</div>
+                        <div class="output">✓ Manifest created and validated</div>
+                        <div class="output">✓ Model ready for MLOS Core (Phase 1)</div>
                     </div>
                 </div>
                 
                 <div class="trust-indicators">
-                    Trusted by forward-thinking organizations
+                    Join leading teams building the future of ML infrastructure
                 </div>
             </div>
         </div>
@@ -1107,32 +1108,43 @@ func (m *Model) Predict(input []float64) []float64 {
     <!-- Getting Started Section -->
     <section class="section getting-started" id="getting-started">
         <div class="container">
-            <h2 class="section-title">Get Started in Minutes</h2>
+            <h2 class="section-title">Get Started with Axon</h2>
+            <p class="section-subtitle">
+                Axon is available now. MLOS Core runtime is in active development (Phase 1).
+            </p>
             
             <div class="steps">
                 <div class="step animate-on-scroll">
                     <div class="step-number">1</div>
-                    <h3>Install MLOS</h3>
-                    <div class="step-code">$ curl -sSL install.mlos.org | sh</div>
-                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Installed in /usr/local/bin</p>
+                    <h3>Install Axon</h3>
+                    <div class="step-code">$ curl -sSL install.axon.mlos.org | sh</div>
+                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Axon installed</p>
                 </div>
                 <div class="step animate-on-scroll">
                     <div class="step-number">2</div>
-                    <h3>Register Model</h3>
-                    <div class="step-code">$ mlos register --name my-model --framework pytorch</div>
-                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Model registered</p>
+                    <h3>Install Model from Repository</h3>
+                    <div class="step-code">$ axon install hf/bert-base-uncased@latest</div>
+                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Model downloaded and cached</p>
                 </div>
                 <div class="step animate-on-scroll">
                     <div class="step-number">3</div>
-                    <h3>Deploy & Infer</h3>
-                    <div class="step-code">$ mlos deploy my-model</div>
-                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Model deployed<br>✓ Endpoint: :8080<br>✓ Ready for requests</p>
+                    <h3>Explore Ecosystem</h3>
+                    <div class="step-code">$ axon list</div>
+                    <p style="color: #64748b; margin-top: 0.5rem;">MLOS Core deployment coming in Phase 1</p>
                 </div>
             </div>
             
+            <div style="background: var(--color-bg-alt); padding: var(--spacing-md); border-radius: 12px; margin-top: var(--spacing-lg); border-left: 4px solid var(--color-secondary);">
+                <p style="color: var(--color-text); margin: 0; line-height: 1.7;">
+                    <strong>Development Status:</strong> Axon (Universal Model Installer) is MVP complete and available. 
+                    MLOS Core runtime with kernel-level integration is in active development (Phase 1). 
+                    <a href="architecture.html" style="color: var(--color-secondary);">View Architecture</a> for details.
+                </p>
+            </div>
+            
             <div class="cta-buttons" style="margin-top: var(--spacing-lg);">
-                <a href="#documentation" class="btn btn-primary">Read Full Documentation</a>
-                <a href="https://github.com/mlOS-foundation" class="btn btn-secondary">View Example Projects</a>
+                <a href="ecosystem.html#axon" class="btn btn-primary">Explore Axon</a>
+                <a href="architecture.html" class="btn btn-secondary">View Architecture</a>
             </div>
         </div>
     </section>

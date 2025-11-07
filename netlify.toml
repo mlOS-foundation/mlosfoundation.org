@@ -4,7 +4,7 @@
 
 # Environment variables (set in Netlify dashboard, not in this file)
 # FORMSUBMIT_ID=your-activation-id-here
-# FORMSUBMIT_EMAIL=ishaileshpant@gmail.com
+# FORMSUBMIT_EMAIL=recieving-email
 
 [[redirects]]
   from = "/api/*"

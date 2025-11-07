@@ -237,11 +237,12 @@
                 };
                 
                 // Determine endpoint based on platform
-                // Try Netlify first, then Vercel, fallback to relative path
-                let endpoint = '/.netlify/functions/submit-demo';
+                // Auto-detect: Netlify or Vercel (you only need one based on your hosting platform)
+                let endpoint = '/.netlify/functions/submit-demo'; // Default to Netlify
                 if (window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com')) {
-                    endpoint = '/api/submit-demo';
+                    endpoint = '/api/submit-demo'; // Use Vercel if on Vercel domain
                 }
+                // Note: If using GitHub Pages, you'll need to deploy to Netlify or Vercel for serverless functions
                 
                 const response = await fetch(endpoint, {
                     method: 'POST',

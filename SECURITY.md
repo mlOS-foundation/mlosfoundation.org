@@ -14,7 +14,9 @@ The FormSubmit.co activation ID is stored as an environment variable in your hos
 
 ## Platform Setup
 
-### Netlify
+**You only need ONE platform. Choose based on your hosting:**
+
+### Option 1: Netlify (Recommended)
 
 1. Go to your Netlify site dashboard
 2. Navigate to **Site settings** → **Environment variables**
@@ -25,7 +27,11 @@ The FormSubmit.co activation ID is stored as an environment variable in your hos
 
 The function will be available at: `/.netlify/functions/submit-demo`
 
-### Vercel
+**After setup, you can remove:**
+- `api/` folder (Vercel function - not needed)
+- `vercel.json` (Vercel config - not needed)
+
+### Option 2: Vercel
 
 1. Go to your Vercel project dashboard
 2. Navigate to **Settings** → **Environment Variables**
@@ -36,13 +42,17 @@ The function will be available at: `/.netlify/functions/submit-demo`
 
 The function will be available at: `/api/submit-demo`
 
-### GitHub Pages (Alternative)
+**After setup, you can remove:**
+- `netlify/` folder (Netlify function - not needed)
+- `netlify.toml` (Netlify config - not needed)
 
-GitHub Pages doesn't support serverless functions directly. Options:
+### GitHub Pages (Not Supported)
 
-1. **Use Netlify/Vercel**: Deploy your site to Netlify or Vercel instead
+GitHub Pages doesn't support serverless functions. You'll need to:
+
+1. **Switch to Netlify/Vercel**: Deploy your site to Netlify or Vercel (recommended)
 2. **External API**: Use a separate API service (AWS Lambda, Google Cloud Functions, etc.)
-3. **Keep current approach**: Accept that the ID is visible (FormSubmit.co has rate limiting)
+3. **Fallback**: Use direct FormSubmit.co (ID will be visible in code, but has rate limiting)
 
 ## Security Benefits
 

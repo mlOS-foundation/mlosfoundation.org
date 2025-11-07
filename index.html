@@ -137,6 +137,16 @@
             line-height: 1.1;
             color: #ffffff;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .hero h1 .trademark {
+            font-size: 0.6em;
+            vertical-align: super;
+            font-weight: 400;
+            margin-left: 0.1em;
         }
         
         .hero .tagline {
@@ -800,6 +810,11 @@
                 padding-top: 100px;
             }
             
+            .hero h1 {
+                white-space: normal;
+                font-size: clamp(1.8rem, 6vw, 2.5rem);
+            }
+            
             .patent-badge {
                 position: relative;
                 top: 0;
@@ -824,30 +839,30 @@
         <div class="container">
             <div class="nav-content">
                 <a href="/" class="logo">MLOS Foundation</a>
-                <ul class="nav-links">
+            <ul class="nav-links">
                     <li><a href="#platform">Platform</a></li>
                     <li><a href="architecture.html">Architecture</a></li>
                     <li><a href="ecosystem.html">Ecosystem</a></li>
                     <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
             </div>
         </div>
-    </nav>
+        </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="patent-badge">Patent-Protected Technology</div>
-                <h1>Machine Learning Operating System</h1>
+                <h1>Machine Learning Operating System<span class="trademark">™</span></h1>
                 <p class="tagline">Kernel-Level ML Infrastructure for Production AI</p>
                 <p class="description">
                     Enterprise-grade machine learning infrastructure that integrates 
                     directly with the operating system kernel for high-performance 
                     inference, efficient resource management, and seamless deployment.
                 </p>
-                <div class="cta-buttons">
+            <div class="cta-buttons">
                     <a href="#documentation" class="btn btn-primary">View Documentation</a>
                     <a href="https://github.com/mlOS-foundation" class="btn btn-secondary">GitHub →</a>
                 </div>
@@ -875,7 +890,7 @@
 
     <!-- Problem Statement Section -->
     <section class="section problem" id="problem">
-        <div class="container">
+            <div class="container">
             <h2 class="section-title">The Challenge of Production ML Infrastructure</h2>
             <p class="section-subtitle">Modern ML workloads face critical bottlenecks:</p>
             
@@ -951,7 +966,7 @@
                 <button class="feature-tab" onclick="showFeature(1)">Tensor Memory Management</button>
                 <button class="feature-tab" onclick="showFeature(2)">Polyglot Plugin Architecture</button>
                 <button class="feature-tab" onclick="showFeature(3)">GPU Orchestration</button>
-            </div>
+                    </div>
             
             <div class="feature-content active animate-on-scroll">
                 <div class="feature-showcase">
@@ -1023,14 +1038,14 @@ func (m *Model) Predict(input []float64) []float64 {
                         <h3>GPU Management</h3>
                         <p>Comprehensive GPU orchestration with automatic failover and optimization</p>
                     </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     <!-- Performance Metrics Section -->
     <section class="section performance" id="performance">
-        <div class="container">
+            <div class="container">
             <h2 class="section-title">Engineered for Performance</h2>
             
             <div class="metrics-grid">
@@ -1038,18 +1053,18 @@ func (m *Model) Predict(input []float64) []float64 {
                     <div class="metric-value">40%</div>
                     <div class="metric-label">Faster Inference</div>
                     <div class="metric-description">vs traditional ML frameworks</div>
-                </div>
+                    </div>
                 <div class="metric-card animate-on-scroll">
                     <div class="metric-value">94%</div>
                     <div class="metric-label">GPU Utilization</div>
                     <div class="metric-description">sustained peak performance</div>
-                </div>
+                    </div>
                 <div class="metric-card animate-on-scroll">
                     <div class="metric-value">&lt;3ms</div>
                     <div class="metric-label">Latency</div>
                     <div class="metric-description">p99 inference time</div>
+                    </div>
                 </div>
-            </div>
             
             <p class="section-subtitle" style="margin-top: var(--spacing-lg);">
                 Benchmark results from production workloads across image classification, NLP, and recommendation systems
@@ -1078,13 +1093,13 @@ func (m *Model) Predict(input []float64) []float64 {
                     <p>High availability, automatic scaling, audit logging, and access control</p>
                     <div class="code-snippet">ha: true<br>auto_scale: enabled</div>
                 </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     <!-- Use Cases Section -->
     <section class="section use-cases" id="use-cases">
-        <div class="container">
+            <div class="container">
             <h2 class="section-title">Built for Real-World Production</h2>
             
             <div class="use-cases-grid">
@@ -1254,15 +1269,15 @@ func (m *Model) Predict(input []float64) []float64 {
         <div class="container">
             <h2>Ready to Transform Your ML Infrastructure?</h2>
             <p>Join forward-thinking teams building production AI with MLOS</p>
-            <div class="cta-buttons">
+                <div class="cta-buttons">
                 <a href="#getting-started" class="btn btn-primary">Get Started</a>
                 <a href="mailto:info@mlosfoundation.org" class="btn btn-secondary">Schedule Demo</a>
-            </div>
+                </div>
             <p style="margin-top: var(--spacing-md); font-size: 1rem; opacity: 0.8;">
                 Or explore our <a href="#documentation" style="color: white; text-decoration: underline;">documentation</a> and <a href="https://github.com/mlOS-foundation" style="color: white; text-decoration: underline;">GitHub repositories</a>
             </p>
-        </div>
-    </section>
+            </div>
+        </section>
 
     <!-- Footer -->
     <footer class="footer" id="contact">
@@ -1273,7 +1288,7 @@ func (m *Model) Predict(input []float64) []float64 {
                     <p style="color: #94a3b8; margin-top: var(--spacing-xs);">
                         Kernel-level ML infrastructure for production AI
                     </p>
-                </div>
+            </div>
                 <div class="footer-section">
                     <h4>Platform</h4>
                     <ul>

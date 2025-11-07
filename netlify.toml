@@ -11,3 +11,19 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
+# Axon installer script
+# Serves install.sh with proper content-type for curl | sh usage
+[[headers]]
+  for = "/install.sh"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    X-Content-Type-Options = "nosniff"
+
+# Redirect install.axon.mlos.org to install.sh
+# Note: This requires DNS configuration to point install.axon.mlos.org to Netlify
+[[redirects]]
+  from = "https://install.axon.mlos.org/*"
+  to = "/install.sh"
+  status = 200
+  force = true
+

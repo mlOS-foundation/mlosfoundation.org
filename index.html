@@ -87,8 +87,8 @@
         }
         
         .logo svg {
-            width: 120px;
-            height: 40px;
+            width: 160px;
+            height: 50px;
         }
         
         .nav-links {
@@ -133,30 +133,25 @@
         
         .hero-title-container {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 1rem;
             margin-bottom: var(--spacing-sm);
-            flex-wrap: wrap;
             position: relative;
-        }
-        
-        .hero-logo {
-            width: 80px;
-            height: 80px;
-            flex-shrink: 0;
         }
         
         .hero-title-wrapper {
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 0.5rem;
         }
         
         .hero-light-logo {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             flex-shrink: 0;
         }
         
@@ -194,9 +189,6 @@
         }
         
         .patent-badge {
-            position: absolute;
-            top: 160px;
-            right: var(--spacing-md);
             background: #1a202c;
             padding: 0.5rem 1rem;
             border-radius: 20px;
@@ -205,6 +197,8 @@
             border: 1px solid #1a202c;
             font-weight: 600;
             font-family: var(--font-sans);
+            margin-top: 0.5rem;
+            text-align: center;
         }
         
         .cta-buttons {
@@ -843,18 +837,13 @@
                 gap: 1rem;
             }
             
-            .hero-logo {
-                width: 60px;
-                height: 60px;
-            }
-            
             .hero-title-wrapper {
                 gap: 0.5rem;
             }
             
             .hero-light-logo {
-                width: 80px;
-                height: 80px;
+                width: 120px;
+                height: 120px;
             }
             
             .hero-trademark-icon {
@@ -864,11 +853,7 @@
             }
             
             .patent-badge {
-                position: relative;
-                top: 0;
-                right: 0;
-                display: inline-block;
-                margin-bottom: var(--spacing-md);
+                margin-top: 0.75rem;
             }
             
             .feature-showcase {
@@ -918,33 +903,7 @@
     <section class="hero" id="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="patent-badge">Patent-Protected Technology</div>
                 <div class="hero-title-container">
-                    <svg class="hero-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Dark background -->
-                        <rect width="200" height="200" rx="12" fill="#212730"/>
-                        <!-- mlOS text -->
-                        <text x="20" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff">ml</text>
-                        <!-- Atom icon replacing 'o' -->
-                        <circle cx="100" cy="50" r="8" fill="#00C0FF" opacity="0.9">
-                            <animate attributeName="opacity" values="0.9;1;0.9" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="100" cy="50" r="25" fill="none" stroke="#00C0FF" stroke-width="2" opacity="0.6">
-                            <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="85" cy="40" r="4" fill="#00C0FF" opacity="0.8">
-                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="115" cy="40" r="4" fill="#00C0FF" opacity="0.8">
-                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <circle cx="100" cy="30" r="4" fill="#00C0FF" opacity="0.8">
-                            <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text x="120" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff">S</text>
-                        <!-- FOUNDATION text -->
-                        <text x="20" y="130" font-family="Arial, sans-serif" font-size="20" fill="#808080">FOUNDATION</text>
-                    </svg>
                     <div class="hero-title-wrapper">
                         <svg class="hero-light-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                             <!-- Light logo: circular cyan design -->
@@ -980,6 +939,7 @@
                             <path d="M 58.58 58.58 A 70.71 70.71 0 0 1 100 30" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.4"/>
                         </svg>
                         <span class="hero-trademark-icon">™</span>
+                        <div class="patent-badge">Patent-Protected Technology</div>
                     </div>
                 </div>
                 <p class="tagline">OS-native ML resource orchestration</p>

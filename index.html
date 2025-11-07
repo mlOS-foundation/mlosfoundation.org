@@ -83,26 +83,26 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--color-primary);
+            color: #667eea;
             text-decoration: none;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
-            gap: var(--spacing-md);
+            gap: 2.5rem;
         }
         
         .nav-links a {
             text-decoration: none;
-            color: var(--color-text);
+            color: #1a202c;
             font-weight: 500;
             font-size: 0.95rem;
             transition: color 0.3s;
         }
         
         .nav-links a:hover {
-            color: var(--color-secondary);
+            color: #667eea;
         }
         
         /* Hero Section */
@@ -120,19 +120,6 @@
             padding-top: 80px;
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(26, 54, 93, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26, 54, 93, 0.3) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.3;
-        }
         
         .hero-content {
             text-align: center;
@@ -232,8 +219,7 @@
         }
         
         .terminal-preview {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
+            background: #1e293b;
             border-radius: 12px;
             padding: var(--spacing-md);
             margin-top: var(--spacing-lg);
@@ -242,7 +228,7 @@
             margin-left: auto;
             margin-right: auto;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
         
         .terminal-header {
@@ -262,14 +248,26 @@
         .terminal-dot.green { background: #10b981; }
         
         .terminal-content {
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            color: #10b981;
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 1rem;
             line-height: 1.8;
+            font-weight: 400;
         }
         
-        .terminal-content .prompt { color: var(--color-accent); }
-        .terminal-content .output { color: #cbd5e1; }
+        .terminal-content .prompt { 
+            color: #06b6d4;
+            font-weight: 500;
+        }
+        
+        .terminal-content .command {
+            color: #10b981;
+            font-weight: 500;
+        }
+        
+        .terminal-content .output { 
+            color: #e2e8f0;
+            font-weight: 400;
+        }
         
         .trust-indicators {
             margin-top: var(--spacing-xl);
@@ -861,7 +859,7 @@
                         <div class="terminal-dot green"></div>
                     </div>
                     <div class="terminal-content">
-                        <div><span class="prompt">$</span> axon install hf/bert-base-uncased@latest</div>
+                        <div><span class="prompt">$</span> <span class="command">axon install hf/bert-base-uncased@latest</span></div>
                         <div class="output">✓ Model downloaded from Hugging Face</div>
                         <div class="output">✓ Manifest created and validated</div>
                         <div class="output">✓ Model ready for MLOS Core (Phase 1)</div>

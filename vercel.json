@@ -1,0 +1,12 @@
+{
+  "functions": {
+    "api/submit-demo.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "FORMSUBMIT_ID": "@formsubmit-id",
+    "FORMSUBMIT_EMAIL": "@formsubmit-email"
+  }
+}
+

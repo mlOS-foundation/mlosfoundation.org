@@ -78,18 +78,56 @@ This ensures users always get the latest version from releases.
 
 ## Verification
 
-Check DNS resolution:
+### Step 1: Verify DNS Record in Cloudflare
+
+1. Go to Cloudflare Dashboard → DNS → Records
+2. Confirm the `axon` CNAME record exists
+3. Verify it shows:
+   - Type: CNAME
+   - Name: axon
+   - Content: mlosfoundation.org
+   - Proxy status: ✅ Proxied (orange cloud)
+   - Status: Active
+
+### Step 2: Check DNS Propagation
+
+DNS propagation can take 5-60 minutes (sometimes up to 24 hours globally).
 
 ```bash
-# Check if it resolves
+# Check with Cloudflare's DNS (1.1.1.1) - should work fastest
+dig @1.1.1.1 axon.mlosfoundation.org +short
+
+# Check with Google's DNS (8.8.8.8)
+dig @8.8.8.8 axon.mlosfoundation.org +short
+
+# Check with your local DNS
 nslookup axon.mlosfoundation.org
 
-# Test HTTPS redirect
+# If using Cloudflare proxy, you should see Cloudflare IPs (e.g., 104.x.x.x or 172.x.x.x)
+```
+
+**Note**: If DNS doesn't resolve yet, wait a few more minutes and try again.
+
+### Step 3: Test HTTPS Redirect
+
+Once DNS resolves:
+
+```bash
+# Test redirect (should show 302 status)
 curl -I https://axon.mlosfoundation.org
 
-# Test actual installation
-curl -sSL axon.mlosfoundation.org | head -20
+# Test actual content (should show install.sh script)
+curl -sSL https://axon.mlosfoundation.org | head -20
 ```
+
+### Step 4: Test Installation
+
+```bash
+# Full installation test
+curl -sSL axon.mlosfoundation.org | sh
+```
+
+**Note**: `ping` will often fail for Cloudflare-proxied domains because Cloudflare blocks ICMP. This is normal and doesn't indicate a problem. Use `curl` or `dig` instead.
 
 ## Troubleshooting
 

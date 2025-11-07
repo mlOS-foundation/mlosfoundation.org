@@ -232,13 +232,25 @@
                 
                 const response = await fetch(form.action, {
                     method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                    body: formData
                 });
                 
-                const data = await response.json();
+                // FormSubmit.co returns HTML on success, JSON on error
+                const contentType = response.headers.get('content-type');
+                let data = null;
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    // HTML response - check if it's a success page
+                    const text = await response.text();
+                    // FormSubmit.co success pages typically contain "Thank you" or redirect
+                    if (text.includes('Thank you') || text.includes('success') || response.ok) {
+                        data = { success: true };
+                    } else {
+                        throw new Error('Unexpected response format');
+                    }
+                }
                 
                 if (response.ok || data.success) {
                     successMessage.style.display = 'block';
@@ -250,8 +262,14 @@
                 }
             } catch (error) {
                 console.error('Form submission error:', error);
+                // Show user-friendly error message
+                let errorMsg = 'There was an error submitting your request.';
+                if (error.message && !error.message.includes('JSON')) {
+                    errorMsg += ' ' + error.message;
+                }
+                errorMsg += ' Please try again or email ishaileshpant@gmail.com directly.';
                 errorMessage.style.display = 'block';
-                errorMessage.textContent = 'There was an error submitting your request: ' + error.message + '. Please try again or email ishaileshpant@gmail.com directly.';
+                errorMessage.textContent = errorMsg;
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } finally {
                 submitBtn.disabled = false;

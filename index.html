@@ -361,14 +361,17 @@
         
         .phase-header {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
         
         .phase-status {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
         }
         
         .phase-status.complete {
@@ -383,17 +386,31 @@
             color: #64748b;
         }
         
+        .phase-header-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
         .phase-title {
             color: #e2e8f0;
             font-weight: 600;
             font-size: 1rem;
-            margin: 0;
+            margin: 0 0 0.25rem 0;
+            line-height: 1.3;
         }
         
         .phase-target {
             color: #94a3b8;
             font-size: 0.9rem;
             margin: 0;
+            line-height: 1.4;
+        }
+        
+        .phase-status-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+            padding: 0.25rem 0;
         }
         
         .phase-features {
@@ -419,33 +436,62 @@
             color: #64748b;
         }
         
-        .phase-details-card {
-            margin-top: 0.75rem;
-            padding: 0.75rem;
-            background: rgba(15, 23, 42, 0.6);
+        .phase-available-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            padding: 0.35rem 0.75rem;
             border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
         
-        .phase-details-title {
-            color: #10b981;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin: 0 0 0.5rem 0;
+        .axon-usage-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
         }
         
-        .phase-details-content {
+        .usage-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 6px;
+            padding: 0.75rem;
+        }
+        
+        .usage-card-title {
+            color: #10b981;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .usage-card-title::before {
+            content: "→";
+            color: #10b981;
+            font-weight: 700;
+        }
+        
+        .usage-card-content {
             color: #cbd5e1;
             font-size: 0.8rem;
             font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
             line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
         }
         
-        .phase-details-content .command {
+        .usage-card-content .command {
             color: #10b981;
         }
         
-        .phase-details-content .comment {
+        .usage-card-content .comment {
             color: #64748b;
         }
         
@@ -1126,29 +1172,36 @@
                                 <div class="phase-card complete">
                                     <div class="phase-header">
                                         <span class="phase-status complete">✓</span>
-                                        <div>
+                                        <div class="phase-header-content">
                                             <h4 class="phase-title">Phase 0</h4>
                                             <p class="phase-target">Axon (Universal Model Installer)</p>
                                         </div>
                                     </div>
-                                    <p style="color: #10b981; font-size: 0.85rem; margin: 0;">MVP Complete</p>
+                                    <div class="phase-available-badge">Axon CLI Available</div>
+                                    <p class="phase-status-text" style="color: #10b981;">MVP Complete</p>
                                     <ul class="phase-features">
                                         <li>Universal model installer</li>
                                         <li>Multi-repository support</li>
                                         <li>Model lifecycle management</li>
                                         <li>Version control & caching</li>
                                     </ul>
-                                    <div class="phase-details-card">
-                                        <h5 class="phase-details-title">CLI Usage:</h5>
-                                        <div class="phase-details-content">
-                                            <span class="comment"># Install Axon</span><br>
-                                            <span class="command">$</span> curl -sSL install.axon.mlos.org | sh<br><br>
-                                            <span class="comment"># Install model</span><br>
-                                            <span class="command">$</span> axon install hf/bert-base-uncased@latest<br><br>
-                                            <span class="comment"># List models</span><br>
-                                            <span class="command">$</span> axon list<br><br>
-                                            <span class="comment"># Search models</span><br>
-                                            <span class="command">$</span> axon search resnet
+                                    
+                                    <div class="axon-usage-cards">
+                                        <div class="usage-card">
+                                            <h5 class="usage-card-title">Install Axon</h5>
+                                            <div class="usage-card-content"><span class="command">$</span> curl -sSL install.axon.mlos.org | sh</div>
+                                        </div>
+                                        <div class="usage-card">
+                                            <h5 class="usage-card-title">Install Model</h5>
+                                            <div class="usage-card-content"><span class="command">$</span> axon install hf/bert-base-uncased@latest</div>
+                                        </div>
+                                        <div class="usage-card">
+                                            <h5 class="usage-card-title">List Models</h5>
+                                            <div class="usage-card-content"><span class="command">$</span> axon list</div>
+                                        </div>
+                                        <div class="usage-card">
+                                            <h5 class="usage-card-title">Search Models</h5>
+                                            <div class="usage-card-content"><span class="command">$</span> axon search resnet</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1157,12 +1210,12 @@
                                 <div class="phase-card active">
                                     <div class="phase-header">
                                         <span class="phase-status active">→</span>
-                                        <div>
+                                        <div class="phase-header-content">
                                             <h4 class="phase-title">Phase 1</h4>
                                             <p class="phase-target">MLOS Core Runtime</p>
                                         </div>
                                     </div>
-                                    <p style="color: #fbbf24; font-size: 0.85rem; margin: 0;">Active Development</p>
+                                    <p class="phase-status-text" style="color: #fbbf24;">Active Development</p>
                                     <ul class="phase-features">
                                         <li>Kernel-level integration</li>
                                         <li>HTTP REST API & IPC interface</li>
@@ -1175,12 +1228,12 @@
                                 <div class="phase-card coming">
                                     <div class="phase-header">
                                         <span class="phase-status coming">→</span>
-                                        <div>
+                                        <div class="phase-header-content">
                                             <h4 class="phase-title">Phase 2</h4>
                                             <p class="phase-target">Advanced Features</p>
                                         </div>
                                     </div>
-                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Coming Soon</p>
+                                    <p class="phase-status-text" style="color: #64748b;">Coming Soon</p>
                                     <ul class="phase-features">
                                         <li>Model versioning (A/B testing, canary)</li>
                                         <li>Auto-scaling & multi-tenancy</li>
@@ -1192,12 +1245,12 @@
                                 <div class="phase-card coming">
                                     <div class="phase-header">
                                         <span class="phase-status coming">→</span>
-                                        <div>
+                                        <div class="phase-header-content">
                                             <h4 class="phase-title">Phase 3</h4>
                                             <p class="phase-target">Enterprise Features</p>
                                         </div>
                                     </div>
-                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Coming Soon</p>
+                                    <p class="phase-status-text" style="color: #64748b;">Coming Soon</p>
                                     <ul class="phase-features">
                                         <li>High availability clustering</li>
                                         <li>Disaster recovery & compliance</li>

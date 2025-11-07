@@ -225,7 +225,7 @@
             errorMessage.style.display = 'none';
             
             try {
-                // Collect form data as JSON
+                // Collect form data
                 const formData = {
                     name: document.getElementById('name').value,
                     email: emailInput.value,
@@ -236,37 +236,90 @@
                     message: document.getElementById('message').value || ''
                 };
                 
-                // Determine endpoint based on platform
-                // Auto-detect: Netlify or Vercel (you only need one based on your hosting platform)
+                // Try serverless function first, fallback to FormSubmit.co if not available
                 let endpoint = '/.netlify/functions/submit-demo'; // Default to Netlify
                 if (window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com')) {
                     endpoint = '/api/submit-demo'; // Use Vercel if on Vercel domain
                 }
-                // Note: If using GitHub Pages, you'll need to deploy to Netlify or Vercel for serverless functions
                 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
+                let useFallback = false;
+                let response;
+                let data;
                 
-                const data = await response.json();
+                try {
+                    // Try serverless function
+                    response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    // Check if we got HTML (404 page) instead of JSON
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('text/html')) {
+                        console.warn('Serverless function not available, using FormSubmit.co fallback');
+                        useFallback = true;
+                    } else {
+                        data = await response.json();
+                        if (response.ok && data.success) {
+                            // Success via serverless function
+                            successMessage.style.display = 'block';
+                            successMessage.textContent = 'Thank you! Your demo request has been submitted. We\'ll get back to you soon at ' + emailInput.value + '.';
+                            form.reset();
+                            form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            return;
+                        } else {
+                            throw new Error(data.message || data.error || 'Form submission failed');
+                        }
+                    }
+                } catch (fetchError) {
+                    // If serverless function fails, use fallback
+                    console.warn('Serverless function error, using FormSubmit.co fallback:', fetchError);
+                    useFallback = true;
+                }
                 
-                if (response.ok && data.success) {
-                    successMessage.style.display = 'block';
-                    successMessage.textContent = 'Thank you! Your demo request has been submitted. We\'ll get back to you soon at ' + emailInput.value + '.';
-                    form.reset();
-                    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    throw new Error(data.message || data.error || 'Form submission failed');
+                // Fallback to FormSubmit.co (works without serverless function setup)
+                if (useFallback) {
+                    const formSubmitData = new URLSearchParams();
+                    formSubmitData.append('_to', 'ishaileshpant@gmail.com');
+                    formSubmitData.append('_subject', 'MLOS Foundation Demo Request');
+                    formSubmitData.append('_replyto', formData.email);
+                    formSubmitData.append('_captcha', 'false');
+                    formSubmitData.append('_template', 'table');
+                    formSubmitData.append('name', formData.name);
+                    formSubmitData.append('email', formData.email);
+                    if (formData.company) formSubmitData.append('company', formData.company);
+                    if (formData.phone) formSubmitData.append('phone', formData.phone);
+                    if (formData.preferredDate) formSubmitData.append('preferredDate', formData.preferredDate);
+                    if (formData.useCase) formSubmitData.append('useCase', formData.useCase);
+                    if (formData.message) formSubmitData.append('message', formData.message);
+                    
+                    response = await fetch('https://formsubmit.co/446f95bbbfd02acf0ce30f77077f439c', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: formSubmitData.toString()
+                    });
+                    
+                    // FormSubmit.co returns HTML on success
+                    const text = await response.text();
+                    if (response.ok && (text.includes('Thank you') || text.includes('success') || text.includes('submitted'))) {
+                        successMessage.style.display = 'block';
+                        successMessage.textContent = 'Thank you! Your demo request has been submitted. We\'ll get back to you soon at ' + emailInput.value + '.';
+                        form.reset();
+                        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
                 }
             } catch (error) {
                 console.error('Form submission error:', error);
                 // Show user-friendly error message
                 let errorMsg = 'There was an error submitting your request.';
-                if (error.message) {
+                if (error.message && !error.message.includes('JSON') && !error.message.includes('Unexpected')) {
                     errorMsg += ' ' + error.message;
                 } else {
                     errorMsg += ' Please try again or email ishaileshpant@gmail.com directly.';

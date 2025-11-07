@@ -11,8 +11,7 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# Note: Axon installer script is hosted in the axon repository
-# Cloudflare redirect rule should be configured to redirect:
-# axon.mlosfoundation.org -> https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh
-# Or to the latest release: https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh
+# Note: Axon installer script is hosted in the mlOS-foundation/axon repository
+# Cloudflare redirect rule configured: axon.mlosfoundation.org -> GitHub raw content
+# See CLOUDFLARE_SETUP.md for configuration details
 

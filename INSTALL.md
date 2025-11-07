@@ -1,53 +1,37 @@
-# Axon Installer
+# Axon CLI Installation
 
-This directory contains the Axon CLI installer script.
+The Axon CLI installer script is hosted in the [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon) repository.
 
-## Installation
-
-### Quick Install
-
-```bash
-curl -sSL https://mlosfoundation.org/install.sh | sh
-```
-
-Or using the subdomain:
+## Quick Install
 
 ```bash
 curl -sSL axon.mlosfoundation.org | sh
 ```
 
-Or alternative subdomain:
-
-```bash
-curl -sSL install.axon.mlos.org | sh
-```
-
-### Manual Installation
-
-1. Download the script:
-   ```bash
-   curl -O https://mlosfoundation.org/install.sh
-   ```
-
-2. Make it executable:
-   ```bash
-   chmod +x install.sh
-   ```
-
-3. Run it:
-   ```bash
-   ./install.sh
-   ```
+This command:
+- Automatically detects your OS (Linux/macOS) and architecture (amd64/arm64)
+- Downloads the latest Axon release from GitHub
+- Installs Axon to `~/.local/bin` (no sudo required)
+- Provides instructions to add to your PATH
 
 ## How It Works
 
-The installer script:
+The installer script is hosted in the Axon repository and served via Cloudflare redirect:
 
-1. **Detects your system**: Automatically detects OS (Linux/macOS) and architecture (amd64/arm64)
-2. **Fetches latest version**: Gets the latest release from GitHub (or uses a specific version)
-3. **Downloads binary**: Downloads the appropriate binary for your system
-4. **Installs to `~/.local/bin`**: Installs Axon to `$HOME/.local/bin` by default
-5. **Updates PATH**: Provides instructions to add the install directory to your PATH
+1. **Cloudflare Redirect**: `axon.mlosfoundation.org` → `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
+2. **Auto-detection**: Detects OS and architecture
+3. **Version Management**: Fetches latest version from GitHub releases
+4. **Installation**: Downloads and installs the appropriate binary
+
+## Customization
+
+```bash
+# Install specific version
+AXON_VERSION=1.0.0 curl -sSL axon.mlosfoundation.org | sh
+
+# Install to custom directory
+AXON_INSTALL_DIR=/usr/local/bin curl -sSL axon.mlosfoundation.org | sh
+```
 
 ## Requirements
 
@@ -56,45 +40,25 @@ The installer script:
 - **Dependencies**: `curl`, `tar`, `gzip`
 - **GitHub Release**: Requires at least v1.0.0 release on [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon)
 
-## Customization
-
-You can customize the installation:
-
-```bash
-# Install specific version
-AXON_VERSION=1.0.0 curl -sSL https://mlosfoundation.org/install.sh | sh
-
-# Install to custom directory
-AXON_INSTALL_DIR=/usr/local/bin curl -sSL https://mlosfoundation.org/install.sh | sh
-```
-
-## Testing
-
-Run the test script to verify the installer logic:
-
-```bash
-./install-test.sh
-```
-
 ## GitHub Release Format
 
-The installer expects GitHub releases in this format:
+The installer expects GitHub releases with binaries named:
 
 ```
 axon_<VERSION>_<OS>_<ARCH>.tar.gz
 ```
 
-Example:
+Examples:
 - `axon_1.0.0_darwin_amd64.tar.gz`
 - `axon_1.0.0_linux_arm64.tar.gz`
+- `axon_1.0.0_darwin_arm64.tar.gz`
+- `axon_1.0.0_linux_amd64.tar.gz`
 
-The archive should contain the `axon` binary at the root or in a subdirectory.
+The archive should contain the `axon` binary at the root.
 
 ## DNS Configuration (Cloudflare)
 
-**Note**: The install script should be hosted in the `mlOS-foundation/axon` repository, not in this static site.
-
-To use `axon.mlosfoundation.org`, configure a Cloudflare Redirect Rule:
+The install script is hosted in the `mlOS-foundation/axon` repository. To use `axon.mlosfoundation.org`, configure a Cloudflare Redirect Rule:
 
 1. Go to Cloudflare Dashboard → **Rules** → **Redirect Rules**
 2. Create a new rule:
@@ -107,16 +71,16 @@ See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) for detailed instructions.
 
 ## Security
 
-- The script uses HTTPS to download from GitHub
-- Verifies the binary exists before installation
+- Uses HTTPS for all downloads
+- Verifies binary exists before installation
 - Uses temporary directories that are cleaned up
-- Does not require sudo/root access (installs to user directory by default)
+- No sudo/root required (installs to user directory by default)
 
 ## Troubleshooting
 
 ### Installation fails
 
-1. Check if the release exists on GitHub
+1. Check if the release exists on GitHub: https://github.com/mlOS-foundation/axon/releases
 2. Verify your OS/architecture is supported
 3. Ensure you have internet connectivity
 4. Check that `curl` and `tar` are installed
@@ -141,13 +105,14 @@ If a specific version doesn't exist, the installer will fall back to the latest 
 
 ## Development
 
+The installer script is maintained in the [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon) repository.
+
 To test locally:
 
 ```bash
-# Test the script logic
-bash install-test.sh
+# Test from GitHub
+curl -sSL https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh | head -20
 
-# Test actual installation (requires GitHub release)
-curl -sSL file://$(pwd)/install.sh | sh
+# Test via redirect (requires Cloudflare setup)
+curl -sSL axon.mlosfoundation.org | head -20
 ```
-

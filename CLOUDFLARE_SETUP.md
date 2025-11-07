@@ -1,20 +1,15 @@
 # Cloudflare DNS Setup for Axon Installer
 
-This guide explains how to configure Cloudflare to redirect `axon.mlosfoundation.org` to the install script hosted in the axon repository.
+This guide explains how to configure Cloudflare to redirect `axon.mlosfoundation.org` to the install script hosted in the [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon) repository.
 
-## Quick Setup (Cloudflare Redirect Rule - Recommended)
+## Current Setup
 
-**Note**: The install script should be hosted in the `mlOS-foundation/axon` repository, not in the mlosfoundation.org static site.
+The install script is hosted in the `mlOS-foundation/axon` repository and accessible at:
+- `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
 
-### Step 1: Host Install Script in Axon Repo
+## Quick Setup (Cloudflare Redirect Rule)
 
-1. Add `install.sh` to the `mlOS-foundation/axon` repository
-2. Place it in the root directory or in a `scripts/` directory
-3. Ensure it's accessible via GitHub raw content URL:
-   - `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
-   - Or from releases: `https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh`
-
-### Step 2: Create Cloudflare Redirect Rule
+### Step 1: Create Cloudflare Redirect Rule
 
 1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com)
 2. Select the `mlosfoundation.org` domain
@@ -33,7 +28,7 @@ This guide explains how to configure Cloudflare to redirect `axon.mlosfoundation
      - Preserve query string: `No`
 6. Click **Deploy**
 
-### Step 3: Test
+### Step 2: Test
 
 Wait a few minutes for the rule to propagate, then test:
 
@@ -69,24 +64,17 @@ This ensures users always get the latest version from releases.
 Check DNS resolution:
 
 ```bash
-# Check CNAME record
-dig axon.mlosfoundation.org CNAME
-
 # Check if it resolves
 nslookup axon.mlosfoundation.org
 
-# Test HTTPS
+# Test HTTPS redirect
 curl -I https://axon.mlosfoundation.org
+
+# Test actual installation
+curl -sSL axon.mlosfoundation.org | head -20
 ```
 
 ## Troubleshooting
-
-### Subdomain not resolving
-
-1. **Check DNS record**: Verify CNAME is correct in Cloudflare
-2. **Check proxy status**: If using proxied, ensure SSL is enabled
-3. **Wait for propagation**: DNS changes can take time
-4. **Check Netlify**: Ensure domain is added to Netlify site settings
 
 ### Redirect not working
 
@@ -119,7 +107,7 @@ curl -I axon.mlosfoundation.org
 
 ## Security Considerations
 
-- ✅ HTTPS is enforced via Cloudflare/Netlify
+- ✅ HTTPS is enforced via Cloudflare
 - ✅ Script is served with proper content-type headers
 - ✅ No sensitive data in the script
 - ✅ Downloads are from GitHub (HTTPS)
@@ -128,7 +116,6 @@ curl -I axon.mlosfoundation.org
 
 If you encounter issues:
 1. Check Cloudflare redirect rules
-2. Verify install.sh exists in axon repository
+2. Verify install.sh exists in axon repository: https://github.com/mlOS-foundation/axon
 3. Test GitHub raw URL directly
 4. Check Cloudflare rule deployment status
-

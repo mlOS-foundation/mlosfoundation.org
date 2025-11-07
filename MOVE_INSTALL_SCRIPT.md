@@ -1,52 +1,23 @@
-# Moving Install Script to Axon Repository
+# Install Script Migration Status
 
-The install script should be moved from `mlosfoundation.org` to the `mlOS-foundation/axon` repository.
+✅ **COMPLETED**: The install script has been moved from `mlosfoundation.org` to the `mlOS-foundation/axon` repository.
 
-## Steps
+## Current Status
 
-### 1. Copy install.sh to Axon Repo
+- ✅ Install script (`install.sh`) is now in [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon)
+- ✅ Install test script (`install-test.sh`) is now in [mlOS-foundation/axon](https://github.com/mlOS-foundation/axon)
+- ✅ Cloudflare redirect configured: `axon.mlosfoundation.org` → GitHub raw content
+- ✅ Website documentation updated to reference the new location
 
-```bash
-# From mlosfoundation.org repo
-cp install.sh /path/to/axon-repo/install.sh
-```
+## Installation Command
 
-### 2. Add to Axon Repository
-
-1. Add `install.sh` to the root of the `mlOS-foundation/axon` repository
-2. Commit and push:
-   ```bash
-   cd /path/to/axon-repo
-   git add install.sh
-   git commit -m "feat: Add installer script for one-line installation"
-   git push
-   ```
-
-### 3. Verify GitHub URL
-
-The script should be accessible at:
-- `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
-
-Or if using releases:
-- `https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh`
-
-### 4. Configure Cloudflare Redirect
-
-1. Go to Cloudflare Dashboard → Rules → Redirect Rules
-2. Create rule:
-   - **If**: Hostname equals `axon.mlosfoundation.org`
-   - **Then**: Redirect to `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
-   - **Status**: 302 (Temporary)
-
-### 5. Test
+Users can now install Axon using:
 
 ```bash
-# Test GitHub URL
-curl -sSL https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh | head -20
-
-# Test subdomain (after Cloudflare setup)
-curl -sSL axon.mlosfoundation.org | head -20
+curl -sSL axon.mlosfoundation.org | sh
 ```
+
+This redirects to: `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
 
 ## Benefits
 
@@ -54,12 +25,15 @@ curl -sSL axon.mlosfoundation.org | head -20
 - ✅ Version control with Axon releases
 - ✅ No website deployment needed for script updates
 - ✅ Simpler infrastructure (just Cloudflare redirect)
+- ✅ Better organization and maintainability
 
-## Remove from mlosfoundation.org
+## Documentation
 
-After moving to axon repo, you can remove:
-- `install.sh` (move to axon repo)
-- `install-test.sh` (move to axon repo or keep for testing)
-- `INSTALL.md` (update to point to axon repo)
-- `CLOUDFLARE_SETUP.md` (keep, but update references)
+- [INSTALL.md](INSTALL.md) - Installation instructions
+- [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) - Cloudflare configuration guide
 
+## Repository Links
+
+- **Axon Repository**: https://github.com/mlOS-foundation/axon
+- **Install Script**: https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh
+- **Website Repository**: https://github.com/mlOS-foundation/mlosfoundation.org

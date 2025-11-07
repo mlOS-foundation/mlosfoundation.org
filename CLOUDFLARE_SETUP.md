@@ -9,13 +9,30 @@ The install script is hosted in the `mlOS-foundation/axon` repository and access
 
 ## Quick Setup (Cloudflare Redirect Rule)
 
-### Step 1: Create Cloudflare Redirect Rule
+### Step 1: Create DNS Record (Required First!)
+
+**Important**: You must create a DNS record for the subdomain before the redirect rule will work.
 
 1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com)
 2. Select the `mlosfoundation.org` domain
-3. Go to **Rules** → **Redirect Rules**
-4. Click **Create rule**
+3. Go to **DNS** → **Records**
+4. Click **Add record**
 5. Configure:
+   - **Type**: `CNAME`
+   - **Name**: `axon`
+   - **Target**: `mlosfoundation.org` (or your main domain's A record target)
+   - **Proxy status**: ✅ Proxied (orange cloud) - Recommended for SSL
+   - **TTL**: Auto
+6. Click **Save**
+
+**Wait 1-2 minutes** for DNS to propagate before proceeding to Step 2.
+
+### Step 2: Create Cloudflare Redirect Rule
+
+1. Still in Cloudflare Dashboard for `mlosfoundation.org`
+2. Go to **Rules** → **Redirect Rules**
+3. Click **Create rule**
+4. Configure:
    - **Rule name**: `Axon Installer Redirect`
    - **If**: 
      - Field: `Hostname`
@@ -26,9 +43,9 @@ The install script is hosted in the `mlOS-foundation/axon` repository and access
      - Status code: `302` (Temporary) - Recommended for flexibility
      - Destination URL: `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
      - Preserve query string: `No`
-6. Click **Deploy**
+5. Click **Deploy**
 
-### Step 2: Test
+### Step 3: Test
 
 Wait a few minutes for the rule to propagate, then test:
 

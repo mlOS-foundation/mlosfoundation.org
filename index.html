@@ -916,11 +916,34 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
         
         .doc-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .doc-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .doc-card-coming-soon {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .doc-card-coming-soon::after {
+            content: " (Coming Soon)";
+            color: var(--color-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: block;
+            margin-top: 0.5rem;
         }
         
         .doc-card-icon {
@@ -1586,22 +1609,22 @@ func (m *Model) Predict(input []float64) []float64 {
             <h2 class="section-title">Comprehensive Documentation</h2>
             
             <div class="docs-grid">
-                <div class="doc-card animate-on-scroll">
+                <a href="#getting-started" class="doc-card doc-card-link animate-on-scroll">
                     <div class="doc-card-icon">📘</div>
                     <h3>Getting Started</h3>
                     <p>Quick installation and first deployment</p>
-                </div>
-                <div class="doc-card animate-on-scroll">
+                </a>
+                <div class="doc-card doc-card-coming-soon animate-on-scroll">
                     <div class="doc-card-icon">🔧</div>
                     <h3>API Reference</h3>
                     <p>Complete API docs for all endpoints</p>
                 </div>
-                <div class="doc-card animate-on-scroll">
+                <a href="architecture.html" class="doc-card doc-card-link animate-on-scroll">
                     <div class="doc-card-icon">🏗️</div>
                     <h3>Architecture Guide</h3>
                     <p>Deep dive into MLOS internals and design</p>
-                </div>
-                <div class="doc-card animate-on-scroll">
+                </a>
+                <div class="doc-card doc-card-coming-soon animate-on-scroll">
                     <div class="doc-card-icon">💡</div>
                     <h3>Examples & Tutorials</h3>
                     <p>Real-world implementation patterns and code samples</p>

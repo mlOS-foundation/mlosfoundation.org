@@ -151,7 +151,15 @@
             There was an error submitting your request. Please try again or contact us directly.
         </div>
         
-        <form id="demoForm" action="https://formsubmit.co/ishaileshpant@gmail.com" method="POST">
+        <!-- 
+            SECURITY NOTE: FormSubmit.co activation ID is visible in client-side code.
+            This is acceptable for static sites, but consider:
+            1. FormSubmit.co has built-in rate limiting and spam protection
+            2. For production, consider moving to a server-side endpoint (serverless function)
+            3. Alternative: Use a service with API keys stored server-side
+        -->
+        <form id="demoForm" action="https://formsubmit.co/446f95bbbfd02acf0ce30f77077f439c" method="POST">
+            <input type="hidden" name="_to" value="ishaileshpant@gmail.com">
             <input type="hidden" name="_subject" value="MLOS Foundation Demo Request">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_template" value="table">
@@ -235,30 +243,40 @@
                     body: formData
                 });
                 
-                // FormSubmit.co returns HTML on success, JSON on error
-                const contentType = response.headers.get('content-type');
+                // FormSubmit.co returns HTML on success (200 status), JSON on error
+                // Read response as text first to avoid JSON parsing errors
+                const text = await response.text();
                 let data = null;
                 
-                if (contentType && contentType.includes('application/json')) {
-                    data = await response.json();
-                } else {
-                    // HTML response - check if it's a success page
-                    const text = await response.text();
-                    // FormSubmit.co success pages typically contain "Thank you" or redirect
-                    if (text.includes('Thank you') || text.includes('success') || response.ok) {
-                        data = { success: true };
-                    } else {
-                        throw new Error('Unexpected response format');
+                // Try to parse as JSON if it looks like JSON
+                if (text.trim().startsWith('{') || text.trim().startsWith('[')) {
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        // Not valid JSON, treat as HTML
+                        data = null;
                     }
                 }
                 
-                if (response.ok || data.success) {
+                // Check if it's a success response
+                // FormSubmit.co returns HTML with "Thank you" or redirects on success
+                const isSuccess = response.ok && (
+                    text.includes('Thank you') || 
+                    text.includes('success') || 
+                    text.includes('submitted') ||
+                    text.includes('received') ||
+                    (data && data.success)
+                );
+                
+                if (isSuccess) {
                     successMessage.style.display = 'block';
                     successMessage.textContent = 'Thank you! Your demo request has been submitted. We\'ll get back to you soon at ' + emailInput.value + '.';
                     form.reset();
                     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
-                    throw new Error(data.message || 'Form submission failed');
+                    // Extract error message from JSON if available
+                    const errorMsg = (data && data.message) ? data.message : 'Form submission failed';
+                    throw new Error(errorMsg);
                 }
             } catch (error) {
                 console.error('Form submission error:', error);

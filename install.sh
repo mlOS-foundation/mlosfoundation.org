@@ -4,6 +4,7 @@
 # Installs Axon CLI from GitHub releases
 #
 # Usage: curl -sSL https://mlosfoundation.org/install.sh | sh
+# Or: curl -sSL axon.mlosfoundation.org | sh
 # Or: curl -sSL install.axon.mlos.org | sh
 #
 

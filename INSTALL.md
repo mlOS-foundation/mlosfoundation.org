@@ -13,6 +13,12 @@ curl -sSL https://mlosfoundation.org/install.sh | sh
 Or using the subdomain:
 
 ```bash
+curl -sSL axon.mlosfoundation.org | sh
+```
+
+Or alternative subdomain:
+
+```bash
 curl -sSL install.axon.mlos.org | sh
 ```
 
@@ -84,13 +90,27 @@ Example:
 
 The archive should contain the `axon` binary at the root or in a subdirectory.
 
-## DNS Configuration
+## DNS Configuration (Cloudflare)
 
-To use `install.axon.mlos.org`, configure DNS:
+To use `axon.mlosfoundation.org`, configure DNS in Cloudflare:
 
-1. Add a CNAME record: `install.axon.mlos.org` → `mlosfoundation.org` (or your Netlify domain)
-2. Or add an A record pointing to Netlify's IP addresses
+### Option 1: CNAME Record (Recommended)
+1. Go to Cloudflare DNS settings for `mlosfoundation.org`
+2. Add a CNAME record:
+   - **Name**: `axon`
+   - **Target**: `mlosfoundation.org` (or your Netlify domain like `mlosfoundation.org.netlify.app`)
+   - **Proxy status**: Proxied (orange cloud) or DNS only (gray cloud)
 3. Netlify will automatically handle the redirect via `netlify.toml`
+
+### Option 2: Cloudflare Redirect Rule
+1. Go to Cloudflare Dashboard → Rules → Redirect Rules
+2. Create a new rule:
+   - **Name**: Axon Installer Redirect
+   - **If**: Hostname equals `axon.mlosfoundation.org`
+   - **Then**: Redirect to `https://mlosfoundation.org/install.sh` (301 or 302)
+
+### Alternative: install.axon.mlos.org
+Same configuration but use `install.axon` as the subdomain name.
 
 ## Security
 

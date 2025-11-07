@@ -1,54 +1,26 @@
 # Cloudflare DNS Setup for Axon Installer
 
-This guide explains how to configure Cloudflare DNS to enable `axon.mlosfoundation.org` to redirect to the install script.
+This guide explains how to configure Cloudflare to redirect `axon.mlosfoundation.org` to the install script hosted in the axon repository.
 
-## Quick Setup (CNAME Method - Recommended)
+## Quick Setup (Cloudflare Redirect Rule - Recommended)
 
-### Step 1: Add CNAME Record in Cloudflare
+**Note**: The install script should be hosted in the `mlOS-foundation/axon` repository, not in the mlosfoundation.org static site.
+
+### Step 1: Host Install Script in Axon Repo
+
+1. Add `install.sh` to the `mlOS-foundation/axon` repository
+2. Place it in the root directory or in a `scripts/` directory
+3. Ensure it's accessible via GitHub raw content URL:
+   - `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
+   - Or from releases: `https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh`
+
+### Step 2: Create Cloudflare Redirect Rule
 
 1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com)
 2. Select the `mlosfoundation.org` domain
-3. Go to **DNS** → **Records**
-4. Click **Add record**
+3. Go to **Rules** → **Redirect Rules**
+4. Click **Create rule**
 5. Configure:
-   - **Type**: `CNAME`
-   - **Name**: `axon`
-   - **Target**: `mlosfoundation.org` (or your Netlify domain like `mlosfoundation.org.netlify.app`)
-   - **Proxy status**: 
-     - **Proxied** (orange cloud) - Recommended for SSL/CDN benefits
-     - **DNS only** (gray cloud) - If you need direct DNS resolution
-   - **TTL**: Auto
-6. Click **Save**
-
-### Step 2: Verify Netlify Configuration
-
-Ensure `netlify.toml` has the redirect rule (already configured):
-
-```toml
-[[redirects]]
-  from = "https://axon.mlosfoundation.org/*"
-  to = "/install.sh"
-  status = 200
-  force = true
-```
-
-### Step 3: Test
-
-Wait a few minutes for DNS propagation, then test:
-
-```bash
-curl -sSL axon.mlosfoundation.org | sh
-```
-
-## Alternative: Cloudflare Redirect Rules
-
-If CNAME doesn't work or you prefer Cloudflare-level redirects:
-
-### Step 1: Create Redirect Rule
-
-1. Go to Cloudflare Dashboard → **Rules** → **Redirect Rules**
-2. Click **Create rule**
-3. Configure:
    - **Rule name**: `Axon Installer Redirect`
    - **If**: 
      - Field: `Hostname`
@@ -56,22 +28,41 @@ If CNAME doesn't work or you prefer Cloudflare-level redirects:
      - Value: `axon.mlosfoundation.org`
    - **Then**:
      - Action: `Redirect`
-     - Status code: `301` (Permanent) or `302` (Temporary)
-     - Destination URL: `https://mlosfoundation.org/install.sh`
+     - Status code: `302` (Temporary) - Recommended for flexibility
+     - Destination URL: `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
      - Preserve query string: `No`
-4. Click **Deploy**
+6. Click **Deploy**
 
-### Step 2: Test
+### Step 3: Test
+
+Wait a few minutes for the rule to propagate, then test:
 
 ```bash
 curl -sSL axon.mlosfoundation.org | sh
 ```
 
-## DNS Propagation
+## Alternative: Using GitHub Releases
 
-- **CNAME records**: Usually propagate within 1-5 minutes
-- **Cloudflare proxy**: Instant (if using proxied CNAME)
-- **DNS only**: May take up to 24 hours globally
+If you prefer to serve from releases (better for versioning):
+
+Redirect to the latest release download URL:
+
+**Destination URL**: `https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh`
+
+This ensures users always get the latest version from releases.
+
+## Why Host in Axon Repo?
+
+- ✅ **Better organization**: Install script belongs with the project it installs
+- ✅ **Version control**: Script can be versioned with Axon releases
+- ✅ **Simpler**: No need for Netlify redirects or static site hosting
+- ✅ **Faster**: Direct redirect from Cloudflare to GitHub
+- ✅ **Maintainable**: Script updates don't require website deployment
+
+## Propagation
+
+- **Cloudflare Redirect Rules**: Usually active within 1-2 minutes
+- **Global propagation**: Complete within 5-10 minutes
 
 ## Verification
 
@@ -99,40 +90,31 @@ curl -I https://axon.mlosfoundation.org
 
 ### Redirect not working
 
-1. **Check Netlify logs**: View deployment logs in Netlify dashboard
-2. **Verify netlify.toml**: Ensure redirect rule is correct
-3. **Test main domain**: `curl -I https://mlosfoundation.org/install.sh` should work
-4. **Check SSL**: Ensure SSL certificate is issued for subdomain
+1. **Check Cloudflare rule**: Verify redirect rule is deployed and active
+2. **Test destination URL**: `curl -I https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh` should work
+3. **Check GitHub**: Ensure install.sh exists in the axon repository
+4. **Verify rule order**: Ensure no other rules are conflicting
 
-### SSL Certificate Issues
+### GitHub Access Issues
 
-If using proxied CNAME:
-- Cloudflare automatically provides SSL
-- May take a few minutes to provision
-
-If using DNS-only CNAME:
-- Netlify needs to issue SSL certificate
-- Add subdomain in Netlify → Domain settings → Custom domains
-- Wait for SSL certificate provisioning
-
-## Alternative Subdomain
-
-You can also use `install.axon.mlosfoundation.org`:
-
-1. Add CNAME: `install.axon` → `mlosfoundation.org`
-2. Netlify redirect is already configured in `netlify.toml`
+- Ensure the repository is public (or user has access)
+- Check that `install.sh` file exists and is accessible
+- Verify the raw GitHub URL works in browser
 
 ## Testing Commands
 
 ```bash
-# Test main domain
-curl -sSL https://mlosfoundation.org/install.sh | head -20
+# Test GitHub raw URL (should work immediately)
+curl -sSL https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh | head -20
 
-# Test subdomain (after DNS setup)
+# Test subdomain redirect (after Cloudflare setup)
 curl -sSL axon.mlosfoundation.org | head -20
 
 # Test with version
 AXON_VERSION=1.0.0 curl -sSL axon.mlosfoundation.org | sh
+
+# Verify redirect is working
+curl -I axon.mlosfoundation.org
 ```
 
 ## Security Considerations
@@ -145,8 +127,8 @@ AXON_VERSION=1.0.0 curl -sSL axon.mlosfoundation.org | sh
 ## Support
 
 If you encounter issues:
-1. Check Cloudflare DNS records
-2. Check Netlify deployment logs
-3. Verify `netlify.toml` configuration
-4. Test with main domain first: `https://mlosfoundation.org/install.sh`
+1. Check Cloudflare redirect rules
+2. Verify install.sh exists in axon repository
+3. Test GitHub raw URL directly
+4. Check Cloudflare rule deployment status
 

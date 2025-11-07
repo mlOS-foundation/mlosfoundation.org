@@ -92,25 +92,18 @@ The archive should contain the `axon` binary at the root or in a subdirectory.
 
 ## DNS Configuration (Cloudflare)
 
-To use `axon.mlosfoundation.org`, configure DNS in Cloudflare:
+**Note**: The install script should be hosted in the `mlOS-foundation/axon` repository, not in this static site.
 
-### Option 1: CNAME Record (Recommended)
-1. Go to Cloudflare DNS settings for `mlosfoundation.org`
-2. Add a CNAME record:
-   - **Name**: `axon`
-   - **Target**: `mlosfoundation.org` (or your Netlify domain like `mlosfoundation.org.netlify.app`)
-   - **Proxy status**: Proxied (orange cloud) or DNS only (gray cloud)
-3. Netlify will automatically handle the redirect via `netlify.toml`
+To use `axon.mlosfoundation.org`, configure a Cloudflare Redirect Rule:
 
-### Option 2: Cloudflare Redirect Rule
-1. Go to Cloudflare Dashboard → Rules → Redirect Rules
+1. Go to Cloudflare Dashboard → **Rules** → **Redirect Rules**
 2. Create a new rule:
    - **Name**: Axon Installer Redirect
    - **If**: Hostname equals `axon.mlosfoundation.org`
-   - **Then**: Redirect to `https://mlosfoundation.org/install.sh` (301 or 302)
+   - **Then**: Redirect to `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh` (302)
+3. Deploy the rule
 
-### Alternative: install.axon.mlos.org
-Same configuration but use `install.axon` as the subdomain name.
+See [CLOUDFLARE_SETUP.md](CLOUDFLARE_SETUP.md) for detailed instructions.
 
 ## Security
 

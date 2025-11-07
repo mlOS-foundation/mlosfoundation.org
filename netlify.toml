@@ -11,26 +11,8 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# Axon installer script
-# Serves install.sh with proper content-type for curl | sh usage
-[[headers]]
-  for = "/install.sh"
-  [headers.values]
-    Content-Type = "text/plain; charset=utf-8"
-    X-Content-Type-Options = "nosniff"
-
-# Redirect axon.mlosfoundation.org to install.sh
-# Cloudflare DNS: Add CNAME record: axon.mlosfoundation.org -> mlosfoundation.org
-[[redirects]]
-  from = "https://axon.mlosfoundation.org/*"
-  to = "/install.sh"
-  status = 200
-  force = true
-
-# Also support install.axon.mlos.org (alternative)
-[[redirects]]
-  from = "https://install.axon.mlos.org/*"
-  to = "/install.sh"
-  status = 200
-  force = true
+# Note: Axon installer script is hosted in the axon repository
+# Cloudflare redirect rule should be configured to redirect:
+# axon.mlosfoundation.org -> https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh
+# Or to the latest release: https://github.com/mlOS-foundation/axon/releases/latest/download/install.sh
 

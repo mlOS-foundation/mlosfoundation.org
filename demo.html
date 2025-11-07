@@ -152,18 +152,10 @@
         </div>
         
         <!-- 
-            SECURITY NOTE: FormSubmit.co activation ID is visible in client-side code.
-            This is acceptable for static sites, but consider:
-            1. FormSubmit.co has built-in rate limiting and spam protection
-            2. For production, consider moving to a server-side endpoint (serverless function)
-            3. Alternative: Use a service with API keys stored server-side
+            SECURE FORM SUBMISSION: Uses serverless function to keep FormSubmit.co ID server-side.
+            The endpoint automatically detects the platform (Netlify or Vercel) and routes accordingly.
         -->
-        <form id="demoForm" action="https://formsubmit.co/446f95bbbfd02acf0ce30f77077f439c" method="POST">
-            <input type="hidden" name="_to" value="ishaileshpant@gmail.com">
-            <input type="hidden" name="_subject" value="MLOS Foundation Demo Request">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_next" value="">
+        <form id="demoForm" method="POST">
             
             <div class="form-group">
                 <label for="name">Full Name *</label>
@@ -233,59 +225,52 @@
             errorMessage.style.display = 'none';
             
             try {
-                const formData = new FormData(form);
+                // Collect form data as JSON
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: emailInput.value,
+                    company: document.getElementById('company').value || '',
+                    phone: document.getElementById('phone').value || '',
+                    preferredDate: document.getElementById('preferredDate').value || '',
+                    useCase: document.getElementById('useCase').value || '',
+                    message: document.getElementById('message').value || ''
+                };
                 
-                // Add email as reply-to
-                formData.append('_replyto', emailInput.value);
+                // Determine endpoint based on platform
+                // Auto-detect: Netlify or Vercel (you only need one based on your hosting platform)
+                let endpoint = '/.netlify/functions/submit-demo'; // Default to Netlify
+                if (window.location.hostname.includes('vercel.app') || window.location.hostname.includes('vercel.com')) {
+                    endpoint = '/api/submit-demo'; // Use Vercel if on Vercel domain
+                }
+                // Note: If using GitHub Pages, you'll need to deploy to Netlify or Vercel for serverless functions
                 
-                const response = await fetch(form.action, {
+                const response = await fetch(endpoint, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
                 });
                 
-                // FormSubmit.co returns HTML on success (200 status), JSON on error
-                // Read response as text first to avoid JSON parsing errors
-                const text = await response.text();
-                let data = null;
+                const data = await response.json();
                 
-                // Try to parse as JSON if it looks like JSON
-                if (text.trim().startsWith('{') || text.trim().startsWith('[')) {
-                    try {
-                        data = JSON.parse(text);
-                    } catch (e) {
-                        // Not valid JSON, treat as HTML
-                        data = null;
-                    }
-                }
-                
-                // Check if it's a success response
-                // FormSubmit.co returns HTML with "Thank you" or redirects on success
-                const isSuccess = response.ok && (
-                    text.includes('Thank you') || 
-                    text.includes('success') || 
-                    text.includes('submitted') ||
-                    text.includes('received') ||
-                    (data && data.success)
-                );
-                
-                if (isSuccess) {
+                if (response.ok && data.success) {
                     successMessage.style.display = 'block';
                     successMessage.textContent = 'Thank you! Your demo request has been submitted. We\'ll get back to you soon at ' + emailInput.value + '.';
                     form.reset();
                     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 } else {
-                    // Extract error message from JSON if available
-                    const errorMsg = (data && data.message) ? data.message : 'Form submission failed';
-                    throw new Error(errorMsg);
+                    throw new Error(data.message || data.error || 'Form submission failed');
                 }
             } catch (error) {
                 console.error('Form submission error:', error);
                 // Show user-friendly error message
                 let errorMsg = 'There was an error submitting your request.';
-                if (error.message && !error.message.includes('JSON')) {
+                if (error.message) {
                     errorMsg += ' ' + error.message;
+                } else {
+                    errorMsg += ' Please try again or email ishaileshpant@gmail.com directly.';
                 }
-                errorMsg += ' Please try again or email ishaileshpant@gmail.com directly.';
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = errorMsg;
                 form.scrollIntoView({ behavior: 'smooth', block: 'start' });

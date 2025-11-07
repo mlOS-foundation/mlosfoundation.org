@@ -1,0 +1,13 @@
+# Netlify Configuration
+[build]
+  publish = "."
+
+# Environment variables (set in Netlify dashboard, not in this file)
+# FORMSUBMIT_ID=your-activation-id-here
+# FORMSUBMIT_EMAIL=recieving-email
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+

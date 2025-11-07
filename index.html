@@ -300,6 +300,161 @@
             font-weight: 400;
         }
         
+        /* Phases Cards Container */
+        .phases-container {
+            margin-top: 1.5rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: #475569 #1e293b;
+        }
+        
+        .phases-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .phases-container::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        
+        .phases-container::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        
+        .phases-container::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        
+        .phases-scroll {
+            display: flex;
+            gap: 1rem;
+            min-width: max-content;
+            padding-right: 1rem;
+        }
+        
+        .phase-card {
+            min-width: 280px;
+            max-width: 320px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .phase-card.complete {
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        
+        .phase-card.active {
+            border-color: rgba(251, 191, 36, 0.4);
+        }
+        
+        .phase-card.coming {
+            border-color: rgba(100, 116, 139, 0.4);
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .phase-status {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .phase-status.complete {
+            color: #10b981;
+        }
+        
+        .phase-status.active {
+            color: #fbbf24;
+        }
+        
+        .phase-status.coming {
+            color: #64748b;
+        }
+        
+        .phase-title {
+            color: #e2e8f0;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .phase-target {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .phase-features {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        
+        .phase-features li {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+        
+        .phase-features li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #64748b;
+        }
+        
+        .phase-details-card {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .phase-details-title {
+            color: #10b981;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .phase-details-content {
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+            line-height: 1.6;
+        }
+        
+        .phase-details-content .command {
+            color: #10b981;
+        }
+        
+        .phase-details-content .comment {
+            color: #64748b;
+        }
+        
+        @media (max-width: 768px) {
+            .phase-card {
+                min-width: 260px;
+            }
+        }
+        
         .trust-indicators {
             margin-top: var(--spacing-xl);
             text-align: center;
@@ -963,21 +1118,94 @@
                         <div><span class="prompt">$</span> <span class="command">axon install hf/bert-base-uncased@latest</span></div>
                         <div class="output">✓ Model downloaded from Hugging Face</div>
                         <div class="output">✓ Manifest created and validated</div>
-                        <div class="output" style="margin-top: 0.5rem; color: #94a3b8;">Delivery Phases:</div>
-                        <div class="output">✓ <strong>Phase 0:</strong> Axon (Universal Model Installer) - MVP Complete</div>
-                        <div class="output" style="color: #fbbf24;">→ <strong>Phase 1:</strong> MLOS Core Runtime (Active Development)</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Kernel-level integration</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • HTTP REST API & IPC interface</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • SMI plugin architecture</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Resource pooling & optimization</div>
-                        <div class="output" style="color: #64748b;">→ <strong>Phase 2:</strong> Advanced Features (Coming)</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Model versioning (A/B testing, canary)</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Auto-scaling & multi-tenancy</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Model marketplace</div>
-                        <div class="output" style="color: #64748b;">→ <strong>Phase 3:</strong> Enterprise Features (Coming)</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • High availability clustering</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Disaster recovery & compliance</div>
-                        <div class="output" style="color: #94a3b8; padding-left: 1rem;">  • Advanced security & audit trails</div>
+                        <div class="output" style="margin-top: 1rem; color: #94a3b8; margin-bottom: 0.5rem;">Delivery Phases:</div>
+                        
+                        <div class="phases-container">
+                            <div class="phases-scroll">
+                                <!-- Phase 0: Axon (Complete) -->
+                                <div class="phase-card complete">
+                                    <div class="phase-header">
+                                        <span class="phase-status complete">✓</span>
+                                        <div>
+                                            <h4 class="phase-title">Phase 0</h4>
+                                            <p class="phase-target">Axon (Universal Model Installer)</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: #10b981; font-size: 0.85rem; margin: 0;">MVP Complete</p>
+                                    <ul class="phase-features">
+                                        <li>Universal model installer</li>
+                                        <li>Multi-repository support</li>
+                                        <li>Model lifecycle management</li>
+                                        <li>Version control & caching</li>
+                                    </ul>
+                                    <div class="phase-details-card">
+                                        <h5 class="phase-details-title">CLI Usage:</h5>
+                                        <div class="phase-details-content">
+                                            <span class="comment"># Install Axon</span><br>
+                                            <span class="command">$</span> curl -sSL install.axon.mlos.org | sh<br><br>
+                                            <span class="comment"># Install model</span><br>
+                                            <span class="command">$</span> axon install hf/bert-base-uncased@latest<br><br>
+                                            <span class="comment"># List models</span><br>
+                                            <span class="command">$</span> axon list<br><br>
+                                            <span class="comment"># Search models</span><br>
+                                            <span class="command">$</span> axon search resnet
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Phase 1: MLOS Core (Active) -->
+                                <div class="phase-card active">
+                                    <div class="phase-header">
+                                        <span class="phase-status active">→</span>
+                                        <div>
+                                            <h4 class="phase-title">Phase 1</h4>
+                                            <p class="phase-target">MLOS Core Runtime</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: #fbbf24; font-size: 0.85rem; margin: 0;">Active Development</p>
+                                    <ul class="phase-features">
+                                        <li>Kernel-level integration</li>
+                                        <li>HTTP REST API & IPC interface</li>
+                                        <li>SMI plugin architecture</li>
+                                        <li>Resource pooling & optimization</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Phase 2: Advanced Features (Coming) -->
+                                <div class="phase-card coming">
+                                    <div class="phase-header">
+                                        <span class="phase-status coming">→</span>
+                                        <div>
+                                            <h4 class="phase-title">Phase 2</h4>
+                                            <p class="phase-target">Advanced Features</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Coming Soon</p>
+                                    <ul class="phase-features">
+                                        <li>Model versioning (A/B testing, canary)</li>
+                                        <li>Auto-scaling & multi-tenancy</li>
+                                        <li>Model marketplace</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- Phase 3: Enterprise Features (Coming) -->
+                                <div class="phase-card coming">
+                                    <div class="phase-header">
+                                        <span class="phase-status coming">→</span>
+                                        <div>
+                                            <h4 class="phase-title">Phase 3</h4>
+                                            <p class="phase-target">Enterprise Features</p>
+                                        </div>
+                                    </div>
+                                    <p style="color: #64748b; font-size: 0.85rem; margin: 0;">Coming Soon</p>
+                                    <ul class="phase-features">
+                                        <li>High availability clustering</li>
+                                        <li>Disaster recovery & compliance</li>
+                                        <li>Advanced security & audit trails</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

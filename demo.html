@@ -151,6 +151,13 @@
             There was an error submitting your request. Please try again or contact us directly.
         </div>
         
+        <!-- 
+            SECURITY NOTE: FormSubmit.co activation ID is visible in client-side code.
+            This is acceptable for static sites, but consider:
+            1. FormSubmit.co has built-in rate limiting and spam protection
+            2. For production, consider moving to a server-side endpoint (serverless function)
+            3. Alternative: Use a service with API keys stored server-side
+        -->
         <form id="demoForm" action="https://formsubmit.co/446f95bbbfd02acf0ce30f77077f439c" method="POST">
             <input type="hidden" name="_to" value="ishaileshpant@gmail.com">
             <input type="hidden" name="_subject" value="MLOS Foundation Demo Request">

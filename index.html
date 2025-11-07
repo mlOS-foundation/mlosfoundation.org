@@ -134,12 +134,33 @@
             gap: 1.5rem;
             margin-bottom: var(--spacing-sm);
             flex-wrap: wrap;
+            position: relative;
         }
         
         .hero-logo {
             width: 80px;
             height: 80px;
             flex-shrink: 0;
+        }
+        
+        .hero-title-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .hero-trademark-icon {
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 0.8rem;
+            color: #1a202c;
+            font-weight: 600;
+            background: #f8fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
         }
         
         .hero h1 {
@@ -151,13 +172,6 @@
             letter-spacing: -0.02em;
             white-space: nowrap;
             margin: 0;
-        }
-        
-        .hero h1 .trademark {
-            font-size: 0.6em;
-            vertical-align: super;
-            font-weight: 400;
-            margin-left: 0.1em;
         }
         
         .hero .tagline {
@@ -835,6 +849,16 @@
                 height: 60px;
             }
             
+            .hero-title-wrapper {
+                gap: 0.5rem;
+            }
+            
+            .hero-trademark-icon {
+                top: -15px;
+                right: -5px;
+                font-size: 0.7rem;
+            }
+            
             .hero h1 {
                 white-space: normal;
                 font-size: clamp(1.8rem, 6vw, 2.5rem);
@@ -906,7 +930,10 @@
                         <!-- FOUNDATION text -->
                         <text x="20" y="130" font-family="Arial, sans-serif" font-size="20" fill="#808080">FOUNDATION</text>
                     </svg>
-                    <h1>ML-OS<span class="trademark">™</span></h1>
+                    <div class="hero-title-wrapper">
+                        <h1>MachineLearning OS</h1>
+                        <span class="hero-trademark-icon">™</span>
+                    </div>
                 </div>
                 <p class="tagline">Kernel-Level ML Infrastructure for Production AI</p>
                 <p class="description">

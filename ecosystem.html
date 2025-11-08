@@ -417,9 +417,9 @@
                             <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">100,000+ models • 60%+ of ML practitioners</div>
                         </li>
                         <li>
-                            <span style="font-size: 1.2em; color: #f59e0b;">→</span>
+                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
                             <strong>PyTorch Hub</strong>
-                            <span class="adapter-status coming">Phase 1</span>
+                            <span class="adapter-status available">v1.1.0+</span>
                             <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">PyTorch pre-trained models • 5%+ coverage • Research focus</div>
                         </li>
                         <li>
@@ -446,8 +446,8 @@
                     <pre><code># Hugging Face (available now)
 axon install hf/bert-base-uncased@latest
 
-# PyTorch Hub (Phase 1)
-axon install pytorch/resnet50@latest
+# PyTorch Hub (v1.1.0+)
+axon install pytorch/vision/resnet50@latest
 
 # ModelScope (Phase 1)
 axon install modelscope/cv/resnet50@latest
@@ -498,6 +498,9 @@ axon init
 # Install any model directly from Hugging Face (no setup needed!)
 axon install hf/bert-base-uncased@latest
 axon install hf/gpt2@latest
+
+# Install PyTorch Hub models (v1.1.0+)
+axon install pytorch/vision/resnet50@latest
 
 # Search for models
 axon search resnet

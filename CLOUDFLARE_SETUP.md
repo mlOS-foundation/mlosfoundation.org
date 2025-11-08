@@ -9,13 +9,30 @@ The install script is hosted in the `mlOS-foundation/axon` repository and access
 
 ## Quick Setup (Cloudflare Redirect Rule)
 
-### Step 1: Create Cloudflare Redirect Rule
+### Step 1: Create DNS Record (Required First!)
+
+**Important**: You must create a DNS record for the subdomain before the redirect rule will work.
 
 1. Log in to [Cloudflare Dashboard](https://dash.cloudflare.com)
 2. Select the `mlosfoundation.org` domain
-3. Go to **Rules** → **Redirect Rules**
-4. Click **Create rule**
+3. Go to **DNS** → **Records**
+4. Click **Add record**
 5. Configure:
+   - **Type**: `CNAME`
+   - **Name**: `axon`
+   - **Target**: `mlosfoundation.org` (or your main domain's A record target)
+   - **Proxy status**: ✅ Proxied (orange cloud) - Recommended for SSL
+   - **TTL**: Auto
+6. Click **Save**
+
+**Wait 1-2 minutes** for DNS to propagate before proceeding to Step 2.
+
+### Step 2: Create Cloudflare Redirect Rule
+
+1. Still in Cloudflare Dashboard for `mlosfoundation.org`
+2. Go to **Rules** → **Redirect Rules**
+3. Click **Create rule**
+4. Configure:
    - **Rule name**: `Axon Installer Redirect`
    - **If**: 
      - Field: `Hostname`
@@ -26,9 +43,9 @@ The install script is hosted in the `mlOS-foundation/axon` repository and access
      - Status code: `302` (Temporary) - Recommended for flexibility
      - Destination URL: `https://raw.githubusercontent.com/mlOS-foundation/axon/main/install.sh`
      - Preserve query string: `No`
-6. Click **Deploy**
+5. Click **Deploy**
 
-### Step 2: Test
+### Step 3: Test
 
 Wait a few minutes for the rule to propagate, then test:
 
@@ -61,18 +78,56 @@ This ensures users always get the latest version from releases.
 
 ## Verification
 
-Check DNS resolution:
+### Step 1: Verify DNS Record in Cloudflare
+
+1. Go to Cloudflare Dashboard → DNS → Records
+2. Confirm the `axon` CNAME record exists
+3. Verify it shows:
+   - Type: CNAME
+   - Name: axon
+   - Content: mlosfoundation.org
+   - Proxy status: ✅ Proxied (orange cloud)
+   - Status: Active
+
+### Step 2: Check DNS Propagation
+
+DNS propagation can take 5-60 minutes (sometimes up to 24 hours globally).
 
 ```bash
-# Check if it resolves
+# Check with Cloudflare's DNS (1.1.1.1) - should work fastest
+dig @1.1.1.1 axon.mlosfoundation.org +short
+
+# Check with Google's DNS (8.8.8.8)
+dig @8.8.8.8 axon.mlosfoundation.org +short
+
+# Check with your local DNS
 nslookup axon.mlosfoundation.org
 
-# Test HTTPS redirect
+# If using Cloudflare proxy, you should see Cloudflare IPs (e.g., 104.x.x.x or 172.x.x.x)
+```
+
+**Note**: If DNS doesn't resolve yet, wait a few more minutes and try again.
+
+### Step 3: Test HTTPS Redirect
+
+Once DNS resolves:
+
+```bash
+# Test redirect (should show 302 status)
 curl -I https://axon.mlosfoundation.org
 
-# Test actual installation
-curl -sSL axon.mlosfoundation.org | head -20
+# Test actual content (should show install.sh script)
+curl -sSL https://axon.mlosfoundation.org | head -20
 ```
+
+### Step 4: Test Installation
+
+```bash
+# Full installation test
+curl -sSL axon.mlosfoundation.org | sh
+```
+
+**Note**: `ping` will often fail for Cloudflare-proxied domains because Cloudflare blocks ICMP. This is normal and doesn't indicate a problem. Use `curl` or `dig` instead.
 
 ## Troubleshooting
 

@@ -477,87 +477,110 @@ axon install modelscope/cv/resnet50@latest</code></pre>
                 
                 <div class="architecture-note" style="margin-top: 2rem;">
                     <h4>🏗️ Architecture: Extensible Adapter Framework (v1.3.0+)</h4>
-                    <p>Axon's adapter framework is built on <strong>GoF design patterns</strong>, making it highly extensible and maintainable. The framework provides a clean separation between core interfaces and adapter implementations. <strong>Available in v1.3.0+</strong></p>
+                    <p>Axon's adapter framework provides a <strong>pluggable, extensible architecture</strong> that enables support for any model repository. The framework separates core interfaces from adapter implementations, making it easy to add new repositories without modifying core code. <strong>Available in v1.3.0+</strong></p>
                     
-                    <h5 style="margin-top: 1.5rem; color: #667eea;">Design Patterns</h5>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
-                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
-                            <strong>Adapter Pattern</strong><br>
-                            <small>Unified interface for all repositories</small>
-                        </div>
-                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
-                            <strong>Strategy Pattern</strong><br>
-                            <small>Each adapter implements its own strategy</small>
-                        </div>
-                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
-                            <strong>Factory Pattern</strong><br>
-                            <small>Dynamic adapter creation</small>
-                        </div>
-                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
-                            <strong>Builder Pattern</strong><br>
-                            <small>Fluent configuration</small>
-                        </div>
-                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
-                            <strong>Registry Pattern</strong><br>
-                            <small>Centralized adapter management</small>
-                        </div>
-                    </div>
+                    <h5 style="margin-top: 2rem; color: #667eea;">How It Works</h5>
+                    <p>The adapter framework automatically:</p>
+                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                        <li><strong>Detects</strong> the model source based on namespace (e.g., <code>hf/</code>, <code>pytorch/</code>, <code>tfhub/</code>)</li>
+                        <li><strong>Selects</strong> the appropriate adapter from the registry</li>
+                        <li><strong>Validates</strong> model existence using shared validation utilities</li>
+                        <li><strong>Downloads</strong> and packages models using common helpers</li>
+                        <li><strong>Caches</strong> packages locally for future use</li>
+                    </ul>
 
                     <h5 style="margin-top: 2rem; color: #667eea;">Framework Architecture</h5>
-                    <div style="background: #1a202c; padding: 2rem; border-radius: 12px; margin: 1rem 0; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.85rem; line-height: 1.6; color: #e2e8f0; overflow-x: auto;">
-                        <pre style="margin: 0; color: #e2e8f0;"><code>┌─────────────────────────────────────────────────────────────┐
-│                      Axon CLI                               │
-│              (cmd/axon/commands.go)                          │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│         AdapterRegistry (Registry Pattern)                   │
-│         (internal/registry/core/adapter.go)                  │
-│                                                              │
-│  RegisterDefaultAdapters()                                   │
-│  ├─ Local Registry (if configured)                           │
-│  ├─ PyTorch Hub                                              │
-│  ├─ TensorFlow Hub                                           │
-│  └─ Hugging Face (fallback)                                 │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-         ┌─────────────┼─────────────┐
-         │             │             │
-         ▼             ▼             ▼
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│   Builtin   │ │  Examples   │ │   Custom    │
-│  Adapters   │ │  Adapters   │ │  Adapters   │
-│             │ │             │ │             │
-│ • Hugging   │ │ • ModelScope│ │ (User-      │
-│   Face      │ │   (Example) │ │  defined)   │
-│ • PyTorch   │ │             │ │             │
-│   Hub       │ │             │ │             │
-│ • TensorFlow│ │             │ │             │
-│   Hub       │ │             │ │             │
-│ • Local     │ │             │ │             │
-└─────────────┘ └─────────────┘ └─────────────┘
-         │             │             │
-         └─────────────┼─────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│         Core Framework (Helper Utilities)                     │
-│         (internal/registry/core/)                            │
-│                                                              │
-│  • HTTPClient      - HTTP requests with auth                  │
-│  • ModelValidator - Model existence validation               │
-│  • PackageBuilder - Create .axon packages                    │
-│  • DownloadFile   - Download with progress                  │
-│  • ComputeChecksum - SHA256 checksums                        │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+                    <div style="background: #ffffff; padding: 2rem; border-radius: 12px; margin: 1rem 0; border: 2px solid #e2e8f0; overflow-x: auto;">
+                        <svg width="100%" height="600" viewBox="0 0 900 600" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            <!-- Axon CLI -->
+                            <rect x="350" y="20" width="200" height="60" rx="8" fill="#667eea" stroke="#5568d3" stroke-width="2"/>
+                            <text x="450" y="45" text-anchor="middle" fill="white" font-size="16" font-weight="600">Axon CLI</text>
+                            <text x="450" y="65" text-anchor="middle" fill="white" font-size="12">commands.go</text>
+                            
+                            <!-- Arrow down -->
+                            <path d="M 450 80 L 450 120" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            
+                            <!-- Adapter Registry -->
+                            <rect x="300" y="120" width="300" height="100" rx="8" fill="#f7fafc" stroke="#667eea" stroke-width="2"/>
+                            <text x="450" y="145" text-anchor="middle" fill="#1a202c" font-size="16" font-weight="600">AdapterRegistry</text>
+                            <text x="450" y="165" text-anchor="middle" fill="#4a5568" font-size="12">RegisterDefaultAdapters()</text>
+                            <line x1="320" y1="180" x2="580" y2="180" stroke="#cbd5e0" stroke-width="1"/>
+                            <text x="450" y="195" text-anchor="middle" fill="#4a5568" font-size="11">Local • PyTorch Hub • TensorFlow Hub • Hugging Face</text>
+                            
+                            <!-- Arrows to adapters -->
+                            <path d="M 350 220 L 200 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <path d="M 450 220 L 450 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <path d="M 550 220 L 700 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            
+                            <!-- Builtin Adapters -->
+                            <rect x="100" y="280" width="200" height="120" rx="8" fill="#e6f3ff" stroke="#667eea" stroke-width="2"/>
+                            <text x="200" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Builtin Adapters</text>
+                            <text x="200" y="330" text-anchor="middle" fill="#4a5568" font-size="11">Hugging Face</text>
+                            <text x="200" y="350" text-anchor="middle" fill="#4a5568" font-size="11">PyTorch Hub</text>
+                            <text x="200" y="370" text-anchor="middle" fill="#4a5568" font-size="11">TensorFlow Hub</text>
+                            <text x="200" y="390" text-anchor="middle" fill="#4a5568" font-size="11">Local Registry</text>
+                            
+                            <!-- Examples Adapters -->
+                            <rect x="350" y="280" width="200" height="120" rx="8" fill="#fff4e6" stroke="#f59e0b" stroke-width="2"/>
+                            <text x="450" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Example Adapters</text>
+                            <text x="450" y="330" text-anchor="middle" fill="#4a5568" font-size="11">ModelScope</text>
+                            <text x="450" y="350" text-anchor="middle" fill="#4a5568" font-size="11">(Reference)</text>
+                            
+                            <!-- Custom Adapters -->
+                            <rect x="600" y="280" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#667eea" stroke-width="2" stroke-dasharray="5,5"/>
+                            <text x="700" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Custom Adapters</text>
+                            <text x="700" y="330" text-anchor="middle" fill="#4a5568" font-size="11">User-defined</text>
+                            <text x="700" y="350" text-anchor="middle" fill="#4a5568" font-size="11">Extensions</text>
+                            
+                            <!-- Arrows to core -->
+                            <path d="M 200 400 L 200 460" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <path d="M 450 400 L 450 460" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <path d="M 700 400 L 700 460" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            
+                            <!-- Core Framework -->
+                            <rect x="100" y="460" width="700" height="120" rx="8" fill="#f7fafc" stroke="#667eea" stroke-width="2"/>
+                            <text x="450" y="485" text-anchor="middle" fill="#1a202c" font-size="16" font-weight="600">Core Framework Utilities</text>
+                            <text x="450" y="505" text-anchor="middle" fill="#4a5568" font-size="12">internal/registry/core/</text>
+                            <line x1="120" y1="520" x2="780" y2="520" stroke="#cbd5e0" stroke-width="1"/>
+                            
+                            <text x="200" y="540" text-anchor="middle" fill="#4a5568" font-size="11">HTTPClient</text>
+                            <text x="200" y="560" text-anchor="middle" fill="#667eea" font-size="10">HTTP + Auth</text>
+                            
+                            <text x="350" y="540" text-anchor="middle" fill="#4a5568" font-size="11">ModelValidator</text>
+                            <text x="350" y="560" text-anchor="middle" fill="#667eea" font-size="10">Existence Check</text>
+                            
+                            <text x="500" y="540" text-anchor="middle" fill="#4a5568" font-size="11">PackageBuilder</text>
+                            <text x="500" y="560" text-anchor="middle" fill="#667eea" font-size="10">.axon Packages</text>
+                            
+                            <text x="650" y="540" text-anchor="middle" fill="#4a5568" font-size="11">DownloadFile</text>
+                            <text x="650" y="560" text-anchor="middle" fill="#667eea" font-size="10">Progress Tracking</text>
+                            
+                            <!-- Arrowhead marker -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                    <polygon points="0 0, 10 3, 0 6" fill="#667eea"/>
+                                </marker>
+                            </defs>
+                        </svg>
                     </div>
 
-                    <h5 style="margin-top: 2rem; color: #667eea;">Example: ModelScope Adapter Implementation</h5>
-                    <p>The ModelScope adapter demonstrates how to implement a new adapter using the framework. See the complete implementation in the <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/modelscope.go" style="color: #667eea;">axon repository</a>.</p>
+                    <h5 style="margin-top: 2rem; color: #667eea;">Example: ModelScope Adapter</h5>
+                    <p>The ModelScope adapter demonstrates how to implement a new adapter using the framework. It shows:</p>
+                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
+                        <li>How to implement the <code>RepositoryAdapter</code> interface</li>
+                        <li>Using core utilities for HTTP requests, validation, and packaging</li>
+                        <li>Best practices for adapter development</li>
+                    </ul>
+                    <p style="margin-top: 1rem;">
+                        <strong>See the complete implementation:</strong>
+                        <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/modelscope.go" 
+                           style="color: #667eea; text-decoration: none; font-weight: 600;">
+                            ModelScope Adapter Example →
+                        </a>
+                    </p>
                     
                     <p style="margin-top: 1.5rem;">
-                        <strong>See the complete framework documentation:</strong>
+                        <strong>Complete framework documentation:</strong>
                         <a href="https://github.com/mlOS-foundation/axon/blob/main/docs/ADAPTER_FRAMEWORK.md" 
                            style="color: #667eea; text-decoration: none; font-weight: 600;">
                             Adapter Framework Guide →

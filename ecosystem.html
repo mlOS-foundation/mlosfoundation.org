@@ -475,16 +475,94 @@ axon install modelscope/cv/resnet50@latest</code></pre>
                     <li><strong>Zero Configuration</strong> - Works out of the box with Hugging Face</li>
                 </ul>
                 
-                <div class="architecture-note">
-                    <h4>Architecture: Pluggable Adapter System</h4>
-                    <p>Axon's adapter architecture allows it to work with any model repository. The system automatically:</p>
-                    <ol>
-                        <li><strong>Detects</strong> the model source (namespace-based)</li>
-                        <li><strong>Selects</strong> the appropriate adapter (Hugging Face, PyTorch Hub, ModelScope, TensorFlow Hub, etc.)</li>
-                        <li><strong>Downloads</strong> and packages models in real-time</li>
-                        <li><strong>Caches</strong> locally for future use</li>
-                    </ol>
-                    <p>This design enables Axon to support new repositories without changing core code - just add a new adapter!</p>
+                <div class="architecture-note" style="margin-top: 2rem;">
+                    <h4>🏗️ Architecture: Extensible Adapter Framework (v1.3.0+)</h4>
+                    <p>Axon's adapter framework is built on <strong>GoF design patterns</strong>, making it highly extensible and maintainable. The framework provides a clean separation between core interfaces and adapter implementations. <strong>Available in v1.3.0+</strong></p>
+                    
+                    <h5 style="margin-top: 1.5rem; color: #667eea;">Design Patterns</h5>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>Adapter Pattern</strong><br>
+                            <small>Unified interface for all repositories</small>
+                        </div>
+                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>Strategy Pattern</strong><br>
+                            <small>Each adapter implements its own strategy</small>
+                        </div>
+                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>Factory Pattern</strong><br>
+                            <small>Dynamic adapter creation</small>
+                        </div>
+                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>Builder Pattern</strong><br>
+                            <small>Fluent configuration</small>
+                        </div>
+                        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 3px solid #667eea;">
+                            <strong>Registry Pattern</strong><br>
+                            <small>Centralized adapter management</small>
+                        </div>
+                    </div>
+
+                    <h5 style="margin-top: 2rem; color: #667eea;">Framework Architecture</h5>
+                    <div style="background: #1a202c; padding: 2rem; border-radius: 12px; margin: 1rem 0; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.85rem; line-height: 1.6; color: #e2e8f0; overflow-x: auto;">
+                        <pre style="margin: 0; color: #e2e8f0;"><code>┌─────────────────────────────────────────────────────────────┐
+│                      Axon CLI                               │
+│              (cmd/axon/commands.go)                          │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│         AdapterRegistry (Registry Pattern)                   │
+│         (internal/registry/core/adapter.go)                  │
+│                                                              │
+│  RegisterDefaultAdapters()                                   │
+│  ├─ Local Registry (if configured)                           │
+│  ├─ PyTorch Hub                                              │
+│  ├─ TensorFlow Hub                                           │
+│  └─ Hugging Face (fallback)                                 │
+└──────────────────────┬──────────────────────────────────────┘
+                       │
+         ┌─────────────┼─────────────┐
+         │             │             │
+         ▼             ▼             ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│   Builtin   │ │  Examples   │ │   Custom    │
+│  Adapters   │ │  Adapters   │ │  Adapters   │
+│             │ │             │ │             │
+│ • Hugging   │ │ • ModelScope│ │ (User-      │
+│   Face      │ │   (Example) │ │  defined)   │
+│ • PyTorch   │ │             │ │             │
+│   Hub       │ │             │ │             │
+│ • TensorFlow│ │             │ │             │
+│   Hub       │ │             │ │             │
+│ • Local     │ │             │ │             │
+└─────────────┘ └─────────────┘ └─────────────┘
+         │             │             │
+         └─────────────┼─────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│         Core Framework (Helper Utilities)                     │
+│         (internal/registry/core/)                            │
+│                                                              │
+│  • HTTPClient      - HTTP requests with auth                  │
+│  • ModelValidator - Model existence validation               │
+│  • PackageBuilder - Create .axon packages                    │
+│  • DownloadFile   - Download with progress                  │
+│  • ComputeChecksum - SHA256 checksums                        │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+                    </div>
+
+                    <h5 style="margin-top: 2rem; color: #667eea;">Example: ModelScope Adapter Implementation</h5>
+                    <p>The ModelScope adapter demonstrates how to implement a new adapter using the framework. See the complete implementation in the <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/modelscope.go" style="color: #667eea;">axon repository</a>.</p>
+                    
+                    <p style="margin-top: 1.5rem;">
+                        <strong>See the complete framework documentation:</strong>
+                        <a href="https://github.com/mlOS-foundation/axon/blob/main/docs/ADAPTER_FRAMEWORK.md" 
+                           style="color: #667eea; text-decoration: none; font-weight: 600;">
+                            Adapter Framework Guide →
+                        </a>
+                    </p>
                 </div>
                 
                 <h3>Basic Usage</h3>

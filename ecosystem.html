@@ -453,8 +453,9 @@ axon install pytorch/vision/resnet50@latest
 axon install tfhub/google/imagenet/resnet_v2_50/classification/5@latest
 axon install tfhub/google/universal-sentence-encoder/4@latest
 
-# ModelScope (Phase 1 - Coming Soon)
-axon install modelscope/cv/resnet50@latest</code></pre>
+# ModelScope (v1.4.0+)
+axon install modelscope/damo/cv_resnet50_image-classification@latest
+axon install modelscope/ai/modelscope_damo-text-to-video-synthesis@latest</code></pre>
                 </div>
                 
                 <h3>What is Axon?</h3>
@@ -564,18 +565,19 @@ axon install modelscope/cv/resnet50@latest</code></pre>
                         </svg>
                     </div>
 
-                    <h5 style="margin-top: 2rem; color: #667eea;">Example: ModelScope Adapter</h5>
-                    <p>The ModelScope adapter demonstrates how to implement a new adapter using the framework. It shows:</p>
+                    <h5 style="margin-top: 2rem; color: #667eea;">Example: Replicate Adapter</h5>
+                    <p>The Replicate adapter demonstrates how to implement a new adapter using the framework. It shows:</p>
                     <ul style="margin: 1rem 0; padding-left: 1.5rem;">
                         <li>How to implement the <code>RepositoryAdapter</code> interface</li>
+                        <li>API-based model access patterns (vs file-based downloads)</li>
                         <li>Using core utilities for HTTP requests, validation, and packaging</li>
                         <li>Best practices for adapter development</li>
                     </ul>
                     <p style="margin-top: 1rem;">
                         <strong>See the complete implementation:</strong>
-                        <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/modelscope.go" 
+                        <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/replicate.go" 
                            style="color: #667eea; text-decoration: none; font-weight: 600;">
-                            ModelScope Adapter Example →
+                            Replicate Adapter Example →
                         </a>
                     </p>
                     

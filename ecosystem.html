@@ -783,6 +783,58 @@ curl -X POST http://localhost:8080/models/hf/bert-base-uncased@latest/inference 
                 </p>
             </div>
 
+            <div class="component" id="distro">
+                <h2>MLOS Linux Distributions</h2>
+                <p>
+                    Complete Linux distributions optimized for machine learning workloads, with MLOS Core, Axon, 
+                    and kernel-level ML optimizations pre-installed. Currently in <strong>planning phase</strong> 
+                    (target: v1.0.0 - Q2-Q3 2026).
+                </p>
+                
+                <h3>Distribution Variants</h3>
+                <ul>
+                    <li><strong>MLOS Linux (Ubuntu)</strong>: Based on Ubuntu 22.04/24.04 LTS with .deb packages, traditional installer, and cloud images</li>
+                    <li><strong>MLOS Linux (Flatcar)</strong>: Based on Flatcar Linux with container-first architecture, Ignition-based provisioning, and immutable filesystem</li>
+                    <li><strong>Shared Kernel Patches</strong>: ML-aware scheduler, tensor memory management, and GPU orchestration (US-63/865,176)</li>
+                </ul>
+                
+                <h3>Key Features (Planned)</h3>
+                <ul>
+                    <li><strong>ML-Aware Kernel</strong>: Priority-based ML task scheduling with tensor operation awareness</li>
+                    <li><strong>Pre-Installed Stack</strong>: MLOS Core, Axon, and ML development toolchain out of the box</li>
+                    <li><strong>Standards Compliant</strong>: LSB, FHS, systemd, Debian Policy (Ubuntu) / Ignition (Flatcar)</li>
+                    <li><strong>IP Protection</strong>: Binary artifacts from private repositories with GPG signature verification</li>
+                    <li><strong>Universal Model Support</strong>: Works with models from Hugging Face, PyTorch Hub, TensorFlow Hub, ModelScope via Axon</li>
+                </ul>
+                
+                <h3>Architecture</h3>
+                <p>
+                    Both distributions include:
+                </p>
+                <ul>
+                    <li><strong>Kernel Modifications</strong>: ML-aware scheduler, tensor memory management, GPU resource orchestration</li>
+                    <li><strong>MLOS Core</strong>: Kernel-level ML runtime with HTTP, gRPC, and IPC APIs</li>
+                    <li><strong>Axon</strong>: Universal model installer with 80%+ repository coverage</li>
+                    <li><strong>ML Toolchain</strong>: Python, PyTorch, TensorFlow, ONNX Runtime pre-installed</li>
+                </ul>
+                
+                <h3>Status & Repositories</h3>
+                <p>
+                    <strong>Status:</strong> 🔄 Planning Phase (Repository structure created, build infrastructure pending)
+                </p>
+                <ul>
+                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-ubuntu" style="color: #667eea;">MLOS Linux (Ubuntu)</a> - Ubuntu-based distribution</li>
+                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-flatcar" style="color: #667eea;">MLOS Linux (Flatcar)</a> - Flatcar-based distribution</li>
+                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-kernel" style="color: #667eea;">MLOS Kernel Patches</a> - Shared kernel patches</li>
+                </ul>
+                
+                <p style="margin-top: 1.5rem;">
+                    <strong>Note:</strong> Distribution repositories are public and contain build scripts, configuration, and documentation. 
+                    MLOS Core binaries and kernel patches are downloaded from private registries during build time with GPG signature verification. 
+                    See <a href="https://github.com/mlOS-foundation/core/blob/main/docs/DISTRO_IP_PROTECTION_PLAN.md" style="color: #667eea;">IP Protection Plan</a> for details.
+                </p>
+            </div>
+
             <div class="component" id="smi">
                 <h2>Standard Model Interface (SMI)</h2>
                 <p>

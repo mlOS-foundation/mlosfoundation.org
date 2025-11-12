@@ -339,6 +339,73 @@
             margin-top: 2rem;
         }
         
+        .integration-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content {
+            color: #333;
+        }
+        
+        .step-content code {
+            background: #f4f4f4;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: block;
+            margin: 0.5rem 0;
+        }
+        
+        .step-content small {
+            color: #666;
+            font-size: 0.85em;
+        }
+        
+        .flow-arrow {
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .integration-flow {
+                flex-direction: column;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+        
         .feature-item {
             background: white;
             padding: 1.5rem;
@@ -651,6 +718,35 @@ axon uninstall vision/resnet50</code></pre>
                     ML frameworks through the Standard Model Interface (SMI).
                 </p>
                 
+                <h3>🔗 Axon Integration</h3>
+                <p>
+                    MLOS Core integrates seamlessly with <a href="#axon">Axon</a> for complete end-to-end model delivery and execution:
+                </p>
+                <ul>
+                    <li><strong>Model Package Format (MPF)</strong>: MLOS Core relies on Axon packages as specified in patent US-63/861,527</li>
+                    <li><strong>Standardized Metadata</strong>: Reads Axon manifests for model information (framework, resources, I/O schema)</li>
+                    <li><strong>Universal Delivery</strong>: Works with models from any repository (Hugging Face, PyTorch Hub, TensorFlow Hub, ModelScope) via Axon</li>
+                    <li><strong>Plugin Independence</strong>: Plugins receive path to model files, don't need to know about Axon</li>
+                </ul>
+                <p><strong>Complete E2E Workflow:</strong></p>
+                <div class="code-block">
+                    <div class="code-block-header">
+                        <h4>End-to-End Integration Example</h4>
+                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code># 1. Install model with Axon
+axon install hf/bert-base-uncased@latest
+
+# 2. Register with MLOS Core
+axon register hf/bert-base-uncased@latest
+
+# 3. Run inference via MLOS Core API
+curl -X POST http://localhost:8080/models/hf/bert-base-uncased@latest/inference \
+  -H "Content-Type: application/json" \
+  -d '{"input": "Hello, MLOS!", "batch_size": 1}'</code></pre>
+                </div>
+                <p>See <a href="https://github.com/mlOS-foundation/core/docs/AXON_MLOS_INTEGRATION.md" style="color: #667eea; text-decoration: none; font-weight: 600;">Axon-MLOS Integration Guide →</a> for detailed architecture and workflow.</p>
+                
                 <h3>Architecture</h3>
                 <p>
                     MLOS Core consists of several key components:
@@ -660,6 +756,7 @@ axon uninstall vision/resnet50</code></pre>
                     <li><strong>API Layer</strong>: Multi-protocol support (HTTP, gRPC, IPC)</li>
                     <li><strong>SMI Interface</strong>: Standardized interface for ML framework plugins</li>
                     <li><strong>Resource Management</strong>: Intelligent allocation and sharing of compute resources</li>
+                    <li><strong>Axon Manifest Reader</strong>: Reads standardized Axon packages (MPF) for model metadata</li>
                 </ul>
                 
                 <h3>Performance</h3>

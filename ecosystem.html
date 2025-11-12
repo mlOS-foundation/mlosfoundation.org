@@ -745,7 +745,13 @@ curl -X POST http://localhost:8080/models/hf/bert-base-uncased@latest/inference 
   -H "Content-Type: application/json" \
   -d '{"input": "Hello, MLOS!", "batch_size": 1}'</code></pre>
                 </div>
-                <p>See <a href="https://github.com/mlOS-foundation/core/docs/AXON_MLOS_INTEGRATION.md" style="color: #667eea; text-decoration: none; font-weight: 600;">Axon-MLOS Integration Guide →</a> for detailed architecture and workflow.</p>
+                <p><strong>Architecture Details:</strong></p>
+                <ul>
+                    <li><strong>Delivery Layer (Axon)</strong>: Handles all repository interactions, creates standardized `.axon` packages with `manifest.yaml`, provides metadata. Does NOT execute models.</li>
+                    <li><strong>Execution Layer (MLOS Core)</strong>: Reads Axon manifests for metadata, manages model lifecycle, routes to appropriate plugins. Does NOT access repositories directly.</li>
+                    <li><strong>Framework Layer (Plugins)</strong>: Load framework-specific model formats, execute inference. Plugins receive path to model files, don't need to know about Axon.</li>
+                </ul>
+                <p><strong>Patent Alignment:</strong> This integration demonstrates key innovations from MLOS Foundation patents - US-63/861,527 (MLOS System with native lifecycle management) and US-63/865,176 (Kernel-level optimizations for ML workloads). Axon packages ARE the Model Package Format (MPF) implementation.</p>
                 
                 <h3>Architecture</h3>
                 <p>

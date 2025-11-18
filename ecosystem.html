@@ -697,6 +697,8 @@ axon uninstall vision/resnet50</code></pre>
                 </p>
                 <ul>
                     <li>✅ Manifest system with YAML parser and validator</li>
+                    <li>✅ Manifest-first architecture with format-agnostic execution</li>
+                    <li>✅ Automatic execution format detection (ONNX, PyTorch, TensorFlow)</li>
                     <li>✅ Cache manager for local model storage</li>
                     <li>✅ Registry client for model discovery</li>
                     <li>✅ CLI commands for model lifecycle management</li>
@@ -724,7 +726,8 @@ axon uninstall vision/resnet50</code></pre>
                 </p>
                 <ul>
                     <li><strong>Model Package Format (MPF)</strong>: MLOS Core relies on Axon packages as specified in patent US-63/861,527</li>
-                    <li><strong>Standardized Metadata</strong>: Reads Axon manifests for model information (framework, resources, I/O schema)</li>
+                    <li><strong>Standardized Metadata</strong>: Reads Axon manifests for model information (framework, resources, I/O schema, execution format)</li>
+                    <li><strong>Format-Agnostic Execution</strong>: Dynamic plugin selection based on manifest's execution format</li>
                     <li><strong>Universal Delivery</strong>: Works with models from any repository (Hugging Face, PyTorch Hub, TensorFlow Hub, ModelScope) via Axon</li>
                     <li><strong>Plugin Independence</strong>: Plugins receive path to model files, don't need to know about Axon</li>
                 </ul>

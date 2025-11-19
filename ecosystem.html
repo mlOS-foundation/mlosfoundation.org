@@ -691,6 +691,95 @@ axon update vision/resnet50
 axon uninstall vision/resnet50</code></pre>
                 </div>
                 
+                <h3>🐳 Axon Converter Image</h3>
+                <p>The <strong>Axon Converter Image</strong> is a Docker container that provides universal ONNX model conversion capabilities. It eliminates the need for Python dependencies on the host machine while enabling seamless conversion of models from any repository to ONNX format.</p>
+                    
+                    <div class="feature-highlight">
+                        <h3>Key Features</h3>
+                        <ul>
+                            <li><strong>Zero Python Installation</strong>: No Python needed on your machine - everything runs in Docker</li>
+                            <li><strong>Multi-Framework Support</strong>: Pre-installed PyTorch, TensorFlow, Transformers, ModelScope, and ONNX Runtime</li>
+                            <li><strong>Universal Conversion</strong>: Convert models from Hugging Face, PyTorch Hub, TensorFlow Hub, and ModelScope</li>
+                            <li><strong>Automatic Usage</strong>: Axon automatically uses the converter image when Docker is available</li>
+                            <li><strong>Cross-Platform</strong>: Works on macOS, Linux, and Windows (with Docker)</li>
+                        </ul>
+                    </div>
+
+                    <h4>How It Works</h4>
+                    <p>When you install a model with Axon, the converter image automatically:</p>
+                    <ol>
+                        <li><strong>Downloads</strong> the model from the repository</li>
+                        <li><strong>Detects</strong> the framework (PyTorch, TensorFlow, Hugging Face, etc.)</li>
+                        <li><strong>Converts</strong> the model to ONNX format using the appropriate conversion script</li>
+                        <li><strong>Saves</strong> the ONNX file to your Axon cache</li>
+                    </ol>
+
+                    <div class="code-block">
+                        <div class="code-block-header">
+                            <h4>Example: Automatic Conversion</h4>
+                        </div>
+                        <pre><code># Install a model - conversion happens automatically
+axon install hf/distilgpt2@latest
+
+# Output:
+# 📦 Downloading model from Hugging Face...
+# 🐳 Converting model using Docker (ghcr.io/mlos-foundation/axon-converter:latest)...
+# ✅ Model converted to ONNX: model.onnx
+# ✅ Model installed successfully</code></pre>
+                    </div>
+
+                    <h4>Integration with MLOS Core</h4>
+                    <p>The converter image is the bridge between Axon and MLOS Core:</p>
+                    <div class="integration-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Axon Install</strong>
+                                <code>axon install hf/model</code>
+                                <small>Downloads & converts to ONNX</small>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>MLOS Core Register</strong>
+                                <code>axon register hf/model</code>
+                                <small>Detects ONNX & auto-selects plugin</small>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>MLOS Core Execute</strong>
+                                <code>POST /models/hf/model/inference</code>
+                                <small>ONNX Runtime executes inference</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="architecture-note">
+                        <h4>Architecture Benefits</h4>
+                        <ol>
+                            <li><strong>Separation of Concerns</strong>: Axon handles conversion, MLOS Core handles execution</li>
+                            <li><strong>No Python in Production</strong>: MLOS Core never needs Python dependencies</li>
+                            <li><strong>Universal Execution</strong>: ONNX Runtime enables all converted models to run</li>
+                            <li><strong>Isolated Environment</strong>: Conversion happens in containers, avoiding conflicts</li>
+                        </ol>
+                    </div>
+
+                    <h4>Image Details</h4>
+                    <ul>
+                        <li><strong>Registry</strong>: <code>ghcr.io/mlos-foundation/axon-converter</code></li>
+                        <li><strong>Tags</strong>: <code>latest</code>, <code>2.1.0</code>, <code>2.1</code>, <code>2</code></li>
+                        <li><strong>Size</strong>: ~4GB (compressed: ~1.2GB)</li>
+                        <li><strong>Platforms</strong>: <code>linux/amd64</code>, <code>linux/arm64</code></li>
+                        <li><strong>Also Available</strong>: OCI artifacts attached to GitHub Releases</li>
+                    </ul>
+
+                <p><strong>Learn More:</strong> See the <a href="https://github.com/mlOS-foundation/axon/blob/main/docs/CONVERTER_IMAGE.md" style="color: #667eea; text-decoration: none; font-weight: 600;">complete converter image documentation</a> for detailed usage, troubleshooting, and technical details.</p>
+
                 <h3>Status</h3>
                 <p>
                     <strong>MVP Complete</strong> - Axon has achieved MVP status with core functionality implemented:

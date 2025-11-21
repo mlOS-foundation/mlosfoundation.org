@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define gradients and styles -->
+  <defs>
+    <linearGradient id="axonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="coreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="onnxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="repoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#43e97b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38f9d7;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666" />
+    </marker>
+    
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4facfe" />
+    </marker>
+    
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="600" y="40" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#2d3748">
+    MLOS End-to-End Architecture
+  </text>
+  <text x="600" y="65" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#718096">
+    Universal Model Inference with Multi-Type Tensor Support
+  </text>
+  
+  <!-- Phase 1: Model Repositories -->
+  <g id="repositories">
+    <text x="100" y="120" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+      1. Model Sources
+    </text>
+    
+    <!-- Hugging Face -->
+    <rect x="50" y="140" width="140" height="80" rx="8" fill="url(#repoGrad)" filter="url(#shadow)"/>
+    <text x="120" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">🤗 Hugging Face</text>
+    <text x="120" y="190" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">GPT-2, BERT, T5</text>
+    <text x="120" y="205" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">100,000+ models</text>
+    
+    <!-- PyTorch Hub -->
+    <rect x="210" y="140" width="140" height="80" rx="8" fill="url(#repoGrad)" filter="url(#shadow)"/>
+    <text x="280" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">🔥 PyTorch Hub</text>
+    <text x="280" y="190" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">ResNet, VGG</text>
+    <text x="280" y="205" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">Research models</text>
+    
+    <!-- TensorFlow Hub -->
+    <rect x="370" y="140" width="140" height="80" rx="8" fill="url(#repoGrad)" filter="url(#shadow)"/>
+    <text x="440" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">🧠 TensorFlow</text>
+    <text x="440" y="190" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">SavedModel</text>
+    <text x="440" y="205" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">Production ready</text>
+    
+    <!-- ModelScope -->
+    <rect x="530" y="140" width="140" height="80" rx="8" fill="url(#repoGrad)" filter="url(#shadow)"/>
+    <text x="600" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">🎨 ModelScope</text>
+    <text x="600" y="190" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">Multimodal AI</text>
+    <text x="600" y="205" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">Vision + Language</text>
+  </g>
+  
+  <!-- Arrows to Axon -->
+  <line x1="120" y1="220" x2="350" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="280" y1="220" x2="350" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="440" y1="220" x2="350" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="600" y1="220" x2="350" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Phase 2: Axon (Model Delivery & Conversion) -->
+  <g id="axon">
+    <text x="100" y="270" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+      2. Axon
+    </text>
+    
+    <rect x="200" y="285" width="300" height="140" rx="12" fill="url(#axonGrad)" filter="url(#shadow)"/>
+    <text x="350" y="315" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="white">
+      ⚡ Axon - Model Delivery
+    </text>
+    
+    <!-- Conversion Box -->
+    <rect x="220" y="330" width="260" height="80" rx="6" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2"/>
+    <text x="350" y="355" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Universal ONNX Conversion
+    </text>
+    <text x="350" y="375" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      ✅ Multi-strategy conversion
+    </text>
+    <text x="350" y="390" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      ✅ Repository-specific routing
+    </text>
+    <text x="350" y="405" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      ✅ Automatic optimization
+    </text>
+  </g>
+  
+  <!-- Arrow to MLOS Core -->
+  <line x1="350" y1="425" x2="350" y2="490" stroke="#666" stroke-width="3" marker-end="url(#arrowhead)"/>
+  <text x="370" y="460" font-family="Arial, sans-serif" font-size="12" fill="#666">
+    axon register
+  </text>
+  
+  <!-- Phase 3: MLOS Core -->
+  <g id="mlos-core">
+    <text x="100" y="480" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+      3. MLOS Core
+    </text>
+    
+    <rect x="200" y="495" width="300" height="180" rx="12" fill="url(#coreGrad)" filter="url(#shadow)"/>
+    <text x="350" y="525" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="white">
+      🚀 MLOS Core Runtime
+    </text>
+    
+    <!-- API Layer -->
+    <rect x="220" y="540" width="260" height="40" rx="6" fill="rgba(255,255,255,0.2)"/>
+    <text x="350" y="565" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" fill="white">
+      📡 HTTP | gRPC | IPC APIs
+    </text>
+    
+    <!-- Plugin Layer -->
+    <rect x="220" y="590" width="260" height="70" rx="6" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+    <text x="350" y="615" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white">
+      Enhanced ONNX Plugin
+    </text>
+    <text x="350" y="635" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      int64 | float32 | int32 | bool
+    </text>
+    <text x="350" y="650" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      Multi-input · Named tensors
+    </text>
+  </g>
+  
+  <!-- Arrow to Inference Engine -->
+  <line x1="500" y1="585" x2="670" y2="585" stroke="#4facfe" stroke-width="3" marker-end="url(#arrowhead-blue)"/>
+  
+  <!-- Phase 4: ONNX Runtime -->
+  <g id="onnx-runtime">
+    <text x="750" y="480" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2d3748">
+      4. Inference
+    </text>
+    
+    <rect x="675" y="495" width="200" height="180" rx="12" fill="url(#onnxGrad)" filter="url(#shadow)"/>
+    <text x="775" y="525" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+      ONNX Runtime
+    </text>
+    
+    <!-- Model execution -->
+    <circle cx="775" cy="575" r="50" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+    <text x="775" y="570" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">🧠</text>
+    <text x="775" y="595" font-family="Arial, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="white">
+      Model
+    </text>
+    
+    <text x="775" y="650" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      ⚡ ~2-8ms inference
+    </text>
+    <text x="775" y="665" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      CPU optimized
+    </text>
+  </g>
+  
+  <!-- User Flow -->
+  <g id="user">
+    <rect x="950" y="140" width="200" height="120" rx="12" fill="#48bb78" filter="url(#shadow)"/>
+    <text x="1050" y="170" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+      👤 User/Application
+    </text>
+    <text x="1050" y="195" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      1️⃣ axon install model
+    </text>
+    <text x="1050" y="215" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      2️⃣ axon register model
+    </text>
+    <text x="1050" y="235" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      3️⃣ POST /inference
+    </text>
+    <text x="1050" y="255" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="white">
+      4️⃣ Get results ✨
+    </text>
+  </g>
+  
+  <!-- User to Axon -->
+  <line x1="950" y1="200" x2="500" y2="340" stroke="#48bb78" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- User to MLOS Core -->
+  <line x1="950" y1="220" x2="500" y2="560" stroke="#48bb78" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  
+  <!-- Return path -->
+  <line x1="875" y1="585" x2="950" y2="240" stroke="#f6ad55" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="920" y="410" font-family="Arial, sans-serif" font-size="11" fill="#f6ad55" transform="rotate(-30 920 410)">
+    Results
+  </text>
+  
+  <!-- Data Flow Examples -->
+  <g id="examples">
+    <rect x="50" y="710" width="1100" height="70" rx="8" fill="#edf2f7" stroke="#cbd5e0" stroke-width="2"/>
+    <text x="60" y="730" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2d3748">
+      💡 Example Requests:
+    </text>
+    <text x="60" y="750" font-family="Courier, monospace" font-size="11" fill="#4a5568">
+      GPT-2:   {"input_ids": [15496, 11, 337, 43, 48, 2640, 0]}
+    </text>
+    <text x="60" y="768" font-family="Courier, monospace" font-size="11" fill="#4a5568">
+      BERT:    {"input_ids": [101, 7592, 102], "attention_mask": [1, 1, 1], "token_type_ids": [0, 0, 0]}
+    </text>
+  </g>
+  
+  <!-- Key Features Callout -->
+  <g id="features">
+    <rect x="950" y="320" width="200" height="200" rx="8" fill="white" stroke="#cbd5e0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="1050" y="345" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#2d3748">
+      ✨ Key Features
+    </text>
+    
+    <text x="960" y="370" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Universal conversion
+    </text>
+    <text x="960" y="390" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Multi-type tensors
+    </text>
+    <text x="960" y="410" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Named inputs
+    </text>
+    <text x="960" y="430" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Dynamic shapes
+    </text>
+    <text x="960" y="450" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Zero API changes
+    </text>
+    <text x="960" y="470" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Kernel-level exec
+    </text>
+    <text x="960" y="490" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ✅ Backward compatible
+    </text>
+    <text x="960" y="510" font-family="Arial, sans-serif" font-size="11" fill="#4a5568">
+      ⚡ ~2-8ms inference
+    </text>
+  </g>
+</svg>
+

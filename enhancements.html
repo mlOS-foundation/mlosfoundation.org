@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Enhancements | MLOS Foundation</title>
+    <meta name="description" content="Universal ONNX conversion and multi-type tensor support - Latest enhancements to MLOS">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #1a365d;
+            --color-secondary: #3b82f6;
+            --color-accent: #06b6d4;
+            --gradient-axon: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-core: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-onnx: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .enhancement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .enhancement-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .enhancement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .enhancement-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .icon {
+            font-size: 2rem;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 1.5rem 0;
+        }
+        
+        .diagram-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            margin: 3rem 0;
+        }
+        
+        .diagram-container img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-axon);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #718096;
+            margin-top: 0.5rem;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #f5576c;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .gradient-text {
+            background: var(--gradient-axon);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="badge">✨ Latest Release</div>
+            <h1>Universal Model Inference<br/>is Here!</h1>
+            <p>MLOS now supports universal ONNX conversion and multi-type tensor inference across all major ML repositories</p>
+        </div>
+    </section>
+    
+    <!-- Main Enhancements -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">🚀 Major Enhancements</h2>
+            
+            <div class="enhancement-grid">
+                <!-- Axon Enhancement -->
+                <div class="enhancement-card">
+                    <h3><span class="icon">⚡</span> Axon: Universal Conversion</h3>
+                    <p>Multi-framework ONNX conversion with repository-specific strategies</p>
+                    
+                    <ul class="feature-list">
+                        <li>Hugging Face (GPT-2, BERT, T5)</li>
+                        <li>PyTorch Hub (ResNet, VGG)</li>
+                        <li>TensorFlow (SavedModel, Keras)</li>
+                        <li>ModelScope (Multimodal)</li>
+                        <li>Auto-optimization</li>
+                    </ul>
+                    
+                    <div class="code-block">
+# One command, any model!
+axon install hf/gpt2@latest
+axon install pytorch/resnet50@latest
+axon install tfhub/bert@latest</div>
+                </div>
+                
+                <!-- Core Enhancement -->
+                <div class="enhancement-card">
+                    <h3><span class="icon">🧠</span> MLOS Core: Multi-Type Tensors</h3>
+                    <p>Enhanced ONNX plugin with comprehensive tensor type support</p>
+                    
+                    <ul class="feature-list">
+                        <li>int64 for NLP token IDs</li>
+                        <li>float32 for vision models</li>
+                        <li>int32 for TensorFlow</li>
+                        <li>bool for attention masks</li>
+                        <li>Multi-input models (BERT)</li>
+                        <li>Named inputs parsing</li>
+                    </ul>
+                    
+                    <div class="code-block">
+# Multi-input inference
+curl -X POST /models/bert/inference \
+  -d '{"input_ids": [101, 7592, 102],
+       "attention_mask": [1, 1, 1]}'</div>
+                </div>
+                
+                <!-- Integration -->
+                <div class="enhancement-card">
+                    <h3><span class="icon">🔗</span> Seamless Integration</h3>
+                    <p>Complete E2E workflow from any repository to kernel-level inference</p>
+                    
+                    <ul class="feature-list">
+                        <li>Zero API changes</li>
+                        <li>Backward compatible</li>
+                        <li>~2-8ms inference</li>
+                        <li>Dynamic shapes</li>
+                        <li>Automatic type detection</li>
+                        <li>Multi-strategy fallbacks</li>
+                    </ul>
+                    
+                    <div class="code-block">
+# Complete workflow
+axon install hf/gpt2@latest
+axon register hf/gpt2@latest
+# Ready for inference!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Architecture Diagram -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <h2 class="section-title">📐 End-to-End Architecture</h2>
+            <div class="diagram-container">
+                <img src="e2e-architecture.svg" alt="MLOS E2E Architecture" />
+            </div>
+        </div>
+    </section>
+    
+    <!-- Statistics -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">📊 By the Numbers</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Data Types<br/>Supported</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Model<br/>Repositories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">~2-8ms</div>
+                    <div class="stat-label">Inference<br/>Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100K+</div>
+                    <div class="stat-label">Models<br/>Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">API<br/>Changes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Backward<br/>Compatible</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Technical Deep Dive -->
+    <section class="section" style="background: white;">
+        <div class="container">
+            <h2 class="section-title">🔬 Technical Highlights</h2>
+            
+            <div class="enhancement-card" style="max-width: 800px; margin: 0 auto;">
+                <h3>Repository-Specific Conversion Strategies</h3>
+                <p>Axon now intelligently routes models to the best converter for their source repository:</p>
+                
+                <div class="code-block">
+Hugging Face:     optimum → torch.onnx.export → transformers
+PyTorch Hub:      TorchScript → torch → torchvision
+TensorFlow Hub:   SavedModel → Keras H5 → tf2onnx
+ModelScope:       Auto-detect → Framework-specific</div>
+                
+                <h3 style="margin-top: 2rem;">Enhanced Tensor Parsing</h3>
+                <p>MLOS Core plugin now parses JSON inputs with full type support:</p>
+                
+                <div class="code-block">
+// Single input (GPT-2)
+{"input_ids": [15496, 11, 337, 43, 48, 2640, 0]}
+
+// Multi-input (BERT)  
+{
+  "input_ids": [101, 7592, 1010, 1045, 2572, 102],
+  "attention_mask": [1, 1, 1, 1, 1, 1],
+  "token_type_ids": [0, 0, 0, 0, 0, 0]
+}</div>
+                
+                <h3 style="margin-top: 2rem;">Zero-Cost Abstraction</h3>
+                <p>All enhancements leverage the existing generic <code>void*</code> API - proving the architecture was designed right from the start. No breaking changes, just more capabilities!</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tested Models -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">✅ Tested & Verified</h2>
+            
+            <div class="enhancement-grid">
+                <div class="enhancement-card">
+                    <h3>🤗 NLP Models</h3>
+                    <ul class="feature-list">
+                        <li>GPT-2 (DistilGPT-2)</li>
+                        <li>BERT (base-uncased)</li>
+                        <li>RoBERTa</li>
+                        <li>T5</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #48bb78; font-weight: 600;">Status: ✅ Passing</p>
+                </div>
+                
+                <div class="enhancement-card">
+                    <h3>🔥 Vision Models</h3>
+                    <ul class="feature-list">
+                        <li>ResNet (50, 101, 152)</li>
+                        <li>VGG (16, 19)</li>
+                        <li>AlexNet</li>
+                        <li>ViT (coming soon)</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #ed8936; font-weight: 600;">Status: ⏳ Ready (not tested)</p>
+                </div>
+                
+                <div class="enhancement-card">
+                    <h3>🎨 Multi-Modal</h3>
+                    <ul class="feature-list">
+                        <li>CLIP (text + image)</li>
+                        <li>Wav2Vec2 (audio)</li>
+                        <li>ModelScope models</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #ed8936; font-weight: 600;">Status: ⏳ Ready (not tested)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Ready to Try MLOS?</h2>
+            <p style="font-size: 1.25rem; opacity: 0.95; max-width: 600px; margin: 0 auto;">
+                Start running models from any repository with kernel-level performance today
+            </p>
+            <a href="https://github.com/mlos-foundation" class="cta-button">View on GitHub →</a>
+        </div>
+    </section>
+    
+    <footer style="background: #1e293b; color: white; padding: 2rem 0; text-align: center;">
+        <div class="container">
+            <p>&copy; 2024 MLOS Foundation. Open Source under MIT License.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

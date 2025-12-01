@@ -1234,8 +1234,12 @@
                                             <div class="usage-card-content"><span class="command">$</span> curl -sSL axon.mlosfoundation.org | sh</div>
                                         </div>
                                         <div class="usage-card">
-                                            <h5 class="usage-card-title">Install Model</h5>
+                                            <h5 class="usage-card-title">Install NLP Model</h5>
                                             <div class="usage-card-content"><span class="command">$</span> axon install hf/bert-base-uncased@latest</div>
+                                        </div>
+                                        <div class="usage-card">
+                                            <h5 class="usage-card-title">Install Vision Model</h5>
+                                            <div class="usage-card-content"><span class="command">$</span> axon install hf/microsoft/resnet-50@latest</div>
                                         </div>
                                         <div class="usage-card">
                                             <h5 class="usage-card-title">List Models</h5>
@@ -1553,13 +1557,14 @@ func (m *Model) Predict(input []float64) []float64 {
             
             <div class="development-status-box">
                 <p style="color: var(--color-text); margin: 0 0 0.5rem 0; line-height: 1.7; font-weight: 600;">
-                    <strong>Development Status:</strong>
+                    <strong>Development Status (December 2024):</strong>
                 </p>
                 <ul style="color: var(--color-text); margin: 0; padding-left: 1.5rem; line-height: 1.8;">
-                    <li>Axon (Universal Model Installer) is MVP complete and available (v1.5.0+).</li>
-                    <li>MLOS Core runtime with kernel-level integration is in active development (Phase 1).</li>
+                    <li><strong>Axon v3.1.1</strong> - Universal Model Installer with vision model support (50+ architectures)</li>
+                    <li><strong>MLOS Core v3.2.0-alpha</strong> - HTTP API with ONNX inference, large input handling (16MB+)</li>
+                    <li><strong>E2E Validated</strong> - 8 models tested: GPT-2, BERT, RoBERTa, ResNet, ViT, ConvNeXt, MobileNet, DeiT</li>
                     <li>MLOS Linux distributions (Ubuntu & Flatcar) are in planning phase (Phase 3, target: Q2-Q3 2026).</li>
-                    <li><a href="architecture.html" style="color: var(--color-secondary);">View Architecture</a> for details.</li>
+                    <li><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-secondary);">View E2E Test Report</a> | <a href="architecture.html" style="color: var(--color-secondary);">Architecture</a></li>
                 </ul>
             </div>
             

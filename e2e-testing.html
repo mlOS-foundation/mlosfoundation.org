@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E2E Testing Guide | MLOS Foundation</title>
+    <meta name="description" content="Guide to MLOS End-to-End testing system - how to validate and extend model testing">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #1a365d;
+            --color-secondary: #3b82f6;
+            --color-accent: #06b6d4;
+            --color-success: #10b981;
+            --color-text: #1e293b;
+            --color-text-muted: #64748b;
+            --color-bg: #ffffff;
+            --color-bg-alt: #f8fafc;
+            --color-dark: #0f172a;
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.7;
+            color: var(--color-text);
+            background: var(--color-bg);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .nav a { color: var(--color-text); text-decoration: none; }
+        .nav a:hover { color: var(--color-secondary); }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #2563eb 100%);
+            color: white;
+            padding: 8rem 0 4rem;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        /* Content */
+        .content {
+            padding-bottom: 4rem;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-bg-alt);
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--color-text);
+        }
+        
+        p { margin-bottom: 1rem; }
+        
+        ul, ol {
+            margin: 1rem 0 1.5rem 1.5rem;
+        }
+        
+        li { margin-bottom: 0.5rem; }
+        
+        /* Code blocks */
+        pre {
+            background: var(--color-dark);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        code {
+            font-family: var(--font-mono);
+            background: var(--color-bg-alt);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+            border-left: 4px solid var(--color-secondary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box.success {
+            background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+            border-color: var(--color-success);
+        }
+        
+        .info-box.warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+            border-color: #f59e0b;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            background: var(--color-bg-alt);
+            font-weight: 600;
+        }
+        
+        /* Diagram */
+        .diagram {
+            background: var(--color-bg-alt);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .diagram pre {
+            background: none;
+            color: var(--color-text);
+            text-align: left;
+            display: inline-block;
+            margin: 0;
+            font-size: 0.85rem;
+        }
+        
+        /* Links */
+        a {
+            color: var(--color-secondary);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--color-dark);
+            color: #94a3b8;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer a { color: #e2e8f0; }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-pending { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" style="font-weight: 700; font-size: 1.1rem;">← MLOS Foundation</a>
+            <div>
+                <a href="https://mlos-foundation.github.io/system-test/" style="margin-right: 2rem;">Live Reports</a>
+                <a href="https://github.com/mlOS-foundation/system-test">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="container">
+            <h1>🧪 E2E Testing Guide</h1>
+            <p>Learn how the MLOS End-to-End testing system works and how to extend it for new models.</p>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="container">
+            
+            <div class="info-box success">
+                <strong>📊 Live Test Reports:</strong> 
+                <a href="https://mlos-foundation.github.io/system-test/">View the latest E2E validation report</a>
+            </div>
+
+            <h2>Overview</h2>
+            <p>
+                The MLOS E2E testing system validates the complete stack from model installation through inference.
+                Tests run automatically on GitHub Actions and publish results to a live dashboard.
+            </p>
+
+            <div class="diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                        E2E Test Pipeline                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. Download Releases          2. Install Models                    │
+│  ┌──────────────────┐         ┌──────────────────┐                 │
+│  │  Axon v3.1.1     │         │  Hugging Face    │                 │
+│  │  Core v3.2.1     │         │  Models → ONNX   │                 │
+│  └──────────────────┘         └──────────────────┘                 │
+│           │                            │                            │
+│           ▼                            ▼                            │
+│  3. Start MLOS Core           4. Register Models                    │
+│  ┌──────────────────┐         ┌──────────────────┐                 │
+│  │  HTTP API :18080 │◀────────│  axon register   │                 │
+│  │  ONNX Runtime    │         │  model.onnx      │                 │
+│  └──────────────────┘         └──────────────────┘                 │
+│           │                                                         │
+│           ▼                                                         │
+│  5. Run Inference Tests       6. Generate Report                    │
+│  ┌──────────────────┐         ┌──────────────────┐                 │
+│  │  POST /inference │────────▶│  HTML Report     │                 │
+│  │  Validate Output │         │  GitHub Pages    │                 │
+│  └──────────────────┘         └──────────────────┘                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+</pre>
+            </div>
+
+            <h2>Configuration Files</h2>
+            
+            <h3>1. Model Configuration (<code>config/models.yaml</code>)</h3>
+            <p>Defines which models to test:</p>
+<pre>models:
+  gpt2:
+    enabled: true
+    category: nlp
+    axon_id: "hf/distilgpt2@latest"
+    description: "DistilGPT2 - Text generation"
+    
+  resnet:
+    enabled: true
+    category: vision
+    axon_id: "hf/microsoft/resnet-50@latest"
+    description: "ResNet-50 - Image classification"</pre>
+
+            <h3>2. Test Input Configuration (<code>config/test-inputs.yaml</code>)</h3>
+            <p>Defines test inputs for each model:</p>
+<pre>models:
+  gpt2:
+    category: nlp
+    tokenizer: "distilgpt2"
+    test_text:
+      small: "Hello, I am a language model."
+      large: "Machine learning has transformed..."
+    max_length:
+      small: 16
+      large: 128
+    required_inputs: ["input_ids"]  # ONNX model inputs
+    
+  resnet:
+    category: vision
+    input_name: "pixel_values"
+    image_size: 224
+    normalization:
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]</pre>
+
+            <div class="info-box warning">
+                <strong>⚠️ Important:</strong> The <code>required_inputs</code> must match exactly what the ONNX model expects.
+                Different models have different input requirements!
+            </div>
+
+            <h2>Currently Tested Models</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Model</th>
+                        <th>Status</th>
+                        <th>Required Inputs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="3"><strong>NLP</strong></td>
+                        <td>GPT-2 (DistilGPT2)</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>input_ids</code></td>
+                    </tr>
+                    <tr>
+                        <td>BERT</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>input_ids</code>, <code>attention_mask</code>, <code>token_type_ids</code></td>
+                    </tr>
+                    <tr>
+                        <td>RoBERTa</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>input_ids</code></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5"><strong>Vision</strong></td>
+                        <td>ResNet-50</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>pixel_values</code></td>
+                    </tr>
+                    <tr>
+                        <td>ViT</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>pixel_values</code></td>
+                    </tr>
+                    <tr>
+                        <td>ConvNeXt</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>pixel_values</code></td>
+                    </tr>
+                    <tr>
+                        <td>MobileNetV2</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>pixel_values</code></td>
+                    </tr>
+                    <tr>
+                        <td>DeiT</td>
+                        <td><span class="badge badge-success">✅ Passing</span></td>
+                        <td><code>pixel_values</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Adding a New Model</h2>
+
+            <h3>Step 1: Check ONNX Model Inputs</h3>
+            <p>First, determine what inputs your ONNX model expects:</p>
+<pre># Using Docker to inspect model
+docker run --rm --entrypoint="" \
+  -v ~/.axon/cache/models/hf/your-model:/model \
+  ghcr.io/mlos-foundation/axon-converter:latest \
+  python3 -c "
+import onnx
+model = onnx.load('/model/model.onnx')
+print('Model inputs:')
+for inp in model.graph.input:
+    print(f'  - {inp.name}')
+"</pre>
+
+            <h3>Step 2: Add to <code>config/models.yaml</code></h3>
+<pre>models:
+  my_new_model:
+    enabled: true
+    category: nlp  # or vision, multimodal
+    axon_id: "hf/organization/model-name@latest"
+    description: "My Model - Task description"</pre>
+
+            <h3>Step 3: Add to <code>config/test-inputs.yaml</code></h3>
+<pre>models:
+  my_new_model:
+    category: nlp
+    tokenizer: "organization/model-name"
+    test_text:
+      small: "Test sentence."
+      large: "Longer test text..."
+    max_length:
+      small: 16
+      large: 128
+    required_inputs: ["input_ids"]  # Match ONNX inputs!</pre>
+
+            <h3>Step 4: Test Locally</h3>
+<pre># Generate test input
+python3 scripts/generate-test-input.py my_new_model small
+
+# Install and test
+axon install hf/organization/model-name@latest
+axon register hf/organization/model-name@latest
+
+# Run inference
+curl -X POST http://localhost:18080/models/my_new_model/inference \
+  -H "Content-Type: application/json" \
+  -d "$(python3 scripts/generate-test-input.py my_new_model small)"</pre>
+
+            <h2>Core API Input Format</h2>
+            <p>MLOS Core expects a flat JSON format where keys match ONNX input names:</p>
+<pre># NLP model (single input)
+{"input_ids": [101, 7592, 102]}
+
+# NLP model (multiple inputs - e.g., BERT)
+{
+  "input_ids": [101, 7592, 102],
+  "attention_mask": [1, 1, 1],
+  "token_type_ids": [0, 0, 0]
+}
+
+# Vision model (flat array of pixel values)
+{"pixel_values": [0.1, 0.2, 0.3, ...]}</pre>
+
+            <div class="info-box">
+                <strong>💡 Tip:</strong> Use <code>python3 scripts/generate-test-input.py &lt;model&gt; --pretty</code>
+                to see formatted JSON output for debugging.
+            </div>
+
+            <h2>Running Tests</h2>
+
+            <h3>Locally</h3>
+<pre># Full E2E test
+./scripts/test-release-e2e.sh.bash
+
+# With specific versions
+AXON_VERSION=v3.1.1 CORE_VERSION=3.2.1-alpha ./scripts/test-release-e2e.sh.bash</pre>
+
+            <h3>GitHub Actions</h3>
+<pre># Trigger manually
+gh workflow run e2e-test.yml \
+  -f axon_version=v3.1.1 \
+  -f core_version=3.2.1-alpha
+
+# View results
+gh run list --workflow=e2e-test.yml</pre>
+
+            <h2>Troubleshooting</h2>
+
+            <h3>"Inference execution failed"</h3>
+            <ul>
+                <li>Check if JSON keys match ONNX model input names exactly</li>
+                <li>Verify you're not sending extra inputs the model doesn't expect</li>
+                <li>Use the ONNX inspection command to see actual model inputs</li>
+            </ul>
+
+            <h3>"Model not found"</h3>
+            <ul>
+                <li>Ensure model is installed: <code>axon list</code></li>
+                <li>Ensure model is registered with Core</li>
+            </ul>
+
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://mlos-foundation.github.io/system-test/">📊 Live E2E Test Report</a></li>
+                <li><a href="https://github.com/mlOS-foundation/system-test">🔗 system-test Repository</a></li>
+                <li><a href="https://github.com/mlOS-foundation/system-test/blob/main/docs/E2E_TESTING_GUIDE.md">📖 Detailed Testing Guide</a></li>
+                <li><a href="https://github.com/mlOS-foundation/system-test/blob/main/config/test-inputs.yaml">⚙️ Test Input Configuration</a></li>
+            </ul>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p><strong>MLOS Foundation</strong> - Signal. Propagate. Myelinate. 🧠</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="index.html">Home</a> · 
+                <a href="https://github.com/mlOS-foundation">GitHub</a> · 
+                <a href="architecture.html">Architecture</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
+

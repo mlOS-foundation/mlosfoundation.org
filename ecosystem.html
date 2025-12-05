@@ -544,8 +544,8 @@ axon install modelscope/ai/modelscope_damo-text-to-video-synthesis@latest</code>
                 </ul>
                 
                 <div class="architecture-note" style="margin-top: 2rem;">
-                    <h4>🏗️ Architecture: Extensible Adapter Framework (v3.1.1)</h4>
-                    <p>Axon's adapter framework provides a <strong>pluggable, extensible architecture</strong> that enables support for any model repository. The framework separates core interfaces from adapter implementations, making it easy to add new repositories without modifying core code. <strong>Latest: v3.1.1</strong> with vision model support (50+ architectures).</p>
+                    <h4>🏗️ Architecture: Extensible Adapter Framework (v3.1.3)</h4>
+                    <p>Axon's adapter framework provides a <strong>pluggable, extensible architecture</strong> that enables support for any model repository. The framework separates core interfaces from adapter implementations, making it easy to add new repositories without modifying core code. <strong>Latest: v3.1.3</strong> with enhanced seq2seq/multi-encoder support and improved T5 conversion.</p>
                     
                     <h5 style="margin-top: 2rem; color: #667eea;">How It Works</h5>
                     <p>The adapter framework automatically:</p>
@@ -716,7 +716,7 @@ axon uninstall vision/resnet50</code></pre>
 
                     <div class="code-block">
                         <div class="code-block-header">
-                            <h4>Example: Automatic Conversion (v3.1.1)</h4>
+                            <h4>Example: Automatic Conversion (v3.1.3)</h4>
                         </div>
                         <pre><code># Install NLP model - conversion happens automatically
 axon install hf/distilgpt2@latest
@@ -837,7 +837,7 @@ axon install hf/microsoft/resnet-50@latest
 # 2. Register with MLOS Core
 axon register hf/bert-base-uncased@latest
 
-# 3. Run inference via MLOS Core API (v3.2.0-alpha)
+# 3. Run inference via MLOS Core API (v3.2.8-alpha)
 curl -X POST http://localhost:8080/models/hf%2Fbert-base-uncased@latest/inference \
   -H "Content-Type: application/json" \
   -d '{"inputs":{"input_ids":[[101,2054,2003,102]]}}'</code></pre>

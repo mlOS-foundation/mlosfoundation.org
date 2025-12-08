@@ -218,9 +218,9 @@
     <!-- Hero -->
     <section class="hero">
         <div class="container">
-            <div class="badge">✨ Latest Release</div>
-            <h1>Universal Model Inference<br/>is Here!</h1>
-            <p>MLOS now supports universal ONNX conversion and multi-type tensor inference across all major ML repositories</p>
+            <div class="badge">✨ v3.2.10-alpha + v3.1.4</div>
+            <h1>Format-Agnostic Runtime<br/>Native LLM Support!</h1>
+            <p>MLOS now runs models in their native format - GGUF models execute directly via llama.cpp, no conversion needed</p>
         </div>
     </section>
     
@@ -230,45 +230,63 @@
             <h2 class="section-title">🚀 Major Enhancements</h2>
             
             <div class="enhancement-grid">
+                <!-- NEW: Format-Agnostic Runtime -->
+                <div class="enhancement-card" style="border: 2px solid #667eea;">
+                    <h3><span class="icon">🚀</span> NEW: Format-Agnostic Runtime</h3>
+                    <p>Models run in their native format - no unnecessary conversions!</p>
+
+                    <ul class="feature-list">
+                        <li>GGUF: Native llama.cpp execution</li>
+                        <li>ONNX: Built-in runtime</li>
+                        <li>SafeTensors: Auto-convert</li>
+                        <li>PyTorch: Auto-convert</li>
+                        <li>Smart format detection</li>
+                    </ul>
+
+                    <div class="code-block">
+# GGUF LLM - native execution!
+axon install hf/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF@latest
+# No conversion - runs directly via llama.cpp!</div>
+                </div>
+
                 <!-- Axon Enhancement -->
                 <div class="enhancement-card">
-                    <h3><span class="icon">⚡</span> Axon: Universal Conversion</h3>
-                    <p>Multi-framework ONNX conversion with repository-specific strategies</p>
-                    
+                    <h3><span class="icon">⚡</span> Axon v3.1.4: Smart Detection</h3>
+                    <p>Format-agnostic installation with extension + magic byte detection</p>
+
                     <ul class="feature-list">
-                        <li>Hugging Face (GPT-2, BERT, T5)</li>
-                        <li>PyTorch Hub (ResNet, VGG)</li>
-                        <li>TensorFlow (SavedModel, Keras)</li>
-                        <li>ModelScope (Multimodal)</li>
-                        <li>Auto-optimization</li>
+                        <li>Auto-detect GGUF, ONNX, SafeTensors</li>
+                        <li>Skip conversion when not needed</li>
+                        <li>Magic byte validation</li>
+                        <li>Fallback to ONNX conversion</li>
+                        <li>LLM-ready installation</li>
                     </ul>
-                    
+
                     <div class="code-block">
-# One command, any model!
-axon install hf/gpt2@latest
-axon install pytorch/resnet50@latest
-axon install tfhub/bert@latest</div>
+# Smart format detection
+axon install hf/gpt2@latest        # ONNX
+axon install hf/TheBloke/...@latest # GGUF</div>
                 </div>
                 
                 <!-- Core Enhancement -->
                 <div class="enhancement-card">
-                    <h3><span class="icon">🧠</span> MLOS Core: Multi-Type Tensors</h3>
-                    <p>Enhanced ONNX plugin with comprehensive tensor type support</p>
-                    
+                    <h3><span class="icon">🧠</span> Core v3.2.10: LLM Plugin</h3>
+                    <p>Native GGUF execution via llama.cpp backend</p>
+
                     <ul class="feature-list">
-                        <li>int64 for NLP token IDs</li>
-                        <li>float32 for vision models</li>
-                        <li>int32 for TensorFlow</li>
-                        <li>bool for attention masks</li>
-                        <li>Multi-input models (BERT)</li>
-                        <li>Named inputs parsing</li>
+                        <li>GGUF runtime plugin (llama.cpp)</li>
+                        <li>TinyLlama, Phi-2, Qwen support</li>
+                        <li>Text generation API</li>
+                        <li>4-bit quantization aware</li>
+                        <li>Streaming responses</li>
+                        <li>Multi-plugin architecture</li>
                     </ul>
-                    
+
                     <div class="code-block">
-# Multi-input inference
-curl -X POST /models/bert/inference \
-  -d '{"input_ids": [101, 7592, 102],
-       "attention_mask": [1, 1, 1]}'</div>
+# LLM text generation
+curl -X POST /models/tinyllama/inference \
+  -d '{"prompt": "What is ML?",
+       "max_tokens": 64}'</div>
                 </div>
                 
                 <!-- Integration -->
@@ -311,24 +329,24 @@ axon register hf/gpt2@latest
             <h2 class="section-title">📊 By the Numbers</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">4</div>
-                    <div class="stat-label">Data Types<br/>Supported</div>
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Runtime<br/>Plugins</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">4</div>
-                    <div class="stat-label">Model<br/>Repositories</div>
+                    <div class="stat-label">Supported<br/>Formats</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">~2-8ms</div>
-                    <div class="stat-label">Inference<br/>Time</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">GGUF<br/>Conversion Time</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">100K+</div>
                     <div class="stat-label">Models<br/>Available</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">API<br/>Changes</div>
+                    <div class="stat-number">4-bit</div>
+                    <div class="stat-label">LLM<br/>Quantization</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number">100%</div>
@@ -342,33 +360,58 @@ axon register hf/gpt2@latest
     <section class="section" style="background: white;">
         <div class="container">
             <h2 class="section-title">🔬 Technical Highlights</h2>
-            
-            <div class="enhancement-card" style="max-width: 800px; margin: 0 auto;">
-                <h3>Repository-Specific Conversion Strategies</h3>
-                <p>Axon now intelligently routes models to the best converter for their source repository:</p>
-                
-                <div class="code-block">
-Hugging Face:     optimum → torch.onnx.export → transformers
-PyTorch Hub:      TorchScript → torch → torchvision
-TensorFlow Hub:   SavedModel → Keras H5 → tf2onnx
-ModelScope:       Auto-detect → Framework-specific</div>
-                
-                <h3 style="margin-top: 2rem;">Enhanced Tensor Parsing</h3>
-                <p>MLOS Core plugin now parses JSON inputs with full type support:</p>
-                
-                <div class="code-block">
-// Single input (GPT-2)
-{"input_ids": [15496, 11, 337, 43, 48, 2640, 0]}
 
-// Multi-input (BERT)  
-{
-  "input_ids": [101, 7592, 1010, 1045, 2572, 102],
-  "attention_mask": [1, 1, 1, 1, 1, 1],
-  "token_type_ids": [0, 0, 0, 0, 0, 0]
-}</div>
-                
+            <div class="enhancement-card" style="max-width: 800px; margin: 0 auto;">
+                <h3>Format-Agnostic Runtime: Why It Matters</h3>
+                <p>Traditional ML pipelines convert everything to ONNX - but this wastes time and loses optimizations for formats like GGUF:</p>
+
+                <div class="code-block">
+Traditional (Always Convert):
+┌──────────┐    ┌──────────────┐    ┌──────────────┐
+│ GGUF LLM │ -> │ Convert ONNX │ -> │ ONNX Runtime │  ❌ Minutes, quality loss
+└──────────┘    │  (slow!)     │    └──────────────┘
+
+MLOS Format-Agnostic:
+┌──────────┐    ┌──────────────┐
+│ GGUF LLM │ -> │ llama.cpp    │  ✅ Instant, native quality
+└──────────┘    │  (direct!)   │</div>
+
+                <h3 style="margin-top: 2rem;">Smart Format Detection (Axon v3.1.4)</h3>
+                <p>Axon uses a multi-layer detection strategy:</p>
+
+                <div class="code-block">
+1. File Extension Detection:
+   .gguf      → GGUF format (llama.cpp)
+   .onnx      → ONNX format (built-in)
+   .safetensors → SafeTensors (convert to ONNX)
+   .pt/.pth   → PyTorch (convert to ONNX)
+
+2. Magic Byte Validation:
+   "GGUF"     → GGUF confirmed
+   PK (ZIP)   → PyTorch ZIP archive
+   0x80       → Pickle format
+
+3. IsExecutionReady() Check:
+   true  → Skip conversion, use native runtime
+   false → Convert to ONNX</div>
+
+                <h3 style="margin-top: 2rem;">Multi-Plugin Architecture (Core v3.2.10)</h3>
+                <p>MLOS Core routes models to the optimal runtime plugin:</p>
+
+                <div class="code-block">
+// Plugin Registry
+PluginRegistry:
+  ├── ONNX Runtime Plugin (built-in)
+  │   └── Handles: .onnx files
+  │
+  └── GGUF/llama.cpp Plugin (new!)
+      └── Handles: .gguf files
+          ├── TinyLlama-1.1B (Q4_K_M)
+          ├── Phi-2 (Q4_K_M)
+          └── Qwen2-0.5B (Q4_K_M)</div>
+
                 <h3 style="margin-top: 2rem;">Zero-Cost Abstraction</h3>
-                <p>All enhancements leverage the existing generic <code>void*</code> API - proving the architecture was designed right from the start. No breaking changes, just more capabilities!</p>
+                <p>The plugin architecture leverages the existing generic <code>void*</code> API - proving the architecture was designed right from the start. Both ONNX and GGUF plugins use the same SMI interface!</p>
             </div>
         </div>
     </section>
@@ -377,38 +420,51 @@ ModelScope:       Auto-detect → Framework-specific</div>
     <section class="section">
         <div class="container">
             <h2 class="section-title">✅ Tested & Verified</h2>
-            
+
             <div class="enhancement-grid">
+                <div class="enhancement-card" style="border: 2px solid #48bb78;">
+                    <h3>🦙 LLM Models (GGUF)</h3>
+                    <ul class="feature-list">
+                        <li>TinyLlama 1.1B (Q4_K_M)</li>
+                        <li>Phi-2 2.7B (Q4_K_M)</li>
+                        <li>Qwen2 0.5B (Q4_K_M)</li>
+                    </ul>
+                    <p style="margin-top: 1rem; color: #48bb78; font-weight: 600;">Status: ✅ Native GGUF Execution</p>
+                </div>
+
                 <div class="enhancement-card">
-                    <h3>🤗 NLP Models</h3>
+                    <h3>🤗 NLP Models (ONNX)</h3>
                     <ul class="feature-list">
                         <li>GPT-2 (DistilGPT-2)</li>
                         <li>BERT (base-uncased)</li>
                         <li>RoBERTa</li>
-                        <li>T5</li>
+                        <li>T5 (encoder-decoder)</li>
+                        <li>DistilBERT</li>
+                        <li>ALBERT</li>
                     </ul>
                     <p style="margin-top: 1rem; color: #48bb78; font-weight: 600;">Status: ✅ Passing</p>
                 </div>
-                
+
                 <div class="enhancement-card">
-                    <h3>🔥 Vision Models</h3>
+                    <h3>🖼️ Vision Models (ONNX)</h3>
                     <ul class="feature-list">
-                        <li>ResNet (50, 101, 152)</li>
-                        <li>VGG (16, 19)</li>
-                        <li>AlexNet</li>
-                        <li>ViT (coming soon)</li>
+                        <li>ResNet-50</li>
+                        <li>ViT (Vision Transformer)</li>
+                        <li>ConvNeXt</li>
+                        <li>MobileNetV2</li>
+                        <li>DeiT</li>
+                        <li>EfficientNet</li>
                     </ul>
-                    <p style="margin-top: 1rem; color: #ed8936; font-weight: 600;">Status: ⏳ Ready (not tested)</p>
+                    <p style="margin-top: 1rem; color: #48bb78; font-weight: 600;">Status: ✅ Passing</p>
                 </div>
-                
+
                 <div class="enhancement-card">
-                    <h3>🎨 Multi-Modal</h3>
+                    <h3>🎨 Multi-Modal (ONNX)</h3>
                     <ul class="feature-list">
                         <li>CLIP (text + image)</li>
-                        <li>Wav2Vec2 (audio)</li>
-                        <li>ModelScope models</li>
+                        <li>Sentence-Transformers</li>
                     </ul>
-                    <p style="margin-top: 1rem; color: #ed8936; font-weight: 600;">Status: ⏳ Ready (not tested)</p>
+                    <p style="margin-top: 1rem; color: #48bb78; font-weight: 600;">Status: ✅ Passing</p>
                 </div>
             </div>
         </div>
@@ -427,7 +483,7 @@ ModelScope:       Auto-detect → Framework-specific</div>
     
     <footer style="background: #1e293b; color: white; padding: 2rem 0; text-align: center;">
         <div class="container">
-            <p>&copy; 2024 MLOS Foundation. Open Source under MIT License.</p>
+            <p>&copy; 2025 MLOS Foundation. Open Source under MIT License.</p>
         </div>
     </footer>
 </body>

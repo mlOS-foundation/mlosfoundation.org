@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supported Models - MLOS Foundation</title>
+    <meta name="description" content="Complete list of ML models supported by MLOS Core. NLP, Vision, Multimodal, and LLM models with ONNX and GGUF format support.">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e8ecef;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a202c;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .content {
+            padding: 4rem 0;
+        }
+
+        /* Stats Section */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid #e8ecef;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* Category Section */
+        .category {
+            margin-bottom: 4rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e8ecef;
+        }
+
+        .category-icon {
+            font-size: 2rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin: 0;
+        }
+
+        .category-count {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .category-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Model Grid */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .model-card {
+            background: #ffffff;
+            border: 1px solid #e8ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .model-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-card.enabled {
+            border-left: 4px solid #10b981;
+        }
+
+        .model-card.disabled {
+            border-left: 4px solid #94a3b8;
+            opacity: 0.7;
+        }
+
+        .model-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .model-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .model-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .model-status.enabled {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+        }
+
+        .model-status.disabled {
+            background: rgba(148, 163, 184, 0.15);
+            color: #64748b;
+        }
+
+        .model-description {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .model-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .meta-item {
+            background: #f8f9fa;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+        }
+
+        .meta-label {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-size: 0.85rem;
+            color: #1a202c;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+        }
+
+        .format-badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: 0.5rem;
+        }
+
+        .format-badge.gguf {
+            background: rgba(245, 158, 11, 0.15);
+            color: #d97706;
+        }
+
+        .format-badge.onnx {
+            background: rgba(59, 130, 246, 0.15);
+            color: #2563eb;
+        }
+
+        /* Formats Table */
+        .formats-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .formats-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a202c;
+        }
+
+        .formats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .formats-table th,
+        .formats-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e8ecef;
+        }
+
+        .formats-table th {
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .formats-table td {
+            color: #1a202c;
+        }
+
+        .formats-table code {
+            background: #e8ecef;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .status-enabled {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">MLOS Foundation</a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="architecture.html">Architecture</a></li>
+                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="models.html" style="color: #667eea; font-weight: 700;">Models</a></li>
+                    <li><a href="enhancements.html">Latest</a></li>
+                    <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Supported Models</h1>
+            <p>Complete list of ML models tested and validated with MLOS Core. From NLP transformers to LLMs.</p>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Total Models</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">17</div>
+                    <div class="stat-label">CI Enabled</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Formats</div>
+                </div>
+            </div>
+
+            <!-- Formats -->
+            <div class="formats-section">
+                <h2>Supported Formats</h2>
+                <table class="formats-table">
+                    <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Extensions</th>
+                            <th>Runtime</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ONNX</strong></td>
+                            <td><code>.onnx</code></td>
+                            <td>ONNX Runtime (SMI)</td>
+                            <td><span class="status-enabled">Built-in</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>GGUF</strong></td>
+                            <td><code>.gguf</code></td>
+                            <td>llama.cpp</td>
+                            <td><span class="status-enabled">Enabled</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PyTorch</strong></td>
+                            <td><code>.pt</code> <code>.pth</code> <code>.bin</code> <code>.safetensors</code></td>
+                            <td>Auto-converted to ONNX</td>
+                            <td><span class="status-ready">Plugin Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>TFLite</strong></td>
+                            <td><code>.tflite</code></td>
+                            <td>TensorFlow Lite</td>
+                            <td><span class="status-ready">Plugin Ready</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>CoreML</strong></td>
+                            <td><code>.mlmodel</code> <code>.mlpackage</code></td>
+                            <td>Apple CoreML</td>
+                            <td><span class="status-ready">Plugin Ready</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- NLP Models -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">NLP</span>
+                    <h2 class="category-title">NLP Models</h2>
+                    <span class="category-count">7 models</span>
+                </div>
+                <p class="category-description">Text processing, embeddings, and encoder-decoder transformers.</p>
+                <div class="model-grid">
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">GPT-2 <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">DistilGPT-2 - Lightweight text generation</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Axon ID</div><div class="meta-value">hf/distilgpt2</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">BERT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">BERT base - Masked language model</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Axon ID</div><div class="meta-value">hf/bert-base-uncased</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">RoBERTa <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">RoBERTa base - Robust BERT variant</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Axon ID</div><div class="meta-value">hf/roberta-base</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">T5 <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">T5 small - Text-to-text transformer (Seq2Seq)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Architecture</div><div class="meta-value">Encoder-Decoder</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">DistilBERT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Smaller, faster BERT variant (40% smaller)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Axon ID</div><div class="meta-value">hf/distilbert-base</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">ALBERT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Parameter-efficient BERT variant</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Axon ID</div><div class="meta-value">hf/albert-base-v2</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">Sentence-BERT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Text embeddings for semantic search</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Output</div><div class="meta-value">384-dim vectors</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text tokens</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision Models -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">Vision</span>
+                    <h2 class="category-title">Vision Models</h2>
+                    <span class="category-count">6 models</span>
+                </div>
+                <p class="category-description">Image classification with CNNs and Vision Transformers.</p>
+                <div class="model-grid">
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">ResNet-50 <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Classic CNN - Image classification (1000 classes)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Output</div><div class="meta-value">1000 classes</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">ViT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Vision Transformer - Patch-based attention</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Patch Size</div><div class="meta-value">16x16</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">ConvNeXt <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Modern CNN architecture (Facebook AI)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Variant</div><div class="meta-value">Tiny</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">MobileNet <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Efficient mobile-optimized architecture</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Variant</div><div class="meta-value">V2 1.0</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">DeiT <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Data-efficient Image Transformer</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Variant</div><div class="meta-value">Small</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">EfficientNet <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Compound scaling CNN (Google)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Input Size</div><div class="meta-value">224x224x3</div></div>
+                            <div class="meta-item"><div class="meta-label">Variant</div><div class="meta-value">B0</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multimodal Models -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">Multimodal</span>
+                    <h2 class="category-title">Multimodal Models</h2>
+                    <span class="category-count">1 model</span>
+                </div>
+                <p class="category-description">Image-text models with multi-encoder architecture.</p>
+                <div class="model-grid">
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">CLIP <span class="format-badge onnx">ONNX</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Image-text matching, zero-shot classification (OpenAI)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Architecture</div><div class="meta-value">Multi-encoder</div></div>
+                            <div class="meta-item"><div class="meta-label">Input</div><div class="meta-value">Text + Image</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LLM Models -->
+            <div class="category">
+                <div class="category-header">
+                    <span class="category-icon">LLM</span>
+                    <h2 class="category-title">LLM Models (GGUF)</h2>
+                    <span class="category-count">7 models</span>
+                </div>
+                <p class="category-description">Large Language Models with native llama.cpp execution. All models use Q4_K_M quantization.</p>
+                <div class="model-grid">
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">Qwen2-0.5B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Ultra-small instruction-tuned model (Alibaba)</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">0.5B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~380MB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">32K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card enabled">
+                        <div class="model-header">
+                            <span class="model-name">TinyLlama-1.1B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status enabled">Enabled</span>
+                        </div>
+                        <p class="model-description">Small but capable chat model</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">1.1B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~637MB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">2K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card disabled">
+                        <div class="model-header">
+                            <span class="model-name">Llama-3.2-1B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status disabled">Local Only</span>
+                        </div>
+                        <p class="model-description">Meta's latest small model optimized for mobile</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">1B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~700MB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">128K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card disabled">
+                        <div class="model-header">
+                            <span class="model-name">Llama-3.2-3B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status disabled">Local Only</span>
+                        </div>
+                        <p class="model-description">Best quality/size ratio from Meta</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">3B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~1.8GB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">128K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card disabled">
+                        <div class="model-header">
+                            <span class="model-name">DeepSeek-Coder-1.3B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status disabled">Local Only</span>
+                        </div>
+                        <p class="model-description">Code generation specialist</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">1.3B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~750MB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">16K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card disabled">
+                        <div class="model-header">
+                            <span class="model-name">DeepSeek-LLM-7B <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status disabled">Local Only</span>
+                        </div>
+                        <p class="model-description">High-quality open chat model</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">7B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~4GB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">4K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+
+                    <div class="model-card disabled">
+                        <div class="model-header">
+                            <span class="model-name">Phi-2 <span class="format-badge gguf">GGUF</span></span>
+                            <span class="model-status disabled">Local Only</span>
+                        </div>
+                        <p class="model-description">Microsoft small language model</p>
+                        <div class="model-meta">
+                            <div class="meta-item"><div class="meta-label">Parameters</div><div class="meta-value">2.7B</div></div>
+                            <div class="meta-item"><div class="meta-label">Size</div><div class="meta-value">~1.6GB</div></div>
+                            <div class="meta-item"><div class="meta-label">Context</div><div class="meta-value">2K tokens</div></div>
+                            <div class="meta-item"><div class="meta-label">Quantization</div><div class="meta-value">Q4_K_M</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p><strong>MLOS Foundation</strong> - Signal. Propagate. Myelinate.</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="https://github.com/mlOS-foundation/system-test">View E2E Test Reports</a> |
+                <a href="https://github.com/mlOS-foundation/core">MLOS Core</a> |
+                <a href="https://github.com/mlOS-foundation/axon">Axon</a>
+            </p>
+            <p style="margin-top: 1rem; font-size: 0.85rem;">Version: Core v3.2.14-alpha | Axon v3.1.7</p>
+        </div>
+    </footer>
+</body>
+</html>

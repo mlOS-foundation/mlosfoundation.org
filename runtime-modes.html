@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runtime Modes - MLOS Foundation</title>
+    <meta name="description" content="MLOS Core runtime modes: userspace, kernel-accelerated, and full kernel optimization for ML workloads.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: #ffffff;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 1.2rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid #e8ecef;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #1a202c;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .content {
+            padding: 4rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            color: #1a202c;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1a202c;
+        }
+
+        .section p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .mode-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-card.userspace {
+            border-left-color: #48bb78;
+        }
+
+        .mode-card.kernel-basic {
+            border-left-color: #ed8936;
+        }
+
+        .mode-card.kernel-sched {
+            border-left-color: #667eea;
+        }
+
+        .mode-card.kernel-full {
+            border-left-color: #9f7aea;
+        }
+
+        .mode-card h4 {
+            font-size: 1.3rem;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .mode-card .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .badge.available {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .badge.kernel {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .badge.full {
+            background: #e9d8fd;
+            color: #6b46c1;
+        }
+
+        .mode-card p {
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        .mode-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .mode-card li {
+            padding: 0.5rem 0;
+            color: #4a5568;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .mode-card li:last-child {
+            border-bottom: none;
+        }
+
+        .mode-card li strong {
+            color: #1a202c;
+        }
+
+        .performance-improvement {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin: 1rem 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: #ffffff;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e8ecef;
+            color: #4a5568;
+        }
+
+        .comparison-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .check {
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #e53e3e;
+        }
+
+        code {
+            background: #f1f3f5;
+            color: #667eea;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        pre .comment {
+            color: #718096;
+        }
+
+        pre .command {
+            color: #68d391;
+        }
+
+        pre .output {
+            color: #a0aec0;
+        }
+
+        .diagram-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+
+        .architecture-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .arch-layer {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .arch-layer h5 {
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .arch-layer p {
+            color: #4a5568;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .arch-layer.userspace {
+            border-left-color: #48bb78;
+        }
+
+        .arch-layer.kernel {
+            border-left-color: #ed8936;
+        }
+
+        .arch-layer.hardware {
+            border-left-color: #e53e3e;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .info-box h4 {
+            color: #2b6cb0;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p {
+            color: #2c5282;
+            margin: 0;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .cta-section h3 {
+            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #667eea;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .footer {
+            background: #1a202c;
+            color: #ffffff;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer p {
+            color: #e2e8f0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #a0aec0;
+        }
+
+        @media (max-width: 768px) {
+            .mode-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">MLOS Foundation</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
+                <li><a href="models.html">Models</a></li>
+                <li><a href="runtime-modes.html">Runtime Modes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Runtime Modes</h1>
+            <p>From userspace portability to full kernel-accelerated performance</p>
+        </div>
+    </section>
+
+    <main class="content">
+        <div class="container">
+            <div class="section">
+                <h2>Understanding MLOS Runtime Modes</h2>
+                <p>
+                    MLOS Core is designed to run efficiently across different system configurations.
+                    Whether you're running on a standard Linux server, a container in the cloud, or a
+                    purpose-built MLOS Linux distribution, Core automatically detects and utilizes
+                    available optimizations.
+                </p>
+                <p>
+                    The runtime mode determines which acceleration features are available and directly
+                    impacts inference latency, throughput, and resource utilization.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Available Runtime Modes</h2>
+
+                <div class="mode-grid">
+                    <div class="mode-card userspace">
+                        <h4>Userspace Only</h4>
+                        <span class="badge available">Available Now</span>
+                        <p class="performance-improvement">Baseline</p>
+                        <p>
+                            Pure userspace execution using ONNX Runtime for neural network inference
+                            and llama.cpp for LLM workloads. Works on any system without special requirements.
+                        </p>
+                        <ul>
+                            <li><strong>Requirements:</strong> None (works everywhere)</li>
+                            <li><strong>Platforms:</strong> Linux, macOS, Windows</li>
+                            <li><strong>Use Case:</strong> Development, CI/CD, containers</li>
+                            <li><strong>Latency:</strong> Model-dependent baseline</li>
+                        </ul>
+                    </div>
+
+                    <div class="mode-card kernel-basic">
+                        <h4>Kernel Basic</h4>
+                        <span class="badge kernel">Kernel Module</span>
+                        <p class="performance-improvement">Target: Improved Latency</p>
+                        <p>
+                            Kernel module provides optimized memory management with zero-copy tensor
+                            transfers and intelligent memory pooling for reduced allocation overhead.
+                        </p>
+                        <ul>
+                            <li><strong>Requirements:</strong> mlos-ml kernel module</li>
+                            <li><strong>Platforms:</strong> Linux (kernel 5.15+)</li>
+                            <li><strong>Use Case:</strong> Production servers</li>
+                            <li><strong>Features:</strong> Memory manager, zero-copy I/O</li>
+                        </ul>
+                    </div>
+
+                    <div class="mode-card kernel-sched">
+                        <h4>Kernel Scheduler</h4>
+                        <span class="badge kernel">Kernel Module</span>
+                        <p class="performance-improvement">Target: Consistent Low Latency</p>
+                        <p>
+                            ML-aware CPU scheduler with preemption control and intelligent thread
+                            affinity for consistent latency under mixed workloads.
+                        </p>
+                        <ul>
+                            <li><strong>Requirements:</strong> mlos-ml module + scheduler</li>
+                            <li><strong>Platforms:</strong> Linux (kernel 5.15+)</li>
+                            <li><strong>Use Case:</strong> Latency-critical workloads</li>
+                            <li><strong>Features:</strong> Memory + ML scheduler</li>
+                        </ul>
+                    </div>
+
+                    <div class="mode-card kernel-full">
+                        <h4>Kernel Full</h4>
+                        <span class="badge full">Maximum Performance</span>
+                        <p class="performance-improvement">Target: Maximum Throughput</p>
+                        <p>
+                            Full kernel optimization with memory management, ML-aware scheduling,
+                            and integrated GPU resource management for maximum throughput.
+                        </p>
+                        <ul>
+                            <li><strong>Requirements:</strong> mlos-ml module (full config)</li>
+                            <li><strong>Platforms:</strong> MLOS Linux distributions</li>
+                            <li><strong>Use Case:</strong> High-performance inference</li>
+                            <li><strong>Features:</strong> Memory + Scheduler + GPU</li>
+                        </ul>
+                    </div>
+
+                    <p style="grid-column: 1/-1; font-size: 0.9rem; color: #718096; text-align: center; margin-top: 1rem;">
+                        <em>Note: Performance improvements are under active benchmarking. Validated numbers will be published from E2E testing with kernel module enabled.</em>
+                    </p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Architecture Overview</h2>
+
+                <div class="diagram-container">
+                    <div class="architecture-layers">
+                        <div class="arch-layer userspace">
+                            <h5>Application Layer</h5>
+                            <p>Your ML applications, API clients, model serving frameworks</p>
+                        </div>
+                        <div class="arch-layer userspace">
+                            <h5>MLOS Core (Userspace)</h5>
+                            <p>REST/gRPC APIs, Plugin Manager, Model Registry, ONNX Runtime, llama.cpp</p>
+                        </div>
+                        <div class="arch-layer kernel">
+                            <h5>mlos-ml Kernel Module (Optional)</h5>
+                            <p>Memory Manager | ML-Aware Scheduler | GPU Resource Manager</p>
+                        </div>
+                        <div class="arch-layer hardware">
+                            <h5>Hardware</h5>
+                            <p>CPU | GPU (CUDA/ROCm/Metal) | Memory | Storage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Feature Comparison</h2>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Userspace</th>
+                            <th>Kernel Basic</th>
+                            <th>Kernel Scheduler</th>
+                            <th>Kernel Full</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ONNX Runtime Inference</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>llama.cpp LLM Support</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>REST/gRPC APIs</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Zero-Copy Tensor I/O</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Memory Pooling</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>ML-Aware Scheduling</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Preemption Control</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>GPU Memory Management</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Multi-GPU Orchestration</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="cross">No</td>
+                            <td class="check">Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Works in Containers</td>
+                            <td class="check">Yes</td>
+                            <td class="check">Yes*</td>
+                            <td class="check">Yes*</td>
+                            <td class="check">Yes*</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.9rem; color: #718096;">* Requires privileged container or host kernel module</p>
+            </div>
+
+            <div class="section">
+                <h2>Mode Detection</h2>
+                <p>
+                    MLOS Core automatically detects the available runtime mode at startup. You can also
+                    check the current mode programmatically or via the command line.
+                </p>
+
+                <h3>Command Line Detection</h3>
+                <pre><span class="comment"># Check if kernel module is loaded</span>
+<span class="command">$ lsmod | grep mlos_ml</span>
+<span class="output">mlos_ml                45056  0</span>
+
+<span class="comment"># Check module parameters (Linux only)</span>
+<span class="command">$ cat /sys/module/mlos_ml/parameters/enable_scheduler</span>
+<span class="output">1</span>
+
+<span class="command">$ cat /sys/module/mlos_ml/parameters/enable_gpu_manager</span>
+<span class="output">1</span>
+
+<span class="comment"># Check via Core health endpoint</span>
+<span class="command">$ curl -s http://localhost:8080/health | jq '.runtime_mode'</span>
+<span class="output">"kernel_full"</span></pre>
+
+                <h3>E2E Test Report</h3>
+                <p>
+                    When viewing E2E validation reports, the <strong>Runtime Mode</strong> card in the
+                    "Release Versions" section indicates which mode was active during testing:
+                </p>
+                <ul>
+                    <li><strong>"Userspace Only (No Kernel Optimizations)"</strong> - Tests ran without kernel acceleration</li>
+                    <li><strong>"Kernel Module (Memory Manager)"</strong> - Basic kernel optimizations active</li>
+                    <li><strong>"Kernel Module (Memory + Scheduler)"</strong> - Scheduler optimizations enabled</li>
+                    <li><strong>"Kernel Module (Full: Memory, Scheduler, GPU)"</strong> - All kernel features enabled</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Deployment Recommendations</h2>
+
+                <div class="info-box">
+                    <h4>CI/CD and Development</h4>
+                    <p>
+                        Use <strong>Userspace Only</strong> mode for GitHub Actions, local development, and
+                        container-based workflows. This provides maximum portability with zero special requirements.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Production Servers</h4>
+                    <p>
+                        Deploy with <strong>Kernel Basic</strong> or <strong>Kernel Scheduler</strong> for
+                        improved latency and throughput. Install the mlos-ml kernel module on your Linux servers.
+                    </p>
+                </div>
+
+                <div class="info-box">
+                    <h4>High-Performance Inference</h4>
+                    <p>
+                        For maximum performance, use <strong>Kernel Full</strong> mode with MLOS Linux distributions
+                        (Ubuntu or Flatcar variants). This provides integrated GPU management and optimal resource utilization.
+                    </p>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>Ready to Deploy?</h3>
+                <p>Check out our E2E validation reports to see runtime modes in action</p>
+                <a href="https://mlos-foundation.github.io/system-test/" class="btn btn-primary">View E2E Reports</a>
+                <a href="architecture.html" class="btn btn-secondary">Architecture Guide</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/mlOS-foundation">GitHub</a>
+                <a href="index.html">Home</a>
+                <a href="ecosystem.html">Ecosystem</a>
+                <a href="architecture.html">Architecture</a>
+                <a href="mailto:info@mlosfoundation.org">Contact</a>
+            </div>
+            <p>&copy; 2025 MLOS Foundation. Building the future of ML infrastructure.</p>
+        </div>
+    </footer>
+</body>
+</html>

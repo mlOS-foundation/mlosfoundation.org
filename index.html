@@ -3,1111 +3,616 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLOS Foundation | OS-Native ML Resource Orchestration</title>
-    <meta name="description" content="OS-native ML resource orchestration for production AI workloads.">
-    
+    <title>MLOS Foundation | Enterprise ML Infrastructure</title>
+    <meta name="description" content="Enterprise-grade ML infrastructure with kernel-level optimization. Deploy models at scale with MLOS Core v5.0.0-alpha.">
+
     <!-- Open Graph -->
-    <meta property="og:title" content="MLOS Foundation | OS-Native ML Resource Orchestration">
-    <meta property="og:description" content="Enterprise-grade ML infrastructure for production AI">
+    <meta property="og:title" content="MLOS Foundation | Enterprise ML Infrastructure">
+    <meta property="og:description" content="Kernel-level ML optimization for production AI workloads">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mlosfoundation.org">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         :root {
-            /* Colors */
-            --color-primary: #1a365d;
+            --color-primary: #0f172a;
             --color-secondary: #3b82f6;
             --color-accent: #06b6d4;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
             --color-text: #1e293b;
             --color-text-muted: #64748b;
             --color-bg: #ffffff;
             --color-bg-alt: #f8fafc;
             --color-dark: #0f172a;
-            
-            /* Spacing */
-            --spacing-xs: 0.5rem;
-            --spacing-sm: 1rem;
-            --spacing-md: 2rem;
-            --spacing-lg: 4rem;
-            --spacing-xl: 6rem;
-            
-            /* Typography */
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: var(--font-sans);
             line-height: 1.6;
             color: var(--color-text);
             background: var(--color-bg);
-            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 var(--spacing-md);
-        }
-        
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
         /* Navigation */
         .nav {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            padding: var(--spacing-sm) 0;
+            padding: 1rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e2e8f0;
         }
-        
+
         .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo {
-            display: flex;
-            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
             text-decoration: none;
         }
-        
-        .logo svg {
-            width: 160px;
-            height: 50px;
-        }
-        
+
+        .logo span { color: var(--color-accent); }
+
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2.5rem;
+            gap: 2rem;
+            align-items: center;
         }
-        
+
         .nav-links a {
             text-decoration: none;
-            color: #1a202c;
+            color: var(--color-text);
             font-weight: 500;
             font-size: 0.95rem;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
-        
-        .nav-links a:hover {
-            color: #667eea;
+
+        .nav-links a:hover { color: var(--color-secondary); }
+
+        .nav-cta {
+            background: var(--color-secondary);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
         }
-        
-        /* Hero Section */
+
+        .nav-cta:hover { background: #2563eb; }
+
+        /* Hero */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 8rem 0 4rem;
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px;
-        }
-        
-        
-        .hero-content {
-            text-align: center;
-            color: #1a202c;
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .hero-title-container {
+            min-height: 90vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: var(--spacing-sm);
-            position: relative;
         }
-        
-        .hero-title-wrapper {
-            position: relative;
-            display: flex;
-            flex-direction: column;
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-        }
-        
-        .hero-light-logo {
-            width: 150px;
-            height: 150px;
-            flex-shrink: 0;
-        }
-        
-        .hero-trademark-icon {
-            position: absolute;
-            top: -20px;
-            right: -10px;
-            font-size: 0.8rem;
-            color: #1a202c;
-            font-weight: 600;
-            background: #f8fafc;
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .hero .tagline {
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            color: #1a202c;
-            margin-bottom: var(--spacing-md);
-            font-weight: 600;
-            font-family: var(--font-sans);
-        }
-        
-        .hero .description {
-            font-size: 1.1rem;
-            color: #1a202c;
-            margin-bottom: var(--spacing-lg);
-            line-height: 1.7;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 400;
-            font-family: var(--font-sans);
-        }
-        
-        .patent-badge {
-            background: #1a202c;
+            background: var(--color-primary);
+            color: white;
             padding: 0.5rem 1rem;
             border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge .version {
+            background: var(--color-success);
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
             font-size: 0.75rem;
-            color: #ffffff;
-            border: 1px solid #1a202c;
-            font-weight: 600;
-            font-family: var(--font-sans);
-            margin-top: 0.5rem;
-            text-align: center;
         }
-        
-        .cta-buttons {
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span { color: var(--color-secondary); }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
             display: flex;
-            gap: var(--spacing-sm);
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: var(--spacing-lg);
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
-        
-        .btn {
-            padding: 14px 32px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-        
-        .btn-primary {
-            background: #667eea;
-            color: #ffffff;
-            border: 2px solid #667eea;
-            font-family: var(--font-sans);
-        }
-        
-        .btn-primary:hover {
-            background: #5568d3;
-            border-color: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            color: #ffffff;
-        }
-        
-        .btn-secondary {
-            background: #667eea;
-            color: #ffffff;
-            border: 2px solid #667eea;
-            font-family: var(--font-sans);
-        }
-        
-        .btn-secondary:hover {
-            background: #5568d3;
-            border-color: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            color: #ffffff;
-        }
-        
-        .terminal-preview {
-            background: #1e293b;
-            border-radius: 12px;
-            padding: var(--spacing-md);
-            margin-top: var(--spacing-lg);
+
+        .stat {
             text-align: left;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-        
-        .terminal-header {
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .hero-ctas {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: var(--spacing-sm);
+            gap: 1rem;
         }
-        
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--color-secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        /* Terminal Preview */
+        .terminal {
+            background: var(--color-dark);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .terminal-header {
+            background: #1e293b;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         .terminal-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
         }
-        
+
         .terminal-dot.red { background: #ef4444; }
         .terminal-dot.yellow { background: #f59e0b; }
         .terminal-dot.green { background: #10b981; }
-        
+
         .terminal-content {
-            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
-            font-size: 1rem;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
             line-height: 1.8;
-            font-weight: 400;
         }
-        
-        .terminal-content .prompt { 
-            color: #06b6d4;
-            font-weight: 500;
+
+        .terminal-content .prompt { color: var(--color-accent); }
+        .terminal-content .command { color: var(--color-success); }
+        .terminal-content .output { color: #94a3b8; }
+        .terminal-content .success { color: var(--color-success); }
+
+        /* Version Banner */
+        .version-banner {
+            background: var(--color-primary);
+            color: white;
+            padding: 3rem 0;
         }
-        
-        .terminal-content .command {
-            color: #10b981;
-            font-weight: 500;
+
+        .version-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
         }
-        
-        .terminal-content .output { 
-            color: #e2e8f0;
-            font-weight: 400;
+
+        .version-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
         }
-        
-        /* Phases Cards Container */
-        .phases-container {
-            margin-top: 1.5rem;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding-bottom: 1rem;
-            scrollbar-width: thin;
-            scrollbar-color: #475569 #1e293b;
+
+        .version-card h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
         }
-        
-        .phases-container::-webkit-scrollbar {
-            height: 8px;
+
+        .version-card .version {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-accent);
         }
-        
-        .phases-container::-webkit-scrollbar-track {
-            background: #1e293b;
-            border-radius: 4px;
+
+        .version-card .status {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            opacity: 0.7;
         }
-        
-        .phases-container::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
+
+        /* Features Section */
+        .section {
+            padding: 5rem 0;
         }
-        
-        .phases-container::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
-        
-        .phases-scroll {
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Kernel Features */
+        .kernel-features {
+            background: var(--color-bg-alt);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-secondary);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+            border-radius: 12px;
             display: flex;
-            gap: 1rem;
-            min-width: max-content;
-            padding-right: 1rem;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
-        
-        .phase-card {
-            min-width: 280px;
-            max-width: 320px;
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .phase-card.complete {
-            border-color: rgba(16, 185, 129, 0.4);
-        }
-        
-        .phase-card.active {
-            border-color: rgba(251, 191, 36, 0.4);
-        }
-        
-        .phase-card.coming {
-            border-color: rgba(100, 116, 139, 0.4);
-        }
-        
-        .phase-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
             margin-bottom: 0.75rem;
         }
-        
-        .phase-status {
-            font-size: 1.2rem;
-            font-weight: 600;
-            line-height: 1;
-            flex-shrink: 0;
-            margin-top: 0.1rem;
+
+        .feature-card p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
-        
-        .phase-status.complete {
-            color: #10b981;
-        }
-        
-        .phase-status.active {
-            color: #fbbf24;
-        }
-        
-        .phase-status.coming {
-            color: #64748b;
-        }
-        
-        .phase-header-content {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .phase-title {
-            color: #e2e8f0;
-            font-weight: 600;
-            font-size: 1rem;
-            margin: 0 0 0.25rem 0;
-            line-height: 1.3;
-        }
-        
-        .phase-target {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin: 0;
-            line-height: 1.4;
-        }
-        
-        .phase-status-text {
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin: 0.5rem 0;
-            padding: 0.25rem 0;
-        }
-        
-        .phase-features {
-            list-style: none;
-            padding: 0;
-            margin: 0.5rem 0 0 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-        
-        .phase-features li {
-            color: #cbd5e1;
-            font-size: 0.85rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-        
-        .phase-features li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #64748b;
-        }
-        
-        .phase-available-badge {
-            display: inline-block;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            padding: 0.35rem 0.75rem;
+
+        .feature-card code {
+            display: block;
+            background: var(--color-bg-alt);
+            padding: 0.75rem;
             border-radius: 6px;
+            font-family: var(--font-mono);
             font-size: 0.8rem;
-            font-weight: 600;
-            margin: 0.5rem 0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        
-        .axon-usage-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            color: var(--color-secondary);
             margin-top: 1rem;
         }
-        
-        .usage-card {
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid rgba(16, 185, 129, 0.25);
-            border-radius: 6px;
-            padding: 0.75rem;
+
+        /* Architecture Diagram */
+        .architecture {
+            background: white;
         }
-        
-        .usage-card-title {
-            color: #10b981;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin: 0 0 0.5rem 0;
+
+        .arch-diagram {
+            background: var(--color-dark);
+            border-radius: 16px;
+            padding: 3rem;
+            color: white;
+        }
+
+        .arch-layer {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .arch-layer-name {
+            font-weight: 700;
+            min-width: 200px;
+        }
+
+        .arch-layer-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .arch-layer.highlight {
+            background: rgba(6, 182, 212, 0.2);
+            border-left-color: var(--color-success);
+        }
+
+        /* Quick Links */
+        .quick-links {
+            background: var(--color-bg-alt);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .link-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .link-card:hover {
+            border-color: var(--color-secondary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        
-        .usage-card-title::before {
-            content: "→";
-            color: #10b981;
-            font-weight: 700;
-        }
-        
-        .usage-card-content {
-            color: #cbd5e1;
-            font-size: 0.8rem;
-            font-family: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        
-        .usage-card-content .command {
-            color: #10b981;
-        }
-        
-        .usage-card-content .comment {
-            color: #64748b;
-        }
-        
-        @media (max-width: 768px) {
-            .phase-card {
-                min-width: 260px;
-            }
-        }
-        
-        .trust-indicators {
-            margin-top: var(--spacing-xl);
-            text-align: center;
-            color: #1a202c;
-            font-size: 0.9rem;
-            font-weight: 500;
-            font-family: var(--font-sans);
-        }
-        
-        /* Section Styles */
-        .section {
-            padding: var(--spacing-xl) 0;
-        }
-        
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: var(--spacing-sm);
-            color: var(--color-primary);
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--color-text);
-            max-width: 700px;
-            margin: 0 auto var(--spacing-lg);
-            line-height: 1.6;
-        }
-        
-        /* Problem Section */
-        .problem {
-            background: var(--color-bg-alt);
-        }
-        
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .problem-card {
-            background: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border-left: 4px solid var(--color-secondary);
-        }
-        
-        .problem-card-icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .problem-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: var(--spacing-xs);
-            color: var(--color-primary);
-            font-weight: 600;
-        }
-        
-        .problem-card p {
-            color: var(--color-text);
-            line-height: 1.6;
-        }
-        
-        .stats-callout {
-            background: var(--color-primary);
-            color: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            text-align: center;
-            margin-top: var(--spacing-lg);
-            font-size: 1.1rem;
-        }
-        
-        /* Solution Section */
-        .solution {
-            background: white;
-        }
-        
-        .architecture-diagram {
-            background: var(--color-bg-alt);
-            border-radius: 16px;
-            padding: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-            border: 2px solid var(--color-secondary);
-        }
-        
-        .diagram-layer {
-            background: white;
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-sm);
-            border-radius: 8px;
-            border-left: 4px solid var(--color-accent);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .diagram-layer:hover {
-            transform: translateX(10px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .diagram-layer h4 {
-            color: var(--color-primary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .diagram-layer p {
-            color: var(--color-text);
-            font-size: 0.9rem;
-        }
-        
-        /* Features Section */
-        .features {
-            background: var(--color-bg-alt);
-        }
-        
-        .feature-tabs {
-            display: flex;
-            gap: var(--spacing-sm);
-            justify-content: center;
-            margin-bottom: var(--spacing-lg);
-            flex-wrap: wrap;
-        }
-        
-        .feature-tab {
-            padding: var(--spacing-sm) var(--spacing-md);
-            background: white;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        
-        .feature-tab.active {
-            background: var(--color-secondary);
-            color: white;
-            border-color: var(--color-secondary);
-        }
-        
-        .feature-tab:hover:not(.active) {
-            border-color: var(--color-secondary);
-            color: var(--color-secondary);
-        }
-        
-        .feature-content {
-            display: none;
-        }
-        
-        .feature-content.active {
-            display: block;
-        }
-        
-        .feature-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-lg);
-            align-items: center;
-        }
-        
-        .feature-code {
-            background: var(--color-dark);
-            color: #cbd5e1;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            font-family: var(--font-mono);
-            font-size: 0.9rem;
-            overflow-x: auto;
-        }
-        
-        .feature-visual {
-            background: var(--color-bg-alt);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            min-height: 200px;
-        }
-        
-        /* Performance Section */
-        .performance {
-            background: white;
-        }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .metric-card {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            color: white;
-            padding: var(--spacing-lg);
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(26, 54, 93, 0.2);
-        }
-        
-        .metric-value {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: var(--spacing-xs);
-        }
-        
-        .metric-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .metric-description {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: var(--spacing-xs);
-        }
-        
-        /* Architecture Highlights */
-        .architecture-highlights {
-            background: var(--color-bg-alt);
-        }
-        
-        .highlights-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .highlight-card {
-            background: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .highlight-card h3 {
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .highlight-card p {
-            color: var(--color-text);
-            line-height: 1.6;
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .code-snippet {
-            background: var(--color-bg-alt);
-            padding: var(--spacing-sm);
-            border-radius: 6px;
-            font-family: var(--font-mono);
+
+        .link-card p {
             font-size: 0.85rem;
-            color: var(--color-primary);
-            overflow-x: auto;
+            color: var(--color-text-muted);
         }
-        
-        /* Use Cases */
-        .use-cases {
-            background: white;
-        }
-        
-        .use-cases-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .use-case-card {
-            background: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid var(--color-accent);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .use-case-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-        
-        .use-case-card h3 {
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-xs);
-            font-size: 1.3rem;
-        }
-        
-        .use-case-card p {
-            color: var(--color-text);
-            line-height: 1.6;
-        }
-        
+
         /* Getting Started */
         .getting-started {
-            background: var(--color-bg-alt);
-        }
-        
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-            max-width: 100%;
-        }
-        
-        .getting-started .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 var(--spacing-md);
-        }
-        
-        .getting-started .section-title,
-        .getting-started .section-subtitle {
-            text-align: center;
-        }
-        
-        .development-status-box {
-            background: var(--color-bg-alt);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            margin-top: var(--spacing-lg);
-            border-left: 4px solid var(--color-secondary);
-            max-width: 100%;
-        }
-        
-        .step {
             background: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-        
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 4rem;
+        }
+
         .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3rem;
+            height: 3rem;
             background: var(--color-secondary);
             color: white;
             border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
         }
-        
+
         .step h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
             color: var(--color-primary);
-            margin-bottom: var(--spacing-xs);
+            margin-bottom: 0.5rem;
         }
-        
-        .step-code {
+
+        .step p {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .step code {
+            display: block;
             background: var(--color-dark);
-            color: #10b981;
-            padding: var(--spacing-sm);
-            border-radius: 8px;
+            color: var(--color-success);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
             font-family: var(--font-mono);
-            font-size: 0.9rem;
-            margin-top: var(--spacing-sm);
-        }
-        
-        /* Open Source */
-        .open-source {
-            background: white;
-        }
-        
-        .open-source-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .open-source-card {
-            text-align: center;
-            padding: var(--spacing-md);
-        }
-        
-        .open-source-card-icon {
-            font-size: 3rem;
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .open-source-card h3 {
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-xs);
-        }
-        
-        .open-source-card p {
-            color: var(--color-text);
-            line-height: 1.6;
-        }
-        
-        /* Documentation */
-        .documentation {
-            background: var(--color-bg-alt);
-        }
-        
-        .docs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .doc-card {
-            background: white;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .doc-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        }
-        
-        .doc-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .doc-card-coming-soon {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-        
-        .doc-card-coming-soon::after {
-            content: " (Coming Soon)";
-            color: var(--color-secondary);
             font-size: 0.85rem;
-            font-weight: 500;
-            display: block;
-            margin-top: 0.5rem;
         }
-        
-        .doc-card-icon {
-            font-size: 2.5rem;
-            margin-bottom: var(--spacing-sm);
-        }
-        
-        .doc-card h3 {
-            color: var(--color-primary);
-            margin-bottom: var(--spacing-xs);
-        }
-        
-        .doc-card p {
-            color: var(--color-text);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        /* Trust Indicators */
-        .trust {
-            background: white;
-        }
-        
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-        }
-        
-        .trust-item {
-            text-align: center;
-            padding: var(--spacing-md);
-        }
-        
-        .trust-item-icon {
-            font-size: 2rem;
-            margin-bottom: var(--spacing-xs);
-        }
-        
-        .trust-item p {
-            color: var(--color-text);
-            font-size: 0.9rem;
-        }
-        
+
         /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1e3a5f 100%);
             color: white;
+            padding: 5rem 0;
             text-align: center;
-            padding: var(--spacing-xl) 0;
         }
-        
+
         .cta-section h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            margin-bottom: var(--spacing-sm);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
         }
-        
+
         .cta-section p {
-            font-size: 1.2rem;
-            margin-bottom: var(--spacing-lg);
+            font-size: 1.1rem;
             opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
+
+        .cta-section .btn-primary {
+            background: white;
+            color: var(--color-primary);
+        }
+
+        .cta-section .btn-primary:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
         /* Footer */
         .footer {
             background: var(--color-dark);
-            color: #cbd5e1;
-            padding: var(--spacing-xl) 0 var(--spacing-md);
+            color: #94a3b8;
+            padding: 4rem 0 2rem;
         }
-        
-        .footer-content {
+
+        .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
-        
+
+        .footer-brand h3 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand h3 span { color: var(--color-accent); }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
         .footer-section h4 {
             color: white;
-            margin-bottom: var(--spacing-sm);
-            font-size: 1.1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
         }
-        
+
         .footer-section ul {
             list-style: none;
         }
-        
-        .footer-section ul li {
-            margin-bottom: var(--spacing-xs);
+
+        .footer-section li {
+            margin-bottom: 0.5rem;
         }
-        
+
         .footer-section a {
             color: #94a3b8;
             text-decoration: none;
-            transition: color 0.3s;
+            font-size: 0.9rem;
+            transition: color 0.2s;
         }
-        
-        .footer-section a:hover {
-            color: white;
-        }
-        
+
+        .footer-section a:hover { color: white; }
+
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: var(--spacing-md);
+            padding-top: 2rem;
             text-align: center;
-            font-size: 0.9rem;
-            color: #64748b;
+            font-size: 0.85rem;
         }
-        
-        /* Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
+
         /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: repeat(2, 1fr); }
+            .version-grid { grid-template-columns: repeat(2, 1fr); }
+            .links-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
         @media (max-width: 768px) {
-            .nav-links {
-                gap: var(--spacing-sm);
-                font-size: 0.85rem;
-            }
-            
-            .hero {
-                padding-top: 100px;
-            }
-            
-            .hero-title-container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .hero-title-wrapper {
-                gap: 0.5rem;
-            }
-            
-            .hero-light-logo {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .hero-trademark-icon {
-                top: -15px;
-                right: -5px;
-                font-size: 0.7rem;
-            }
-            
-            .patent-badge {
-                margin-top: 0.75rem;
-            }
-            
-            .feature-showcase {
-                grid-template-columns: 1fr;
-            }
-            
-            .section {
-                padding: var(--spacing-lg) 0;
-            }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .links-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1116,642 +621,329 @@
     <nav class="nav">
         <div class="container">
             <div class="nav-content">
-                <a href="/" class="logo">
-                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Dark background -->
-                        <rect width="200" height="200" rx="12" fill="#212730"/>
-                        <!-- mlOS text -->
-                        <text x="20" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff">ml</text>
-                        <!-- Atom icon replacing 'o' -->
-                        <circle cx="100" cy="50" r="8" fill="#00C0FF" opacity="0.9"/>
-                        <circle cx="100" cy="50" r="25" fill="none" stroke="#00C0FF" stroke-width="2" opacity="0.6"/>
-                        <circle cx="85" cy="40" r="4" fill="#00C0FF" opacity="0.8"/>
-                        <circle cx="115" cy="40" r="4" fill="#00C0FF" opacity="0.8"/>
-                        <circle cx="100" cy="30" r="4" fill="#00C0FF" opacity="0.8"/>
-                        <text x="120" y="80" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff">S</text>
-                        <!-- FOUNDATION text -->
-                        <text x="20" y="130" font-family="Arial, sans-serif" font-size="20" fill="#808080">FOUNDATION</text>
-                    </svg>
-                </a>
-            <ul class="nav-links">
-                    <li><a href="#platform">Platform</a></li>
+                <a href="/" class="logo">ml<span>OS</span></a>
+                <ul class="nav-links">
                     <li><a href="architecture.html">Architecture</a></li>
                     <li><a href="ecosystem.html">Ecosystem</a></li>
                     <li><a href="models.html">Models</a></li>
-                    <li><a href="runtime-modes.html">Runtime Modes</a></li>
-                    <li><a href="enhancements.html" style="background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">✨ Latest</a></li>
+                    <li><a href="runtime-modes.html">Runtime</a></li>
                     <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+                    <li><a href="#getting-started" class="nav-cta">Get Started</a></li>
+                </ul>
             </div>
         </div>
-        </nav>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero" id="hero">
+    <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-title-container">
-                    <div class="hero-title-wrapper">
-                        <svg class="hero-light-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Light logo: circular cyan design -->
-                            <circle cx="100" cy="100" r="80" fill="none" stroke="#06b6d4" stroke-width="3" opacity="0.3"/>
-                            <!-- Central node -->
-                            <circle cx="100" cy="100" r="12" fill="#06b6d4"/>
-                            <!-- Eight outer nodes -->
-                            <circle cx="100" cy="30" r="6" fill="#06b6d4"/>
-                            <circle cx="170" cy="100" r="6" fill="#06b6d4"/>
-                            <circle cx="100" cy="170" r="6" fill="#06b6d4"/>
-                            <circle cx="30" cy="100" r="6" fill="#06b6d4"/>
-                            <circle cx="141.42" cy="58.58" r="6" fill="#06b6d4"/>
-                            <circle cx="141.42" cy="141.42" r="6" fill="#06b6d4"/>
-                            <circle cx="58.58" cy="141.42" r="6" fill="#06b6d4"/>
-                            <circle cx="58.58" cy="58.58" r="6" fill="#06b6d4"/>
-                            <!-- Connecting lines from center -->
-                            <line x1="100" y1="100" x2="100" y2="30" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="170" y2="100" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="100" y2="170" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="30" y2="100" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="141.42" y2="58.58" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="141.42" y2="141.42" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="58.58" y2="141.42" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <line x1="100" y1="100" x2="58.58" y2="58.58" stroke="#06b6d4" stroke-width="2" opacity="0.5"/>
-                            <!-- Outer ring connecting adjacent nodes -->
-                            <path d="M 100 30 A 70.71 70.71 0 0 1 141.42 58.58" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 141.42 58.58 A 70.71 70.71 0 0 1 170 100" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 170 100 A 70.71 70.71 0 0 1 141.42 141.42" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 141.42 141.42 A 70.71 70.71 0 0 1 100 170" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 100 170 A 70.71 70.71 0 0 1 58.58 141.42" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 58.58 141.42 A 70.71 70.71 0 0 1 30 100" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 30 100 A 70.71 70.71 0 0 1 58.58 58.58" fill="none" stroke="#06b6d4" stroke-width="1.5" opacity="0.4"/>
-                            <path d="M 58.58 58.58 A 70.71 70.71 0 0 1 100 30" fill="none" stroke="#06b6d4" stroke-width="2" opacity="0.4"/>
-                        </svg>
-                        <span class="hero-trademark-icon">™</span>
-                        <div class="patent-badge">Patent-Protected Technology</div>
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        MLOS Core <span class="version">v5.0.0-alpha</span>
+                    </div>
+                    <h1>Enterprise ML Infrastructure with <span>Kernel-Level</span> Optimization</h1>
+                    <p class="hero-description">
+                        Deploy ML models at scale with true OS-native integration.
+                        MLOS provides kernel-level tensor management, ML-aware scheduling,
+                        and zero-copy memory operations for production AI workloads.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Kernel ioctls</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Linux Kernels</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Patents Pending</div>
+                        </div>
+                    </div>
+                    <div class="hero-ctas">
+                        <a href="#getting-started" class="btn btn-primary">Get Started</a>
+                        <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-secondary">View Releases</a>
                     </div>
                 </div>
-                <p class="tagline">OS-native ML resource orchestration</p>
-                <p class="description">
-                    Enterprise-grade machine learning infrastructure that integrates 
-                    directly with the operating system kernel for high-performance 
-                    inference, efficient resource management, and seamless deployment.
-                </p>
-            <div class="cta-buttons">
-                    <a href="#documentation" class="btn btn-primary">View Documentation</a>
-                    <a href="https://github.com/mlOS-foundation" class="btn btn-secondary">GitHub →</a>
-                </div>
-                
-                <div class="terminal-preview animate-on-scroll">
+                <div class="terminal">
                     <div class="terminal-header">
                         <div class="terminal-dot red"></div>
                         <div class="terminal-dot yellow"></div>
                         <div class="terminal-dot green"></div>
                     </div>
                     <div class="terminal-content">
-                        <div class="output" style="color: #94a3b8; margin-bottom: 0.5rem;">Delivery Phases:</div>
-                        
-                        <div class="phases-container">
-                            <div class="phases-scroll">
-                                <!-- Phase 0: Axon (Complete) -->
-                                <div class="phase-card complete">
-                                    <div class="phase-header">
-                                        <span class="phase-status complete">✓</span>
-                                        <div class="phase-header-content">
-                                            <h4 class="phase-title">Phase 0</h4>
-                                            <p class="phase-target">Axon (Universal Model Installer)</p>
-                                        </div>
-                                    </div>
-                                    <div class="phase-available-badge">Axon CLI Available</div>
-                                    <p class="phase-status-text" style="color: #10b981;">MVP Complete</p>
-                                    <ul class="phase-features">
-                                        <li>Universal model installer</li>
-                                        <li>Multi-repository support</li>
-                                        <li>Model lifecycle management</li>
-                                        <li>Version control & caching</li>
-                                    </ul>
-                                    
-                                    <div class="axon-usage-cards">
-                                        <div class="usage-card">
-                                            <h5 class="usage-card-title">Install Axon</h5>
-                                            <div class="usage-card-content"><span class="command">$</span> curl -sSL axon.mlosfoundation.org | sh</div>
-                                        </div>
-                                        <div class="usage-card">
-                                            <h5 class="usage-card-title">Install NLP Model</h5>
-                                            <div class="usage-card-content"><span class="command">$</span> axon install hf/bert-base-uncased@latest</div>
-                                        </div>
-                                        <div class="usage-card">
-                                            <h5 class="usage-card-title">Install Vision Model</h5>
-                                            <div class="usage-card-content"><span class="command">$</span> axon install hf/microsoft/resnet-50@latest</div>
-                                        </div>
-                                        <div class="usage-card">
-                                            <h5 class="usage-card-title">List Models</h5>
-                                            <div class="usage-card-content"><span class="command">$</span> axon list</div>
-                                        </div>
-                                        <div class="usage-card">
-                                            <h5 class="usage-card-title">Search Models</h5>
-                                            <div class="usage-card-content"><span class="command">$</span> axon search resnet</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Phase 1: MLOS Core (Active) -->
-                                <div class="phase-card active">
-                                    <div class="phase-header">
-                                        <span class="phase-status active">→</span>
-                                        <div class="phase-header-content">
-                                            <h4 class="phase-title">Phase 1</h4>
-                                            <p class="phase-target">MLOS Core Runtime</p>
-                                        </div>
-                                    </div>
-                                    <p class="phase-status-text" style="color: #fbbf24;">Active Development</p>
-                                    <ul class="phase-features">
-                                        <li>Kernel-level integration</li>
-                                        <li>HTTP REST API & IPC interface</li>
-                                        <li>SMI plugin architecture</li>
-                                        <li>Resource pooling & optimization</li>
-                                    </ul>
-                                </div>
-                                
-                                <!-- Phase 2: Advanced Features (Coming) -->
-                                <div class="phase-card coming">
-                                    <div class="phase-header">
-                                        <span class="phase-status coming">→</span>
-                                        <div class="phase-header-content">
-                                            <h4 class="phase-title">Phase 2</h4>
-                                            <p class="phase-target">Advanced Features</p>
-                                        </div>
-                                    </div>
-                                    <p class="phase-status-text" style="color: #64748b;">Coming Soon</p>
-                                    <ul class="phase-features">
-                                        <li>Model versioning (A/B testing, canary)</li>
-                                        <li>Auto-scaling & multi-tenancy</li>
-                                        <li>Model marketplace</li>
-                                    </ul>
-                                </div>
-                                
-                                <!-- Phase 3: Production Readiness (Planning) -->
-                                <div class="phase-card coming">
-                                    <div class="phase-header">
-                                        <span class="phase-status coming">→</span>
-                                        <div class="phase-header-content">
-                                            <h4 class="phase-title">Phase 3</h4>
-                                            <p class="phase-target">Production Readiness</p>
-                                        </div>
-                                    </div>
-                                    <p class="phase-status-text" style="color: #64748b;">Planning (Q2-Q3 2026)</p>
-                                    <ul class="phase-features">
-                                        <li>gRPC full implementation</li>
-                                        <li>Advanced monitoring & scaling</li>
-                                        <li>MLOS Linux distributions</li>
-                                        <li>Enterprise features</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <div><span class="prompt">$</span> <span class="command">curl -sSL axon.mlosfoundation.org | sh</span></div>
+                        <div class="output">Installing Axon v3.1.4...</div>
+                        <div class="success">✓ Axon installed successfully</div>
+                        <br>
+                        <div><span class="prompt">$</span> <span class="command">axon install hf/bert-base-uncased@latest</span></div>
+                        <div class="output">Downloading from Hugging Face...</div>
+                        <div class="output">Converting to ONNX format...</div>
+                        <div class="success">✓ Model installed: bert-base-uncased</div>
+                        <br>
+                        <div><span class="prompt">$</span> <span class="command">sudo insmod mlos-ml.ko</span></div>
+                        <div class="success">✓ Kernel module loaded</div>
+                        <div class="output">/dev/mlos-ml created (major 239)</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Problem Statement Section -->
-    <section class="section problem" id="problem">
-            <div class="container">
-            <h2 class="section-title">The Challenge of Production ML Infrastructure</h2>
-            <p class="section-subtitle">Modern ML workloads face critical bottlenecks:</p>
-            
-            <div class="problem-grid">
-                <div class="problem-card animate-on-scroll">
-                    <div class="problem-card-icon">⚡</div>
-                    <h3>Application-Layer Overhead</h3>
-                    <p>Standard ML frameworks operate at application level, introducing unnecessary latency and overhead</p>
-                </div>
-                <div class="problem-card animate-on-scroll">
-                    <div class="problem-card-icon">📊</div>
-                    <h3>Resource Inefficiency</h3>
-                    <p>GPU memory fragmentation and poor scheduling waste compute resources</p>
-                </div>
-                <div class="problem-card animate-on-scroll">
-                    <div class="problem-card-icon">🔧</div>
-                    <h3>Integration Complexity</h3>
-                    <p>Disparate tools and frameworks require extensive integration work</p>
-                </div>
-                <div class="problem-card animate-on-scroll">
-                    <div class="problem-card-icon">🚀</div>
-                    <h3>Limited Performance</h3>
-                    <p>Lack of kernel-level optimization limits throughput and latency</p>
-                </div>
-            </div>
-            
-        </div>
-    </section>
-
-    <!-- Solution Overview Section -->
-    <section class="section solution" id="solution">
+    <!-- Version Banner -->
+    <section class="version-banner">
         <div class="container">
-            <h2 class="section-title">Built Different: True Kernel-Level Integration</h2>
-            
-            <div class="architecture-diagram animate-on-scroll">
-                <div class="diagram-layer">
-                    <h4>Application Layer (Your Code)</h4>
+            <div class="version-grid">
+                <div class="version-card">
+                    <h3>MLOS Core</h3>
+                    <div class="version">v5.0.0-alpha</div>
+                    <div class="status">Kernel Integration</div>
                 </div>
-                <div class="diagram-layer">
-                    <h4>Standard Model Interface (SMI)</h4>
-                    <p>← Polyglot Plugin Architecture</p>
+                <div class="version-card">
+                    <h3>Kernel Module</h3>
+                    <div class="version">v5.0.0-alpha</div>
+                    <div class="status">4 Kernels Supported</div>
                 </div>
-                <div class="diagram-layer">
-                    <h4>MLOS Core (Go)</h4>
-                    <p>← Orchestration & Management</p>
+                <div class="version-card">
+                    <h3>Axon CLI</h3>
+                    <div class="version">v3.1.4</div>
+                    <div class="status">Stable Release</div>
                 </div>
-                <div class="diagram-layer">
-                    <h4>Kernel Integration Layer</h4>
-                    <p>← Direct OS Integration</p>
-                </div>
-                <div class="diagram-layer">
-                    <h4>Operating System Kernel</h4>
-                </div>
-            </div>
-            
-            <p class="section-subtitle" style="margin-top: var(--spacing-lg);">
-                Unlike application-layer abstractions, MLOS operates at the kernel level,
-                treating ML models as first-class OS resources for unprecedented performance.
-            </p>
-        </div>
-    </section>
-
-    <!-- Key Features Section -->
-    <section class="section features" id="features">
-        <div class="container">
-            <h2 class="section-title">Key Features</h2>
-            
-            <div class="feature-tabs">
-                <button class="feature-tab active" onclick="showFeature(0)">ML-Aware Scheduling</button>
-                <button class="feature-tab" onclick="showFeature(1)">Tensor Memory Management</button>
-                <button class="feature-tab" onclick="showFeature(2)">Polyglot Plugin Architecture</button>
-                <button class="feature-tab" onclick="showFeature(3)">GPU Orchestration</button>
-                    </div>
-            
-            <div class="feature-content active animate-on-scroll">
-                <div class="feature-showcase">
-                    <div class="feature-code">
-                        <pre>model.deploy({
-  priority: "realtime",
-  affinity: "gpu:0",
-  latency_target: "5ms"
-});
-
-✓ Model deployed successfully
-✓ Zero-copy memory transfers enabled
-✓ Optimized resource allocation</pre>
-                    </div>
-                    <div class="feature-visual">
-                        <h3>Intelligent Task Scheduling</h3>
-                        <p>Preemption-aware scheduling with ML workload prioritization and dynamic resource allocation</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="feature-content animate-on-scroll">
-                <div class="feature-showcase">
-                    <div class="feature-code">
-                        <pre>Intelligent memory management:
-• Zero-copy tensor operations
-• Automatic memory pooling
-• GPU memory defragmentation
-• Cross-device memory coherence</pre>
-                    </div>
-                    <div class="feature-visual">
-                        <h3>Memory Optimization</h3>
-                        <p>Efficient memory utilization with automatic pooling and defragmentation</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="feature-content animate-on-scroll">
-                <div class="feature-showcase">
-                    <div class="feature-code">
-                        <pre>// Python Plugin
-@mlos.plugin
-class MyModel(SMIModel):
-    def predict(self, input):
-        return self.model.forward(input)
-
-// Go Plugin
-func (m *Model) Predict(input []float64) []float64 {
-    return m.engine.Forward(input)
-}</pre>
-                    </div>
-                    <div class="feature-visual">
-                        <h3>Language-Agnostic</h3>
-                        <p>Write plugins in any language through SMI. Language-agnostic communication via Protocol Buffers</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="feature-content animate-on-scroll">
-                <div class="feature-showcase">
-                    <div class="feature-code">
-                        <pre>Enterprise-grade GPU management:
-• Multi-GPU workload distribution
-• Automatic failover and recovery
-• GPU memory optimization
-• Real-time performance monitoring</pre>
-                    </div>
-                    <div class="feature-visual">
-                        <h3>GPU Management</h3>
-                        <p>Comprehensive GPU orchestration with automatic failover and optimization</p>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    <!-- Performance Metrics Section -->
-    <section class="section performance" id="performance">
-            <div class="container">
-            <h2 class="section-title">Engineered for Performance</h2>
-            <p class="section-subtitle">
-                MLOS is designed for high-performance ML inference with kernel-level optimizations, 
-                efficient resource management, and low-latency model serving.
-            </p>
-                    </div>
-    </section>
-
-    <!-- Architecture Highlights Section -->
-    <section class="section architecture-highlights" id="architecture">
-        <div class="container">
-            <h2 class="section-title">Technical Excellence</h2>
-            
-            <div class="highlights-grid">
-                <div class="highlight-card animate-on-scroll">
-                    <h3>Standard Model Interface</h3>
-                    <p>Framework-agnostic plugin system for maximum flexibility and portability</p>
-                    <div class="code-snippet">@mlos.plugin<br>class MyModel(SMIModel): ...</div>
-                    </div>
-                <div class="highlight-card animate-on-scroll">
-                    <h3>Multi-Protocol API</h3>
-                    <p>HTTP/REST, gRPC, Unix IPC for flexible integration with any stack</p>
-                    <div class="code-snippet">POST /api/v1/models/{id}/inference</div>
-                    </div>
-                <div class="highlight-card animate-on-scroll">
-                    <h3>Enterprise Features</h3>
-                    <p>High availability, automatic scaling, audit logging, and access control</p>
-                    <div class="code-snippet">ha: true<br>auto_scale: enabled</div>
-                </div>
-                </div>
-            </div>
-        </section>
-
-    <!-- Use Cases Section -->
-    <section class="section use-cases" id="use-cases">
-            <div class="container">
-            <h2 class="section-title">Built for Real-World Production</h2>
-            
-            <div class="use-cases-grid">
-                <div class="use-case-card animate-on-scroll">
-                    <h3>🚀 Real-Time Inference</h3>
-                    <p>Deploy latency-sensitive models for recommendation systems, fraud detection, and chatbots</p>
-                </div>
-                <div class="use-case-card animate-on-scroll">
-                    <h3>🏢 Enterprise ML Platform</h3>
-                    <p>Unified infrastructure for all organizational ML workloads</p>
-                </div>
-                <div class="use-case-card animate-on-scroll">
-                    <h3>🔬 Research & Development</h3>
-                    <p>Experiment with models while maintaining production stability</p>
-                </div>
-                <div class="use-case-card animate-on-scroll">
-                    <h3>🌐 Edge AI Deployment</h3>
-                    <p>Consistent interface from datacenter to edge devices</p>
+                <div class="version-card">
+                    <h3>E2E Tests</h3>
+                    <div class="version">Passing</div>
+                    <div class="status"><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-accent);">View Report</a></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Getting Started Section -->
+    <!-- Kernel Features -->
+    <section class="section kernel-features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Kernel-Level ML Operations</h2>
+                <p class="section-subtitle">
+                    Complete ioctl interface for tensor memory management, ML-aware scheduling,
+                    and GPU orchestration directly in the Linux kernel.
+                </p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📌</div>
+                    <h3>Tensor Pinning</h3>
+                    <p>Pin tensors in memory for zero-copy mmap access. Prevent eviction during critical inference operations.</p>
+                    <code>MLOS_TENSOR_PIN / MLOS_TENSOR_UNPIN</code>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Memory Management</h3>
+                    <p>LRU-based eviction, pool defragmentation, and intelligent memory trimming for optimal GPU utilization.</p>
+                    <code>MLOS_MEMORY_DEFRAG / MLOS_MEMORY_TRIM</code>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>ML-Aware Scheduler</h3>
+                    <p>Priority queues (REALTIME, HIGH, NORMAL, BATCH) for latency-sensitive inference workloads.</p>
+                    <code>MLOS_INFERENCE_START / MLOS_INFERENCE_WAIT</code>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>GPU Orchestration</h3>
+                    <p>Multi-GPU enumeration, workload distribution, and simulated GPU backend for testing.</p>
+                    <code>MLOS_GPU_LIST</code>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>Universal Model Delivery</h3>
+                    <p>Axon CLI for installing models from HuggingFace, PyTorch Hub, TensorFlow Hub, and ModelScope.</p>
+                    <code>axon install hf/model@version</code>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>Multi-Runtime Support</h3>
+                    <p>ONNX Runtime for universal inference, llama.cpp for native GGUF/LLM execution.</p>
+                    <code>ONNX + GGUF + PyTorch</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section architecture" id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">OS-Native Architecture</h2>
+                <p class="section-subtitle">
+                    MLOS operates at the kernel level, treating ML models as first-class OS resources.
+                </p>
+            </div>
+            <div class="arch-diagram">
+                <div class="arch-layer">
+                    <span class="arch-layer-name">Application Layer</span>
+                    <span class="arch-layer-desc">Your ML applications, Axon CLI, REST/gRPC APIs</span>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-layer-name">MLOS Core Runtime</span>
+                    <span class="arch-layer-desc">Model registry, plugin system, resource management</span>
+                </div>
+                <div class="arch-layer">
+                    <span class="arch-layer-name">Standard Model Interface</span>
+                    <span class="arch-layer-desc">Framework-agnostic plugin architecture (SMI)</span>
+                </div>
+                <div class="arch-layer highlight">
+                    <span class="arch-layer-name">Kernel Module (mlos-ml)</span>
+                    <span class="arch-layer-desc">/dev/mlos-ml character device, ioctl operations</span>
+                </div>
+                <div class="arch-layer highlight">
+                    <span class="arch-layer-name">Linux Kernel</span>
+                    <span class="arch-layer-desc">Tensor memory manager, ML scheduler, GPU driver integration</span>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="architecture.html" class="btn btn-secondary">View Full Architecture →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="section quick-links" id="resources">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Resources</h2>
+                <p class="section-subtitle">Everything you need to get started with MLOS</p>
+            </div>
+            <div class="links-grid">
+                <a href="https://github.com/mlOS-foundation/core-releases" class="link-card">
+                    <h3>📦 Core Releases</h3>
+                    <p>Download MLOS Core binaries for Linux and macOS</p>
+                </a>
+                <a href="https://github.com/mlOS-foundation/mlos-linux-kernel/releases" class="link-card">
+                    <h3>🐧 Kernel Modules</h3>
+                    <p>Pre-built .ko files for Ubuntu 22.04, 24.04, and Flatcar</p>
+                </a>
+                <a href="https://github.com/mlOS-foundation/axon" class="link-card">
+                    <h3>⚡ Axon CLI</h3>
+                    <p>Universal model installer with multi-repository support</p>
+                </a>
+                <a href="https://mlos-foundation.github.io/system-test/" class="link-card">
+                    <h3>🧪 E2E Test Reports</h3>
+                    <p>Live validation reports for all supported models</p>
+                </a>
+                <a href="architecture.html" class="link-card">
+                    <h3>🏗️ Architecture</h3>
+                    <p>Deep dive into MLOS internals and design decisions</p>
+                </a>
+                <a href="ecosystem.html" class="link-card">
+                    <h3>🌐 Ecosystem</h3>
+                    <p>All MLOS components and how they work together</p>
+                </a>
+                <a href="models.html" class="link-card">
+                    <h3>🤖 Supported Models</h3>
+                    <p>NLP, Vision, LLM models tested and validated</p>
+                </a>
+                <a href="https://github.com/mlOS-foundation" class="link-card">
+                    <h3>💻 GitHub</h3>
+                    <p>Source code, issues, and contributions</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started -->
     <section class="section getting-started" id="getting-started">
         <div class="container">
-            <h2 class="section-title">Get Started with Axon</h2>
-            <p class="section-subtitle">
-                Axon is available now. MLOS Core runtime is in active development (Phase 1).
-            </p>
-            
-            <div class="steps">
-                <div class="step animate-on-scroll">
+            <div class="section-header">
+                <h2 class="section-title">Get Started</h2>
+                <p class="section-subtitle">Deploy your first ML model with MLOS in minutes</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step">
                     <div class="step-number">1</div>
                     <h3>Install Axon</h3>
-                    <div class="step-code">$ curl -sSL axon.mlosfoundation.org | sh</div>
-                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Axon installed</p>
+                    <p>The universal model installer that works with all major ML repositories</p>
+                    <code>curl -sSL axon.mlosfoundation.org | sh</code>
                 </div>
-                <div class="step animate-on-scroll">
+                <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Install Model from Repository</h3>
-                    <div class="step-code">$ axon install hf/bert-base-uncased@latest</div>
-                    <p style="color: #10b981; margin-top: 0.5rem;">✓ Model downloaded and cached</p>
+                    <h3>Install a Model</h3>
+                    <p>Choose from HuggingFace, PyTorch Hub, TensorFlow Hub, or ModelScope</p>
+                    <code>axon install hf/bert-base-uncased@latest</code>
                 </div>
-                <div class="step animate-on-scroll">
+                <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Explore Ecosystem</h3>
-                    <div class="step-code">$ axon list</div>
-                    <p style="color: #64748b; margin-top: 0.5rem;">MLOS Core deployment coming in Phase 1</p>
+                    <h3>Load Kernel Module</h3>
+                    <p>Enable kernel-level optimizations (Ubuntu 22.04/24.04, Flatcar)</p>
+                    <code>sudo insmod mlos-ml-v5.0.0-alpha-linux-6.8.ko</code>
                 </div>
             </div>
-            
-            <div class="development-status-box">
-                <p style="color: var(--color-text); margin: 0 0 0.5rem 0; line-height: 1.7; font-weight: 600;">
-                    <strong>Development Status (December 2024):</strong>
-                </p>
-                <ul style="color: var(--color-text); margin: 0; padding-left: 1.5rem; line-height: 1.8;">
-                    <li><strong>Axon v3.1.3</strong> - Enhanced seq2seq/multi-encoder support with improved T5 conversion</li>
-                    <li><strong>MLOS Core v4.0.0-alpha</strong> - Linux kernel module support, GGUF/LLM runtime, format-agnostic detection</li>
-                    <li><strong>E2E Validated</strong> - 8 models tested: GPT-2, BERT, RoBERTa, ResNet, ViT, ConvNeXt, MobileNet, DeiT</li>
-                    <li>MLOS Linux distributions (Ubuntu & Flatcar) are in planning phase (Phase 3, target: Q2-Q3 2026).</li>
-                    <li><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-secondary);">View E2E Test Report</a> | <a href="architecture.html" style="color: var(--color-secondary);">Architecture</a></li>
-                </ul>
-            </div>
-            
-            <div class="cta-buttons" style="margin-top: var(--spacing-lg); text-align: center;">
-                <a href="ecosystem.html#axon" class="btn btn-primary">Explore Axon</a>
-                <a href="architecture.html" class="btn btn-secondary">View Architecture</a>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://github.com/mlOS-foundation/axon#readme" class="btn btn-primary">View Full Documentation →</a>
             </div>
         </div>
     </section>
 
-    <!-- Open Source & Community Section -->
-    <section class="section open-source" id="open-source">
-        <div class="container">
-            <h2 class="section-title">Built in the Open</h2>
-            <p class="section-subtitle">
-                MLOS Foundation operates with a hybrid approach:
-            </p>
-            
-            <div class="open-source-grid">
-                <div class="open-source-card animate-on-scroll">
-                    <div class="open-source-card-icon">📖</div>
-                    <h3>Open Standards</h3>
-                    <p>SMI specification and language bindings are fully open source</p>
-                </div>
-                <div class="open-source-card animate-on-scroll">
-                    <div class="open-source-card-icon">🔒</div>
-                    <h3>Core Innovation</h3>
-                    <p>Protected core implementation ensures competitive advantage and quality</p>
-                </div>
-                <div class="open-source-card animate-on-scroll">
-                    <div class="open-source-card-icon">🤝</div>
-                    <h3>Community Driven</h3>
-                    <p>Examples, tutorials, and integrations developed collaboratively</p>
-                </div>
-            </div>
-            
-            <div class="cta-buttons" style="margin-top: var(--spacing-lg);">
-                <a href="https://github.com/mlOS-foundation" class="btn btn-primary">View on GitHub</a>
-                <a href="https://github.com/mlOS-foundation" class="btn btn-secondary">Contribute</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Documentation Preview -->
-    <section class="section documentation" id="documentation">
-        <div class="container">
-            <h2 class="section-title">Comprehensive Documentation</h2>
-            
-            <div class="docs-grid">
-                <a href="#getting-started" class="doc-card doc-card-link animate-on-scroll">
-                    <div class="doc-card-icon">📘</div>
-                    <h3>Getting Started</h3>
-                    <p>Quick installation and first deployment</p>
-                </a>
-                <a href="https://mlos-foundation.github.io/system-test/" class="doc-card doc-card-link animate-on-scroll">
-                    <div class="doc-card-icon">🧪</div>
-                    <h3>E2E Test Reports</h3>
-                    <p>Live validation reports for Axon & Core releases</p>
-                </a>
-                <a href="architecture.html" class="doc-card doc-card-link animate-on-scroll">
-                    <div class="doc-card-icon">🏗️</div>
-                    <h3>Architecture Guide</h3>
-                    <p>Deep dive into MLOS internals and design</p>
-                </a>
-                <a href="e2e-testing.html" class="doc-card doc-card-link animate-on-scroll">
-                    <div class="doc-card-icon">⚙️</div>
-                    <h3>Testing Guide</h3>
-                    <p>How to extend E2E tests for new models</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call-to-Action Section -->
-    <section class="cta-section" id="cta">
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="container">
             <h2>Ready to Transform Your ML Infrastructure?</h2>
-            <p>Join forward-thinking teams building production AI with MLOS</p>
-                <div class="cta-buttons">
-                <a href="#getting-started" class="btn btn-primary">Get Started</a>
-                <a href="demo.html" class="btn btn-secondary">Schedule Demo</a>
-                </div>
-            <p style="margin-top: var(--spacing-md); font-size: 1rem; opacity: 0.8;">
-                Or explore our <a href="#documentation" style="color: white; text-decoration: underline;">documentation</a> and <a href="https://github.com/mlOS-foundation" style="color: white; text-decoration: underline;">GitHub repositories</a>
+            <p>
+                Join organizations building production AI with kernel-level optimization.
+                MLOS v5.0.0-alpha is available now with complete kernel tensor operations.
             </p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download v5.0.0-alpha</a>
+                <a href="demo.html" class="btn btn-secondary" style="background: transparent; border-color: white; color: white;">Schedule Demo</a>
             </div>
-        </section>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer" id="contact">
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>MLOS Foundation</h4>
-                    <p style="color: #94a3b8; margin-top: var(--spacing-xs);">
-                        OS-native ML resource orchestration
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>ml<span>OS</span> Foundation</h3>
+                    <p>Building the universal operating system for machine learning.
+                       Kernel-level optimization for enterprise AI workloads.</p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Patents Pending:</strong><br>
+                        US-63/861,527 • US-63/865,176
                     </p>
-            </div>
+                </div>
                 <div class="footer-section">
                     <h4>Platform</h4>
                     <ul>
-                        <li><a href="#documentation">Documentation</a></li>
                         <li><a href="architecture.html">Architecture</a></li>
                         <li><a href="ecosystem.html">Ecosystem</a></li>
-                        <li><a href="#performance">Benchmarks</a></li>
-                        <li><a href="#features">Roadmap</a></li>
+                        <li><a href="models.html">Models</a></li>
+                        <li><a href="runtime-modes.html">Runtime Modes</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
-                        <li><a href="#open-source">Community</a></li>
-                        <li><a href="https://github.com/mlOS-foundation">Contributing</a></li>
+                        <li><a href="https://github.com/mlOS-foundation/core-releases">Releases</a></li>
+                        <li><a href="https://mlos-foundation.github.io/system-test/">E2E Tests</a></li>
+                        <li><a href="e2e-testing.html">Testing Guide</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Connect</h4>
                     <ul>
-                        <li><a href="mailto:info@mlosfoundation.org">Email</a></li>
-                        <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
+                        <li><a href="mailto:info@mlosfoundation.org">Contact</a></li>
+                        <li><a href="demo.html">Schedule Demo</a></li>
+                        <li><a href="https://github.com/mlOS-foundation">Contribute</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 mlOS Foundation. MLOS and the MLOS logo are trademarks of mlOS Foundation.</p>
-                <p style="margin-top: 0.5rem;">Patent-protected technology.</p>
+                <p>&copy; 2025 mlOS Foundation. All rights reserved. MLOS is a trademark of mlOS Foundation.</p>
             </div>
         </div>
     </footer>
-
-    <script>
-        // Feature tabs functionality
-        function showFeature(index) {
-            const tabs = document.querySelectorAll('.feature-tab');
-            const contents = document.querySelectorAll('.feature-content');
-            
-            tabs.forEach((tab, i) => {
-                if (i === index) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-            
-            contents.forEach((content, i) => {
-                if (i === index) {
-                    content.classList.add('active');
-                } else {
-                    content.classList.remove('active');
-                }
-            });
-        }
-        
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.animate-on-scroll').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>

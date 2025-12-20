@@ -11,7 +11,7 @@
     
     <style>
         :root {
-            --color-primary: #1a365d;
+            --color-primary: #0f172a;
             --color-secondary: #3b82f6;
             --color-accent: #06b6d4;
             --color-success: #10b981;
@@ -23,25 +23,19 @@
             --font-sans: 'Inter', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: var(--font-sans);
             line-height: 1.7;
             color: var(--color-text);
             background: var(--color-bg);
         }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        /* Navigation */
+
+        /* Navigation - Consistent with index.html */
         .nav {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             padding: 1rem 0;
             position: fixed;
@@ -49,20 +43,69 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e2e8f0;
         }
-        
+
+        .nav > .container {
+            max-width: 1200px;
+        }
+
         .nav-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1280px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .logo span { color: var(--color-accent); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--color-secondary); }
+
+        .nav-cta {
+            background: var(--color-secondary);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+        }
+
+        .nav-cta:hover { background: #2563eb; }
+
+        .content-container {
+            max-width: 900px;
             margin: 0 auto;
             padding: 0 2rem;
         }
-        
-        .nav a { color: var(--color-text); text-decoration: none; }
-        .nav a:hover { color: var(--color-secondary); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+        }
         
         /* Header */
         .header {
@@ -230,12 +273,19 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="nav">
-        <div class="nav-content">
-            <a href="index.html" style="font-weight: 700; font-size: 1.1rem;">← MLOS Foundation</a>
-            <div>
-                <a href="https://mlos-foundation.github.io/system-test/" style="margin-right: 2rem;">Live Reports</a>
-                <a href="https://github.com/mlOS-foundation/system-test">GitHub</a>
+        <div class="container">
+            <div class="nav-content">
+                <a href="index.html" class="logo">ml<span>OS</span></a>
+                <ul class="nav-links">
+                    <li><a href="architecture.html">Architecture</a></li>
+                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="models.html">Models</a></li>
+                    <li><a href="runtime-modes.html">Runtime</a></li>
+                    <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
+                    <li><a href="index.html#getting-started" class="nav-cta">Get Started</a></li>
+                </ul>
             </div>
         </div>
     </nav>

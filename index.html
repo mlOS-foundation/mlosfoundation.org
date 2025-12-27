@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MLOS Foundation | Enterprise ML Infrastructure</title>
-    <meta name="description" content="Enterprise-grade ML infrastructure with kernel-level optimization. Deploy models at scale with MLOS Core v5.0.1-alpha.">
+    <meta name="description" content="Enterprise-grade ML infrastructure with kernel-level optimization. Deploy models at scale with MLOS Core v5.1.0-alpha featuring kernel module integration.">
 
     <!-- Open Graph -->
     <meta property="og:title" content="MLOS Foundation | Enterprise ML Infrastructure">
@@ -640,7 +640,7 @@
             <div class="hero-grid">
                 <div class="hero-content">
                     <div class="hero-badge">
-                        MLOS Core <span class="version">v5.0.1-alpha</span>
+                        MLOS Core <span class="version">v5.1.0-alpha</span> - Kernel Integration
                     </div>
                     <h1>Enterprise ML Infrastructure with <span>Kernel-Level</span> Optimization</h1>
                     <p class="hero-description">
@@ -686,6 +686,10 @@
                         <div><span class="prompt">$</span> <span class="command">sudo insmod mlos-ml.ko</span></div>
                         <div class="success">✓ Kernel module loaded</div>
                         <div class="output">/dev/mlos-ml created (major 239)</div>
+                        <br>
+                        <div><span class="prompt">$</span> <span class="command">mlos_core --http-port 8080</span></div>
+                        <div class="success">✓ Kernel module integration active</div>
+                        <div class="output">Kernel module version: 1.0.0 (API v1)</div>
                     </div>
                 </div>
             </div>
@@ -698,13 +702,13 @@
             <div class="version-grid">
                 <div class="version-card">
                     <h3>MLOS Core</h3>
-                    <div class="version">v5.0.1-alpha</div>
-                    <div class="status">Smart Plugin Selection</div>
+                    <div class="version">v5.1.0-alpha</div>
+                    <div class="status">Kernel Module Integration</div>
                 </div>
                 <div class="version-card">
                     <h3>Kernel Module</h3>
                     <div class="version">v5.0.0-alpha</div>
-                    <div class="status">4 Kernels Supported</div>
+                    <div class="status">Core Integration Ready</div>
                 </div>
                 <div class="version-card">
                     <h3>Axon CLI</h3>
@@ -891,10 +895,10 @@
             <h2>Ready to Transform Your ML Infrastructure?</h2>
             <p>
                 Join organizations building production AI with kernel-level optimization.
-                MLOS v5.0.1-alpha is available now with smart plugin selection and complete kernel tensor operations.
+                MLOS v5.1.0-alpha is now available with full kernel module integration - Core now connects directly to the kernel module for zero-copy tensor operations.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download v5.0.1-alpha</a>
+                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download v5.1.0-alpha</a>
                 <a href="demo.html" class="btn btn-secondary" style="background: transparent; border-color: white; color: white;">Schedule Demo</a>
             </div>
         </div>

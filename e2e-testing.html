@@ -320,7 +320,7 @@
 │  1. Download Releases          2. Install Models                    │
 │  ┌──────────────────┐         ┌──────────────────┐                 │
 │  │  Axon v3.1.9     │         │  Hugging Face    │                 │
-│  │  Core v5.2.0     │         │  Models → ONNX   │                 │
+│  │  Core v5.3.0     │         │  Models → ONNX   │                 │
 │  └──────────────────┘         └──────────────────┘                 │
 │           │                            │                            │
 │           ▼                            ▼                            │
@@ -386,61 +386,120 @@
             </div>
 
             <h2>Currently Tested Models</h2>
-            
+
+            <p>Latest test run: <strong>18 models, 100% success rate</strong> (Core v5.3.0-alpha, Axon v3.1.9)</p>
+
             <table>
                 <thead>
                     <tr>
                         <th>Category</th>
                         <th>Model</th>
                         <th>Status</th>
-                        <th>Required Inputs</th>
+                        <th>Kernel Speedup</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="3"><strong>NLP</strong></td>
+                        <td rowspan="7"><strong>NLP</strong></td>
                         <td>GPT-2 (DistilGPT2)</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>input_ids</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.01x</td>
                     </tr>
                     <tr>
                         <td>BERT</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>input_ids</code>, <code>attention_mask</code>, <code>token_type_ids</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.98x</td>
                     </tr>
                     <tr>
                         <td>RoBERTa</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>input_ids</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.00x</td>
                     </tr>
                     <tr>
-                        <td rowspan="5"><strong>Vision</strong></td>
+                        <td>ALBERT</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.03x</td>
+                    </tr>
+                    <tr>
+                        <td>T5</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.93x</td>
+                    </tr>
+                    <tr>
+                        <td>DistilBERT</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.02x</td>
+                    </tr>
+                    <tr>
+                        <td>Sentence-Transformers</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.01x</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4"><strong>LLM</strong></td>
+                        <td>Llama-3.2-1B</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td><strong>1.18x</strong></td>
+                    </tr>
+                    <tr>
+                        <td>TinyLlama</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.02x</td>
+                    </tr>
+                    <tr>
+                        <td>Qwen2-0.5B</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.04x</td>
+                    </tr>
+                    <tr>
+                        <td>DeepSeek-Coder-1.3B</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.99x</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="6"><strong>Vision</strong></td>
                         <td>ResNet-50</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>pixel_values</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.99x</td>
                     </tr>
                     <tr>
                         <td>ViT</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>pixel_values</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.00x</td>
                     </tr>
                     <tr>
                         <td>ConvNeXt</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>pixel_values</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.01x</td>
                     </tr>
                     <tr>
                         <td>MobileNetV2</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>pixel_values</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.00x</td>
                     </tr>
                     <tr>
                         <td>DeiT</td>
-                        <td><span class="badge badge-success">✅ Passing</span></td>
-                        <td><code>pixel_values</code></td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.99x</td>
+                    </tr>
+                    <tr>
+                        <td>EfficientNet</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>1.02x</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multimodal</strong></td>
+                        <td>CLIP</td>
+                        <td><span class="badge badge-success">Passing</span></td>
+                        <td>0.99x</td>
                     </tr>
                 </tbody>
             </table>
+
+            <div class="info-box success">
+                <strong>Kernel Mode Performance:</strong> Average speedup of <strong>1.01x</strong> across all models.
+                LLMs show the best improvement with Llama-3.2-1B achieving <strong>1.18x</strong> speedup in kernel mode.
+            </div>
 
             <h2>Adding a New Model</h2>
 
@@ -516,19 +575,20 @@ curl -X POST http://localhost:18080/models/my_new_model/inference \
 
             <h3>Locally</h3>
 <pre># Full E2E test
-./scripts/test-release-e2e.sh.bash
+./scripts/test-release-e2e.sh
 
 # With specific versions
-AXON_VERSION=v3.1.9 CORE_VERSION=5.3.0-alpha ./scripts/test-release-e2e.sh.bash</pre>
+AXON_VERSION=v3.1.9 CORE_VERSION=5.3.0-alpha ./scripts/test-release-e2e.sh</pre>
 
             <h3>GitHub Actions</h3>
-<pre># Trigger manually
-gh workflow run e2e-test.yml \
+<pre># Trigger unified E2E test (userspace + kernel mode)
+gh workflow run e2e-unified.yml \
   -f axon_version=v3.1.9 \
-  -f core_version=5.3.0-alpha
+  -f core_version=5.3.0-alpha \
+  -f kernel_mode=scheduler
 
 # View results
-gh run list --workflow=e2e-test.yml</pre>
+gh run list --workflow=e2e-unified.yml</pre>
 
             <h2>Troubleshooting</h2>
 

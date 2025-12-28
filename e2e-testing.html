@@ -519,13 +519,13 @@ curl -X POST http://localhost:18080/models/my_new_model/inference \
 ./scripts/test-release-e2e.sh.bash
 
 # With specific versions
-AXON_VERSION=v3.1.9 CORE_VERSION=5.2.0-alpha ./scripts/test-release-e2e.sh.bash</pre>
+AXON_VERSION=v3.1.9 CORE_VERSION=5.3.0-alpha ./scripts/test-release-e2e.sh.bash</pre>
 
             <h3>GitHub Actions</h3>
 <pre># Trigger manually
 gh workflow run e2e-test.yml \
   -f axon_version=v3.1.9 \
-  -f core_version=5.2.0-alpha
+  -f core_version=5.3.0-alpha
 
 # View results
 gh run list --workflow=e2e-test.yml</pre>

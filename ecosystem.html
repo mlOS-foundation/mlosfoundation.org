@@ -867,7 +867,7 @@ axon install hf/microsoft/resnet-50@latest
 # 2. Register with MLOS Core
 axon register hf/bert-base-uncased@latest
 
-# 3. Run inference via MLOS Core API (v6.0.0-alpha)
+# 3. Run inference via MLOS Core API (v6.1.0-alpha)
 curl -X POST http://localhost:8080/models/hf%2Fbert-base-uncased@latest/inference \
   -H "Content-Type: application/json" \
   -d '{"inputs":{"input_ids":[[101,2054,2003,102]]}}'</code></pre>

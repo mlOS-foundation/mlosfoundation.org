@@ -650,16 +650,20 @@
                     </p>
                     <div class="hero-stats">
                         <div class="stat">
-                            <div class="stat-value">8</div>
+                            <div class="stat-value">23</div>
                             <div class="stat-label">Kernel ioctls</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">Models Tested</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">E2E Pass Rate</div>
                         </div>
                         <div class="stat">
                             <div class="stat-value">4</div>
                             <div class="stat-label">Linux Kernels</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">2</div>
-                            <div class="stat-label">Patents Pending</div>
                         </div>
                     </div>
                     <div class="hero-ctas">
@@ -717,8 +721,8 @@
                 </div>
                 <div class="version-card">
                     <h3>E2E Tests</h3>
-                    <div class="version">Passing</div>
-                    <div class="status"><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-accent);">View Report</a></div>
+                    <div class="version">15 Models • 100%</div>
+                    <div class="status"><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-accent);">View Report →</a></div>
                 </div>
             </div>
         </div>
@@ -735,6 +739,24 @@
                 </p>
             </div>
             <div class="feature-grid">
+                <div class="feature-card" style="border: 2px solid var(--color-accent);">
+                    <div class="feature-icon">🌐</div>
+                    <h3>NUMA-Aware Placement</h3>
+                    <p>Intelligent tensor allocation across NUMA nodes for multi-socket systems. Up to 40% latency reduction.</p>
+                    <code>MLOS_ALLOC_NUMA_LOCAL / MLOS_NUMA_MIGRATE</code>
+                </div>
+                <div class="feature-card" style="border: 2px solid var(--color-accent);">
+                    <div class="feature-icon">🔮</div>
+                    <h3>Predictive Prefetching</h3>
+                    <p>ML-based prediction of tensor access patterns with async prefetching. Reduced cache misses.</p>
+                    <code>MLOS_PREFETCH_PLAN_SET / MLOS_PREFETCH_STATS</code>
+                </div>
+                <div class="feature-card" style="border: 2px solid var(--color-accent);">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Deadline Prediction</h3>
+                    <p>Early warning system for inference deadline violations with adaptive scheduling for SLA compliance.</p>
+                    <code>MLOS_DEADLINE_PREDICT / MLOS_MODEL_PREDICT</code>
+                </div>
                 <div class="feature-card">
                     <div class="feature-icon">📌</div>
                     <h3>Tensor Pinning</h3>
@@ -757,7 +779,7 @@
                     <div class="feature-icon">🎮</div>
                     <h3>GPU Orchestration</h3>
                     <p>Multi-GPU enumeration, workload distribution, and simulated GPU backend for testing.</p>
-                    <code>MLOS_GPU_LIST</code>
+                    <code>MLOS_GPU_LIST / MLOS_GPU_SELECT</code>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">📦</div>
@@ -895,7 +917,7 @@
             <h2>Ready to Transform Your ML Infrastructure?</h2>
             <p>
                 Join organizations building production AI with kernel-level optimization.
-                MLOS v6.0.0-alpha is now available with plugin kernel scheduling - ONNX, GGUF, and PyTorch plugins now use ML-aware scheduling priorities for optimized inference performance.
+                MLOS v6.0.0-alpha features NUMA-aware tensor placement, predictive prefetching, and deadline-miss prediction for production inference workloads.
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center;">
                 <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download v6.0.0-alpha</a>

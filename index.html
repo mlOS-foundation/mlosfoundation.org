@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLOS Foundation | Enterprise ML Infrastructure</title>
-    <meta name="description" content="Enterprise-grade ML infrastructure with kernel-level optimization. Deploy models at scale with MLOS Core v6.2.0-alpha featuring NUMA-aware tensor placement and predictive prefetching.">
+    <title>MLOS Foundation | Production ML Infrastructure</title>
+    <meta name="description" content="Deploy ML models at scale with production-grade performance. MLOS delivers 40% lower latency through intelligent memory management and adaptive scheduling.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="MLOS Foundation | Enterprise ML Infrastructure">
-    <meta property="og:description" content="Kernel-level ML optimization for production AI workloads">
+    <meta property="og:title" content="MLOS Foundation | Production ML Infrastructure">
+    <meta property="og:description" content="Production-grade ML infrastructure for enterprise AI workloads">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mlosfoundation.org">
 
@@ -19,17 +19,22 @@
     <style>
         :root {
             --color-primary: #0f172a;
-            --color-secondary: #3b82f6;
-            --color-accent: #06b6d4;
-            --color-success: #10b981;
-            --color-warning: #f59e0b;
+            --color-secondary: #2563eb;
+            --color-accent: #0ea5e9;
+            --color-success: #059669;
             --color-text: #1e293b;
             --color-text-muted: #64748b;
+            --color-text-light: #94a3b8;
             --color-bg: #ffffff;
             --color-bg-alt: #f8fafc;
-            --color-dark: #0f172a;
+            --color-bg-subtle: #f1f5f9;
+            --color-border: #e2e8f0;
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,21 +44,22 @@
             line-height: 1.6;
             color: var(--color-text);
             background: var(--color-bg);
+            -webkit-font-smoothing: antialiased;
         }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
         /* Navigation */
         .nav {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
             padding: 1rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .nav-content {
@@ -67,9 +73,10 @@
             font-weight: 800;
             color: var(--color-primary);
             text-decoration: none;
+            letter-spacing: -0.02em;
         }
 
-        .logo span { color: var(--color-accent); }
+        .logo span { color: var(--color-secondary); }
 
         .nav-links {
             display: flex;
@@ -80,145 +87,389 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--color-text);
+            color: var(--color-text-muted);
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover { color: var(--color-secondary); }
+        .nav-links a:hover { color: var(--color-primary); }
 
         .nav-cta {
-            background: var(--color-secondary);
+            background: var(--color-primary);
             color: white !important;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
-        .nav-cta:hover { background: #2563eb; }
+        .nav-cta:hover { background: #1e293b; }
 
         /* Hero */
         .hero {
-            padding: 8rem 0 4rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
+            padding: 10rem 0 6rem;
+            background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+        .hero-content {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: var(--color-primary);
-            color: white;
+            background: var(--color-bg-subtle);
+            color: var(--color-text-muted);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            border: 1px solid var(--color-border);
         }
 
         .hero-badge .version {
             background: var(--color-success);
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
+            color: white;
+            padding: 0.125rem 0.5rem;
+            border-radius: 100px;
             font-size: 0.75rem;
+            font-weight: 600;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 3.75rem;
             font-weight: 800;
             line-height: 1.1;
             color: var(--color-primary);
             margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
         }
-
-        .hero h1 span { color: var(--color-secondary); }
 
         .hero-description {
             font-size: 1.25rem;
             color: var(--color-text-muted);
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             line-height: 1.7;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat {
-            text-align: left;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--color-primary);
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--color-text-muted);
         }
 
         .hero-ctas {
             display: flex;
             gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
         }
 
         .btn {
             padding: 0.875rem 1.75rem;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.95rem;
         }
 
         .btn-primary {
-            background: var(--color-secondary);
+            background: var(--color-primary);
             color: white;
         }
 
         .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            background: #1e293b;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-secondary {
             background: white;
             color: var(--color-primary);
-            border: 2px solid var(--color-primary);
+            border: 1px solid var(--color-border);
         }
 
         .btn-secondary:hover {
-            background: var(--color-primary);
-            color: white;
+            background: var(--color-bg-alt);
+            border-color: var(--color-text-light);
         }
 
-        /* Terminal Preview */
+        /* Stats Row */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        /* Value Props Section */
+        .value-props {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .value-card {
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s;
+        }
+
+        .value-card:hover {
+            border-color: var(--color-secondary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-bg-subtle);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .value-card p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+            background: var(--color-bg-alt);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .workflow-step {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: '';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0.5rem;
+            height: 0.5rem;
+            background: var(--color-border);
+            border-radius: 50%;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0 auto 1rem;
+        }
+
+        .workflow-step h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-step p {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Capabilities Section */
+        .capabilities {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .capability-card {
+            display: flex;
+            gap: 1.25rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+            transition: all 0.2s;
+        }
+
+        .capability-card:hover {
+            background: var(--color-bg-alt);
+        }
+
+        .capability-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-bg-subtle);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .capability-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .capability-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            line-height: 1.5;
+        }
+
+        /* Terminal Demo */
+        .demo-section {
+            padding: 6rem 0;
+            background: var(--color-primary);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .demo-content h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .demo-content p {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .demo-features {
+            list-style: none;
+        }
+
+        .demo-features li {
+            color: white;
+            font-size: 0.95rem;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .demo-features li::before {
+            content: '✓';
+            color: var(--color-success);
+            font-weight: 700;
+        }
+
         .terminal {
-            background: var(--color-dark);
+            background: #1e293b;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--shadow-xl);
         }
 
         .terminal-header {
-            background: #1e293b;
+            background: #334155;
             padding: 0.75rem 1rem;
             display: flex;
             align-items: center;
@@ -238,310 +489,89 @@
         .terminal-content {
             padding: 1.5rem;
             font-family: var(--font-mono);
-            font-size: 0.9rem;
-            line-height: 1.8;
+            font-size: 0.85rem;
+            line-height: 1.9;
         }
 
         .terminal-content .prompt { color: var(--color-accent); }
-        .terminal-content .command { color: var(--color-success); }
+        .terminal-content .command { color: #10b981; }
         .terminal-content .output { color: #94a3b8; }
-        .terminal-content .success { color: var(--color-success); }
+        .terminal-content .success { color: #10b981; }
 
-        /* Version Banner */
-        .version-banner {
-            background: var(--color-primary);
-            color: white;
-            padding: 3rem 0;
-        }
-
-        .version-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .version-card {
-            text-align: center;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-        }
-
-        .version-card h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        .version-card .version {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--color-accent);
-        }
-
-        .version-card .status {
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            opacity: 0.7;
-        }
-
-        /* Features Section */
-        .section {
-            padding: 5rem 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--color-text-muted);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Kernel Features */
-        .kernel-features {
+        /* Resources */
+        .resources {
+            padding: 6rem 0;
             background: var(--color-bg-alt);
         }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border-color: var(--color-secondary);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-card p {
-            color: var(--color-text-muted);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .feature-card code {
-            display: block;
-            background: var(--color-bg-alt);
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--color-secondary);
-            margin-top: 1rem;
-        }
-
-        /* Architecture Diagram */
-        .architecture {
-            background: white;
-        }
-
-        .arch-diagram {
-            background: var(--color-dark);
-            border-radius: 16px;
-            padding: 3rem;
-            color: white;
-        }
-
-        .arch-layer {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            padding: 1rem 1.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            border-left: 4px solid var(--color-accent);
-        }
-
-        .arch-layer-name {
-            font-weight: 700;
-            min-width: 200px;
-        }
-
-        .arch-layer-desc {
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        .arch-layer.highlight {
-            background: rgba(6, 182, 212, 0.2);
-            border-left-color: var(--color-success);
-        }
-
-        /* Quick Links */
-        .quick-links {
-            background: var(--color-bg-alt);
-        }
-
-        .links-grid {
+        .resources-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
         }
 
-        .link-card {
+        .resource-card {
             background: white;
             padding: 1.5rem;
             border-radius: 12px;
             text-decoration: none;
             color: inherit;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--color-border);
             transition: all 0.2s;
         }
 
-        .link-card:hover {
+        .resource-card:hover {
             border-color: var(--color-secondary);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
-        .link-card h3 {
+        .resource-card h3 {
             font-size: 1rem;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--color-primary);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 0.375rem;
         }
 
-        .link-card p {
-            font-size: 0.85rem;
+        .resource-card p {
+            font-size: 0.875rem;
             color: var(--color-text-muted);
-        }
-
-        /* Getting Started */
-        .getting-started {
-            background: white;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .step {
-            position: relative;
-            padding-left: 4rem;
-        }
-
-        .step-number {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 3rem;
-            height: 3rem;
-            background: var(--color-secondary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.25rem;
-        }
-
-        .step h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .step p {
-            font-size: 0.9rem;
-            color: var(--color-text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .step code {
-            display: block;
-            background: var(--color-dark);
-            color: var(--color-success);
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
         }
 
         /* CTA Section */
         .cta-section {
-            background: linear-gradient(135deg, var(--color-primary) 0%, #1e3a5f 100%);
-            color: white;
-            padding: 5rem 0;
+            padding: 6rem 0;
+            background: white;
             text-align: center;
         }
 
         .cta-section h2 {
             font-size: 2.5rem;
             font-weight: 800;
+            color: var(--color-primary);
             margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .cta-section p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            color: var(--color-text-muted);
             margin-bottom: 2rem;
-            max-width: 600px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .cta-section .btn-primary {
-            background: white;
-            color: var(--color-primary);
-        }
-
-        .cta-section .btn-primary:hover {
-            background: var(--color-accent);
-            color: white;
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
         }
 
         /* Footer */
         .footer {
-            background: var(--color-dark);
-            color: #94a3b8;
+            background: var(--color-primary);
+            color: var(--color-text-light);
             padding: 4rem 0 2rem;
         }
 
@@ -568,21 +598,19 @@
 
         .footer-section h4 {
             color: white;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 0.875rem;
+            font-weight: 600;
             margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .footer-section ul {
-            list-style: none;
-        }
+        .footer-section ul { list-style: none; }
 
-        .footer-section li {
-            margin-bottom: 0.5rem;
-        }
+        .footer-section li { margin-bottom: 0.5rem; }
 
         .footer-section a {
-            color: #94a3b8;
+            color: var(--color-text-light);
             text-decoration: none;
             font-size: 0.9rem;
             transition: color 0.2s;
@@ -593,26 +621,45 @@
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 2rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.85rem;
         }
 
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            color: var(--color-text-light);
+            text-decoration: none;
+        }
+
+        .footer-legal a:hover { color: white; }
+
         /* Responsive */
         @media (max-width: 1024px) {
-            .hero-grid { grid-template-columns: 1fr; }
-            .feature-grid { grid-template-columns: repeat(2, 1fr); }
-            .version-grid { grid-template-columns: repeat(2, 1fr); }
-            .links-grid { grid-template-columns: repeat(2, 1fr); }
-            .steps-grid { grid-template-columns: 1fr; }
+            .value-grid { grid-template-columns: repeat(2, 1fr); }
+            .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+            .capabilities-grid { grid-template-columns: 1fr; }
+            .demo-grid { grid-template-columns: 1fr; }
+            .resources-grid { grid-template-columns: repeat(2, 1fr); }
             .footer-grid { grid-template-columns: 1fr 1fr; }
+            .workflow-step::after { display: none; }
         }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
-            .hero-stats { flex-direction: column; gap: 1rem; }
-            .feature-grid { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .value-grid { grid-template-columns: 1fr; }
+            .workflow-grid { grid-template-columns: 1fr; }
+            .resources-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            .links-grid { grid-template-columns: 1fr; }
+            .hero-ctas { flex-direction: column; }
+            .cta-buttons { flex-direction: column; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
@@ -623,10 +670,9 @@
             <div class="nav-content">
                 <a href="index.html" class="logo">ml<span>OS</span></a>
                 <ul class="nav-links">
-                    <li><a href="architecture.html">Architecture</a></li>
-                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="architecture.html">Platform</a></li>
                     <li><a href="models.html">Models</a></li>
-                    <li><a href="runtime-modes.html">Runtime</a></li>
+                    <li><a href="ecosystem.html">Ecosystem</a></li>
                     <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
                     <li><a href="#getting-started" class="nav-cta">Get Started</a></li>
                 </ul>
@@ -637,39 +683,169 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        MLOS Core <span class="version">v6.2.0-alpha</span> - Kernel Integration
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="version">v6.2.0</span> Now available with predictive scheduling
+                </div>
+                <h1>Production ML Infrastructure That Scales</h1>
+                <p class="hero-description">
+                    Deploy machine learning models with enterprise-grade performance.
+                    MLOS delivers faster inference, intelligent memory management, and
+                    seamless integration with your existing infrastructure.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#getting-started" class="btn btn-primary">Get Started Free</a>
+                    <a href="demo.html" class="btn btn-secondary">Schedule Demo</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">40%</div>
+                        <div class="stat-label">Lower Latency</div>
                     </div>
-                    <h1>Enterprise ML Infrastructure with <span>Kernel-Level</span> Optimization</h1>
-                    <p class="hero-description">
-                        Deploy ML models at scale with true OS-native integration.
-                        MLOS provides kernel-level tensor management, ML-aware scheduling,
-                        and zero-copy memory operations for production AI workloads.
+                    <div class="stat">
+                        <div class="stat-value">18+</div>
+                        <div class="stat-label">Model Types</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">&lt;100ms</div>
+                        <div class="stat-label">P99 Inference</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Test Coverage</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-props">
+        <div class="container">
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="value-icon">&#9889;</div>
+                    <h3>Faster Time to Production</h3>
+                    <p>Deploy models in minutes with automatic optimization. No infrastructure expertise required - MLOS handles memory, scheduling, and scaling automatically.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">&#128200;</div>
+                    <h3>Predictable Performance</h3>
+                    <p>Meet your SLAs with adaptive scheduling that predicts and prevents deadline violations. Real-time monitoring ensures consistent inference latency.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">&#128274;</div>
+                    <h3>Enterprise Security</h3>
+                    <p>Deploy on-premise or in your cloud. Models never leave your infrastructure. SOC 2 compliant with full audit logging and access controls.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="getting-started">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">How It Works</div>
+                <h2 class="section-title">From Model to Production in Minutes</h2>
+                <p class="section-subtitle">A streamlined workflow that eliminates infrastructure complexity</p>
+            </div>
+            <div class="workflow-grid">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h4>Install</h4>
+                    <p>One-line installation with automatic dependency resolution</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h4>Add Models</h4>
+                    <p>Pull from HuggingFace, PyTorch Hub, or your private registry</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h4>Optimize</h4>
+                    <p>Automatic format conversion and hardware-specific tuning</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h4>Deploy</h4>
+                    <p>Production-ready API with monitoring and scaling built-in</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="capabilities">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Platform Capabilities</div>
+                <h2 class="section-title">Built for Enterprise Scale</h2>
+                <p class="section-subtitle">Everything you need to run ML workloads in production</p>
+            </div>
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <div class="capability-icon">&#128171;</div>
+                    <div class="capability-content">
+                        <h4>Intelligent Memory Management</h4>
+                        <p>Automatic tensor placement across NUMA nodes with predictive prefetching for optimal cache utilization</p>
+                    </div>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">&#9202;</div>
+                    <div class="capability-content">
+                        <h4>Adaptive Scheduling</h4>
+                        <p>Priority-based inference queues with deadline awareness to ensure latency-sensitive requests are handled first</p>
+                    </div>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">&#128202;</div>
+                    <div class="capability-content">
+                        <h4>Real-Time Observability</h4>
+                        <p>Comprehensive metrics, tracing, and alerting for inference performance, resource usage, and model health</p>
+                    </div>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">&#127760;</div>
+                    <div class="capability-content">
+                        <h4>Universal Model Support</h4>
+                        <p>Run ONNX, PyTorch, TensorFlow, and GGUF models with automatic format detection and conversion</p>
+                    </div>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">&#128736;</div>
+                    <div class="capability-content">
+                        <h4>Multi-GPU Orchestration</h4>
+                        <p>Automatic workload distribution across available GPUs with intelligent batching and load balancing</p>
+                    </div>
+                </div>
+                <div class="capability-card">
+                    <div class="capability-icon">&#128295;</div>
+                    <div class="capability-content">
+                        <h4>Simple REST & gRPC APIs</h4>
+                        <p>Standard interfaces that integrate with any application. SDKs available for Python, Go, and JavaScript</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="demo-grid">
+                <div class="demo-content">
+                    <h2>Deploy Your First Model in 60 Seconds</h2>
+                    <p>
+                        MLOS simplifies the entire ML deployment workflow. Install the CLI,
+                        add your model, and start serving inference requests immediately.
                     </p>
-                    <div class="hero-stats">
-                        <div class="stat">
-                            <div class="stat-value">27</div>
-                            <div class="stat-label">Kernel ioctls</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">18</div>
-                            <div class="stat-label">Models Tested</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">36</div>
-                            <div class="stat-label">Inferences</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value">100%</div>
-                            <div class="stat-label">E2E Pass Rate</div>
-                        </div>
-                    </div>
-                    <div class="hero-ctas">
-                        <a href="#getting-started" class="btn btn-primary">Get Started</a>
-                        <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-secondary">View Releases</a>
-                    </div>
+                    <ul class="demo-features">
+                        <li>Automatic ONNX conversion from PyTorch and TensorFlow</li>
+                        <li>Built-in model versioning and rollback</li>
+                        <li>Zero-downtime deployments</li>
+                        <li>Hardware-optimized inference out of the box</li>
+                    </ul>
                 </div>
                 <div class="terminal">
                     <div class="terminal-header">
@@ -679,240 +855,46 @@
                     </div>
                     <div class="terminal-content">
                         <div><span class="prompt">$</span> <span class="command">curl -sSL axon.mlosfoundation.org | sh</span></div>
-                        <div class="output">Installing Axon v3.1.9...</div>
-                        <div class="success">✓ Axon installed successfully</div>
+                        <div class="success">&#10003; Axon CLI installed</div>
                         <br>
                         <div><span class="prompt">$</span> <span class="command">axon install hf/bert-base-uncased@latest</span></div>
                         <div class="output">Downloading from Hugging Face...</div>
-                        <div class="output">Converting to ONNX format...</div>
-                        <div class="success">✓ Model installed: bert-base-uncased</div>
+                        <div class="output">Converting to optimized format...</div>
+                        <div class="success">&#10003; Model ready: bert-base-uncased</div>
                         <br>
-                        <div><span class="prompt">$</span> <span class="command">sudo insmod mlos-ml.ko</span></div>
-                        <div class="success">✓ Kernel module loaded</div>
-                        <div class="output">/dev/mlos-ml created (major 239)</div>
-                        <br>
-                        <div><span class="prompt">$</span> <span class="command">mlos_core --http-port 8080</span></div>
-                        <div class="success">✓ Kernel module integration active</div>
-                        <div class="output">Kernel module version: v6.2.0-alpha</div>
+                        <div><span class="prompt">$</span> <span class="command">mlos_core serve --port 8080</span></div>
+                        <div class="success">&#10003; Server running at http://localhost:8080</div>
+                        <div class="output">Ready to handle inference requests</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Version Banner -->
-    <section class="version-banner">
-        <div class="container">
-            <div class="version-grid">
-                <div class="version-card">
-                    <h3>MLOS Core</h3>
-                    <div class="version">v6.2.0-alpha</div>
-                    <div class="status">Kernel Module Integration</div>
-                </div>
-                <div class="version-card">
-                    <h3>Kernel Module</h3>
-                    <div class="version">v6.2.0-alpha</div>
-                    <div class="status">Core Integration Ready</div>
-                </div>
-                <div class="version-card">
-                    <h3>Axon CLI</h3>
-                    <div class="version">v3.1.9</div>
-                    <div class="status">Docker ONNX Fix</div>
-                </div>
-                <div class="version-card">
-                    <h3>E2E Tests</h3>
-                    <div class="version">18 Models • 36 Inferences</div>
-                    <div class="status"><a href="https://mlos-foundation.github.io/system-test/" style="color: var(--color-accent);">View Report →</a></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kernel Features -->
-    <section class="section kernel-features" id="features">
+    <!-- Resources -->
+    <section class="resources">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Kernel-Level ML Operations</h2>
-                <p class="section-subtitle">
-                    Complete ioctl interface for tensor memory management, ML-aware scheduling,
-                    and GPU orchestration directly in the Linux kernel.
-                </p>
+                <div class="section-label">Resources</div>
+                <h2 class="section-title">Everything You Need</h2>
             </div>
-            <div class="feature-grid">
-                <div class="feature-card" style="border: 2px solid var(--color-accent);">
-                    <div class="feature-icon">🌐</div>
-                    <h3>NUMA-Aware Placement</h3>
-                    <p>Intelligent tensor allocation across NUMA nodes for multi-socket systems. Up to 40% latency reduction.</p>
-                    <code>MLOS_ALLOC_NUMA_LOCAL / MLOS_NUMA_MIGRATE</code>
-                </div>
-                <div class="feature-card" style="border: 2px solid var(--color-accent);">
-                    <div class="feature-icon">🔮</div>
-                    <h3>Predictive Prefetching</h3>
-                    <p>ML-based prediction of tensor access patterns with async prefetching. Reduced cache misses.</p>
-                    <code>MLOS_PREFETCH_PLAN_SET / MLOS_PREFETCH_STATS</code>
-                </div>
-                <div class="feature-card" style="border: 2px solid var(--color-accent);">
-                    <div class="feature-icon">⏱️</div>
-                    <h3>Deadline Prediction</h3>
-                    <p>Early warning system for inference deadline violations with adaptive scheduling for SLA compliance.</p>
-                    <code>MLOS_DEADLINE_PREDICT / MLOS_MODEL_PREDICT</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📌</div>
-                    <h3>Tensor Pinning</h3>
-                    <p>Pin tensors in memory for zero-copy mmap access. Prevent eviction during critical inference operations.</p>
-                    <code>MLOS_TENSOR_PIN / MLOS_TENSOR_UNPIN</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Memory Management</h3>
-                    <p>LRU-based eviction, pool defragmentation, and intelligent memory trimming for optimal GPU utilization.</p>
-                    <code>MLOS_MEMORY_DEFRAG / MLOS_MEMORY_TRIM</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>ML-Aware Scheduler</h3>
-                    <p>Priority queues (REALTIME, HIGH, NORMAL, BATCH) for latency-sensitive inference workloads.</p>
-                    <code>MLOS_INFERENCE_START / MLOS_INFERENCE_WAIT</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎮</div>
-                    <h3>GPU Orchestration</h3>
-                    <p>Multi-GPU enumeration, workload distribution, and simulated GPU backend for testing.</p>
-                    <code>MLOS_GPU_LIST / MLOS_GPU_SELECT</code>
-                </div>
-                <div class="feature-card" style="border: 2px solid var(--color-accent);">
-                    <div class="feature-icon">📊</div>
-                    <h3>Enhanced Statistics</h3>
-                    <p>NUMA memory stats, prefetch learning metrics, prediction accuracy, and latency variance analysis.</p>
-                    <code>MLOS_NUMA_STATS / MLOS_PREDICTION_ACCURACY</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📦</div>
-                    <h3>Universal Model Delivery</h3>
-                    <p>Axon CLI for installing models from HuggingFace, PyTorch Hub, TensorFlow Hub, and ModelScope.</p>
-                    <code>axon install hf/model@version</code>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔌</div>
-                    <h3>Multi-Runtime Support</h3>
-                    <p>ONNX Runtime for universal inference, llama.cpp for native GGUF/LLM execution.</p>
-                    <code>ONNX + GGUF + PyTorch</code>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Architecture -->
-    <section class="section architecture" id="architecture">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">OS-Native Architecture</h2>
-                <p class="section-subtitle">
-                    MLOS operates at the kernel level, treating ML models as first-class OS resources.
-                </p>
-            </div>
-            <div class="arch-diagram">
-                <div class="arch-layer">
-                    <span class="arch-layer-name">Application Layer</span>
-                    <span class="arch-layer-desc">Your ML applications, Axon CLI, REST/gRPC APIs</span>
-                </div>
-                <div class="arch-layer">
-                    <span class="arch-layer-name">MLOS Core Runtime</span>
-                    <span class="arch-layer-desc">Model registry, plugin system, resource management</span>
-                </div>
-                <div class="arch-layer">
-                    <span class="arch-layer-name">Standard Model Interface</span>
-                    <span class="arch-layer-desc">Framework-agnostic plugin architecture (SMI)</span>
-                </div>
-                <div class="arch-layer highlight">
-                    <span class="arch-layer-name">Kernel Module (mlos-ml)</span>
-                    <span class="arch-layer-desc">/dev/mlos-ml character device, ioctl operations</span>
-                </div>
-                <div class="arch-layer highlight">
-                    <span class="arch-layer-name">Linux Kernel</span>
-                    <span class="arch-layer-desc">Tensor memory manager, ML scheduler, GPU driver integration</span>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 2rem;">
-                <a href="architecture.html" class="btn btn-secondary">View Full Architecture →</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quick Links -->
-    <section class="section quick-links" id="resources">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Resources</h2>
-                <p class="section-subtitle">Everything you need to get started with MLOS</p>
-            </div>
-            <div class="links-grid">
-                <a href="https://github.com/mlOS-foundation/core-releases" class="link-card">
-                    <h3>📦 Core Releases</h3>
-                    <p>Download MLOS Core binaries for Linux and macOS</p>
+            <div class="resources-grid">
+                <a href="https://github.com/mlOS-foundation/core-releases" class="resource-card">
+                    <h3>Downloads</h3>
+                    <p>Pre-built binaries for Linux and macOS</p>
                 </a>
-                <a href="https://github.com/mlOS-foundation/mlos-linux-kernel/releases" class="link-card">
-                    <h3>🐧 Kernel Modules</h3>
-                    <p>Pre-built .ko files for Ubuntu 22.04, 24.04, and Flatcar</p>
+                <a href="https://github.com/mlOS-foundation/axon" class="resource-card">
+                    <h3>Documentation</h3>
+                    <p>Guides, tutorials, and API reference</p>
                 </a>
-                <a href="https://github.com/mlOS-foundation/axon" class="link-card">
-                    <h3>⚡ Axon CLI</h3>
-                    <p>Universal model installer with multi-repository support</p>
+                <a href="https://mlos-foundation.github.io/system-test/" class="resource-card">
+                    <h3>Test Reports</h3>
+                    <p>Live E2E validation for all models</p>
                 </a>
-                <a href="https://mlos-foundation.github.io/system-test/" class="link-card">
-                    <h3>🧪 E2E Test Reports</h3>
-                    <p>Live validation reports for all supported models</p>
+                <a href="https://github.com/mlOS-foundation" class="resource-card">
+                    <h3>GitHub</h3>
+                    <p>Source code and community</p>
                 </a>
-                <a href="architecture.html" class="link-card">
-                    <h3>🏗️ Architecture</h3>
-                    <p>Deep dive into MLOS internals and design decisions</p>
-                </a>
-                <a href="ecosystem.html" class="link-card">
-                    <h3>🌐 Ecosystem</h3>
-                    <p>All MLOS components and how they work together</p>
-                </a>
-                <a href="models.html" class="link-card">
-                    <h3>🤖 Supported Models</h3>
-                    <p>NLP, Vision, LLM models tested and validated</p>
-                </a>
-                <a href="https://github.com/mlOS-foundation" class="link-card">
-                    <h3>💻 GitHub</h3>
-                    <p>Source code, issues, and contributions</p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Getting Started -->
-    <section class="section getting-started" id="getting-started">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Get Started</h2>
-                <p class="section-subtitle">Deploy your first ML model with MLOS in minutes</p>
-            </div>
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Install Axon</h3>
-                    <p>The universal model installer that works with all major ML repositories</p>
-                    <code>curl -sSL axon.mlosfoundation.org | sh</code>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Install a Model</h3>
-                    <p>Choose from HuggingFace, PyTorch Hub, TensorFlow Hub, or ModelScope</p>
-                    <code>axon install hf/bert-base-uncased@latest</code>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Load Kernel Module</h3>
-                    <p>Enable kernel-level optimizations (Ubuntu 22.04/24.04, Flatcar)</p>
-                    <code>sudo insmod mlos-ml-v6.2.0-alpha-linux-6.8.ko</code>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 3rem;">
-                <a href="https://github.com/mlOS-foundation/axon#readme" class="btn btn-primary">View Full Documentation →</a>
             </div>
         </div>
     </section>
@@ -920,14 +902,14 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>Ready to Transform Your ML Infrastructure?</h2>
+            <h2>Ready to Simplify Your ML Infrastructure?</h2>
             <p>
-                Join organizations building production AI with kernel-level optimization.
-                MLOS v6.2.0-alpha features NUMA-aware tensor placement, predictive prefetching, and deadline-miss prediction for production inference workloads.
+                Join teams shipping ML to production faster with MLOS.
+                Free for development, with enterprise support available.
             </p>
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download v6.2.0-alpha</a>
-                <a href="demo.html" class="btn btn-secondary" style="background: transparent; border-color: white; color: white;">Schedule Demo</a>
+            <div class="cta-buttons">
+                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-primary">Download Free</a>
+                <a href="demo.html" class="btn btn-secondary">Talk to Sales</a>
             </div>
         </div>
     </section>
@@ -938,20 +920,19 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <h3>ml<span>OS</span> Foundation</h3>
-                    <p>Building the universal operating system for machine learning.
-                       Kernel-level optimization for enterprise AI workloads.</p>
-                    <p style="margin-top: 1rem;">
-                        <strong>Patents Pending:</strong><br>
-                        US-63/861,527 • US-63/865,176
+                    <p>Production-grade ML infrastructure for enterprise teams.
+                       Deploy models faster with intelligent optimization.</p>
+                    <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+                        Patents Pending: US-63/861,527 &bull; US-63/865,176
                     </p>
                 </div>
                 <div class="footer-section">
                     <h4>Platform</h4>
                     <ul>
                         <li><a href="architecture.html">Architecture</a></li>
-                        <li><a href="ecosystem.html">Ecosystem</a></li>
-                        <li><a href="models.html">Models</a></li>
+                        <li><a href="models.html">Supported Models</a></li>
                         <li><a href="runtime-modes.html">Runtime Modes</a></li>
+                        <li><a href="ecosystem.html">Ecosystem</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -959,12 +940,12 @@
                     <ul>
                         <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
                         <li><a href="https://github.com/mlOS-foundation/core-releases">Releases</a></li>
-                        <li><a href="https://mlos-foundation.github.io/system-test/">E2E Tests</a></li>
+                        <li><a href="https://mlos-foundation.github.io/system-test/">Test Reports</a></li>
                         <li><a href="e2e-testing.html">Testing Guide</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Connect</h4>
+                    <h4>Company</h4>
                     <ul>
                         <li><a href="mailto:info@mlosfoundation.org">Contact</a></li>
                         <li><a href="demo.html">Schedule Demo</a></li>
@@ -973,7 +954,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 mlOS Foundation. All rights reserved. MLOS is a trademark of mlOS Foundation.</p>
+                <p>&copy; 2025 mlOS Foundation. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
             </div>
         </div>
     </footer>

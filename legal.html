@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal | mlOS Foundation</title>
+    <meta name="description" content="Privacy Policy, Terms of Use, and Patent Information for mlOS Foundation.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #030712;
+            --bg-base: #0a0f1a;
+            --bg-elevated: #111827;
+            --bg-surface: #1f2937;
+            --border: #374151;
+            --border-subtle: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --glow-blue: rgba(59, 130, 246, 0.1);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-base);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 15, 26, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 140px 0 60px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-base) 100%);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Legal Navigation */
+        .legal-nav {
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 68px;
+            z-index: 50;
+        }
+
+        .legal-nav-inner {
+            display: flex;
+            gap: 8px;
+            padding: 16px 0;
+            overflow-x: auto;
+        }
+
+        .legal-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .legal-nav a:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+
+        .legal-nav a.active {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep);
+            border-color: transparent;
+        }
+
+        /* Legal Content */
+        .legal-content {
+            padding: 60px 0 100px;
+        }
+
+        .legal-section {
+            margin-bottom: 80px;
+            scroll-margin-top: 160px;
+        }
+
+        .legal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 24px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .last-updated {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-left: auto;
+        }
+
+        .legal-text {
+            max-width: 800px;
+        }
+
+        .legal-text h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 32px 0 16px;
+        }
+
+        .legal-text h3:first-child {
+            margin-top: 0;
+        }
+
+        .legal-text p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .legal-text ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .legal-text li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .legal-text a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        .legal-text a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 20px 24px;
+            border-radius: 0 8px 8px 0;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+        }
+
+        /* Patent Cards */
+        .patent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .patent-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .patent-card:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .patent-number {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--accent-cyan);
+            background: var(--glow-cyan);
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .patent-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .patent-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .patent-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--accent-emerald);
+        }
+
+        .patent-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-deep);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 16px;
+            max-width: 280px;
+        }
+
+        .footer-section h4 {
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 10px; }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover { color: var(--text-primary); }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .page-header h1 { font-size: 36px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+        }
+
+        @media (max-width: 600px) {
+            .page-header { padding: 120px 0 40px; }
+            .page-header h1 { font-size: 28px; }
+            .section-header { flex-wrap: wrap; }
+            .last-updated { width: 100%; margin-left: 64px; margin-top: 8px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+            .patent-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-inner">
+                <a href="index.html" class="logo">ml<span>OS</span></a>
+                <ul class="nav-links">
+                    <li><a href="architecture.html">Architecture</a></li>
+                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="models.html">Models</a></li>
+                    <li><a href="runtime-modes.html">Runtime</a></li>
+                    <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
+                    <li><a href="index.html#getting-started" class="nav-cta">Get Started</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Legal</h1>
+            <p>Privacy policy, terms of use, and intellectual property information for the mlOS project.</p>
+        </div>
+    </header>
+
+    <!-- Legal Navigation -->
+    <div class="legal-nav">
+        <div class="container">
+            <div class="legal-nav-inner">
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Use</a>
+                <a href="#patents">Patents</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legal Content -->
+    <main class="legal-content">
+        <div class="container">
+
+            <!-- Privacy Policy Section -->
+            <section id="privacy" class="legal-section">
+                <div class="section-header">
+                    <div class="section-icon">🔒</div>
+                    <h2>Privacy Policy</h2>
+                    <span class="last-updated">Last updated: January 2025</span>
+                </div>
+                <div class="legal-text">
+                    <h3>Overview</h3>
+                    <p>The mlOS Foundation ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard information when you use the mlOS software, visit our website, or interact with our services.</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Key Point:</strong> mlOS is open-source software that runs locally on your systems. We do not collect, transmit, or store any data from your ML models, inference requests, or runtime operations.</p>
+                    </div>
+
+                    <h3>Information We Collect</h3>
+                    <p><strong>Website Visitors:</strong> When you visit mlosfoundation.org, we may collect:</p>
+                    <ul>
+                        <li>Basic analytics data (page views, referrer information) via privacy-respecting analytics</li>
+                        <li>Information you voluntarily provide through contact forms or newsletter signups</li>
+                        <li>Technical information such as browser type and operating system for compatibility purposes</li>
+                    </ul>
+
+                    <p><strong>mlOS Software:</strong> The mlOS runtime and kernel module:</p>
+                    <ul>
+                        <li>Do not phone home or transmit any telemetry data</li>
+                        <li>Do not collect information about your models or inference workloads</li>
+                        <li>Do not require an internet connection to operate</li>
+                        <li>Store all data locally on your systems</li>
+                    </ul>
+
+                    <h3>GitHub and Open Source</h3>
+                    <p>When you interact with our GitHub repositories, GitHub's privacy policy applies to that interaction. We may see publicly available information such as usernames associated with issues, pull requests, and contributions.</p>
+
+                    <h3>How We Use Information</h3>
+                    <p>Information collected through our website is used to:</p>
+                    <ul>
+                        <li>Improve website content and user experience</li>
+                        <li>Respond to inquiries and support requests</li>
+                        <li>Send project updates to newsletter subscribers (opt-in only)</li>
+                        <li>Analyze aggregate usage patterns to improve documentation</li>
+                    </ul>
+
+                    <h3>Data Security</h3>
+                    <p>We implement appropriate technical and organizational measures to protect any personal information we collect. The mlOS software itself is designed with security in mind, operating entirely within your infrastructure without external data transmission.</p>
+
+                    <h3>Your Rights</h3>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Request access to any personal data we hold about you</li>
+                        <li>Request correction or deletion of your personal data</li>
+                        <li>Opt out of any marketing communications</li>
+                        <li>Lodge a complaint with a supervisory authority</li>
+                    </ul>
+
+                    <h3>Contact</h3>
+                    <p>For privacy-related inquiries, please open an issue on our <a href="https://github.com/mlOS-foundation">GitHub repository</a> or contact the maintainers through the channels listed there.</p>
+                </div>
+            </section>
+
+            <!-- Terms of Use Section -->
+            <section id="terms" class="legal-section">
+                <div class="section-header">
+                    <div class="section-icon">📜</div>
+                    <h2>Terms of Use</h2>
+                    <span class="last-updated">Last updated: January 2025</span>
+                </div>
+                <div class="legal-text">
+                    <h3>Acceptance of Terms</h3>
+                    <p>By accessing or using the mlOS software, website, or any associated services, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our software or services.</p>
+
+                    <h3>Open Source License</h3>
+                    <p>The mlOS software is released under an open source license. Your use of the software is governed by the terms of that license, which can be found in the LICENSE file in our repositories. Key points include:</p>
+                    <ul>
+                        <li>You are free to use, modify, and distribute the software</li>
+                        <li>Attribution requirements must be maintained</li>
+                        <li>The software is provided "as is" without warranty</li>
+                        <li>Patent rights are granted under the license terms (see Patents section)</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <p><strong>License:</strong> Please refer to the LICENSE file in the <a href="https://github.com/mlOS-foundation/core">core repository</a> for the complete license terms governing the software.</p>
+                    </div>
+
+                    <h3>Website Use</h3>
+                    <p>When using the mlosfoundation.org website, you agree to:</p>
+                    <ul>
+                        <li>Use the website only for lawful purposes</li>
+                        <li>Not attempt to gain unauthorized access to any systems</li>
+                        <li>Not interfere with the proper functioning of the website</li>
+                        <li>Not use automated tools to scrape or harvest content inappropriately</li>
+                    </ul>
+
+                    <h3>Contributions</h3>
+                    <p>If you contribute to the mlOS project (code, documentation, or other materials), you agree that:</p>
+                    <ul>
+                        <li>Your contributions are your original work or you have the right to submit them</li>
+                        <li>You grant the project a license to use your contributions under the project's open source license</li>
+                        <li>Your contributions do not infringe on any third-party rights</li>
+                    </ul>
+
+                    <h3>Disclaimer of Warranties</h3>
+                    <p>THE SOFTWARE AND SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS.</p>
+
+                    <h3>Limitation of Liability</h3>
+                    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE MLOS FOUNDATION AND ITS CONTRIBUTORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING FROM YOUR USE OF THE SOFTWARE OR SERVICES.</p>
+
+                    <h3>Indemnification</h3>
+                    <p>You agree to indemnify and hold harmless the mlOS Foundation and its contributors from any claims, damages, or expenses arising from your use of the software or violation of these terms.</p>
+
+                    <h3>Modifications</h3>
+                    <p>We reserve the right to modify these Terms of Use at any time. Changes will be posted on this page with an updated revision date. Continued use of the software or services after changes constitutes acceptance of the modified terms.</p>
+
+                    <h3>Governing Law</h3>
+                    <p>These Terms of Use shall be governed by and construed in accordance with applicable law, without regard to conflict of law principles.</p>
+                </div>
+            </section>
+
+            <!-- Patents Section -->
+            <section id="patents" class="legal-section">
+                <div class="section-header">
+                    <div class="section-icon">⚡</div>
+                    <h2>Patents</h2>
+                    <span class="last-updated">Last updated: January 2025</span>
+                </div>
+                <div class="legal-text">
+                    <h3>Patent Applications</h3>
+                    <p>The mlOS Foundation has filed provisional patent applications to protect key innovations in the project. These patents cover novel approaches to ML runtime execution, memory management, and kernel-level optimizations.</p>
+
+                    <div class="patent-grid">
+                        <div class="patent-card">
+                            <span class="patent-number">US-63/861,527</span>
+                            <h4>Predictive Memory Management for ML Inference</h4>
+                            <p>Methods and systems for predicting memory requirements of ML models and proactively managing memory allocation to minimize latency and prevent out-of-memory conditions during inference.</p>
+                            <span class="patent-status">Provisional Application Filed</span>
+                        </div>
+                        <div class="patent-card">
+                            <span class="patent-number">US-63/865,176</span>
+                            <h4>Kernel-Native ML Runtime Architecture</h4>
+                            <p>Architecture and methods for executing ML inference workloads with kernel-level integration, enabling deterministic scheduling, reduced context switching, and hardware-optimized execution paths.</p>
+                            <span class="patent-status">Provisional Application Filed</span>
+                        </div>
+                    </div>
+
+                    <h3>Patent Grant for Open Source Use</h3>
+                    <p>The mlOS Foundation is committed to the open source ecosystem. We provide a patent grant to all users of the mlOS software:</p>
+
+                    <div class="highlight-box">
+                        <p><strong>Patent Grant:</strong> Subject to the terms of the mlOS open source license, users are granted a perpetual, worldwide, non-exclusive, royalty-free, irrevocable patent license to make, use, sell, offer for sale, import, and otherwise transfer the software, where such license applies only to those patent claims licensable by mlOS Foundation contributors that are necessarily infringed by their contributions.</p>
+                    </div>
+
+                    <h3>Defensive Use</h3>
+                    <p>These patent applications are filed for defensive purposes to:</p>
+                    <ul>
+                        <li>Protect the open source project and its users from patent claims</li>
+                        <li>Ensure the technology remains freely available for the community</li>
+                        <li>Establish prior art for the innovations developed by the project</li>
+                        <li>Prevent others from patenting and restricting access to similar technologies</li>
+                    </ul>
+
+                    <h3>Patent Termination Clause</h3>
+                    <p>The patent grant terminates automatically for any party that initiates patent litigation (including cross-claims or counterclaims) against the mlOS Foundation or any contributor, alleging that the software constitutes patent infringement.</p>
+
+                    <h3>Questions</h3>
+                    <p>For questions about patents or licensing, please contact the maintainers through our <a href="https://github.com/mlOS-foundation">GitHub organization</a>.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">ml<span>OS</span></a>
+                    <p>
+                        The runtime layer between your models and the metal.
+                        Open source ML infrastructure for production workloads.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#models">Supported Models</a></li>
+                        <li><a href="architecture.html">Architecture</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://github.com/mlOS-foundation/core-releases">Downloads</a></li>
+                        <li><a href="https://mlos-foundation.github.io/system-test/">Test Reports</a></li>
+                        <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Use</a></li>
+                        <li><a href="#patents">Patents</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 mlOS Foundation. All rights reserved.</p>
+                <div class="footer-legal">
+                    <span>Patents: US-63/861,527 • US-63/865,176</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Highlight active section in legal nav
+        const sections = document.querySelectorAll('.legal-section');
+        const navLinks = document.querySelectorAll('.legal-nav a');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+    </script>
+</body>
+</html>

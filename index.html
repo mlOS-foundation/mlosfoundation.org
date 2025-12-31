@@ -316,82 +316,209 @@
             position: relative;
         }
 
-        .arch-diagram {
-            background: var(--bg-elevated);
+        /* New Impactful Architecture Diagram */
+        .arch-diagram-v2 {
+            background: linear-gradient(145deg, var(--bg-elevated), var(--bg-deep));
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
+            border-radius: 20px;
+            padding: 28px;
             position: relative;
+            overflow: hidden;
         }
 
-        .arch-layer {
+        .arch-diagram-v2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+        }
+
+        .arch-input-layer, .arch-output-layer {
             display: flex;
             justify-content: center;
             gap: 12px;
-            padding: 16px 0;
-            position: relative;
         }
 
-        .arch-layer::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -20px;
-            width: 2px;
-            height: 20px;
-            background: linear-gradient(to bottom, var(--accent-cyan), transparent);
-        }
-
-        .arch-layer:last-child::after { display: none; }
-
-        .arch-item {
+        .arch-input-item, .arch-output-item {
             background: var(--bg-surface);
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-subtle);
             padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
+            border-radius: 10px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
+            min-width: 70px;
+            transition: all 0.2s;
         }
 
-        .arch-item.highlight {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
+        .arch-input-item:hover, .arch-output-item:hover {
             border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-            animation: pulse-glow 3s ease-in-out infinite;
+            transform: translateY(-2px);
         }
 
-        .arch-label {
-            text-align: center;
+        .input-icon { font-size: 20px; }
+        .input-label {
             font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+        }
+
+        .output-port {
+            font-size: 13px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .output-label {
+            font-size: 10px;
             color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 12px;
+            letter-spacing: 0.05em;
         }
 
-        .arch-mlos {
+        .arch-output-item.highlight {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.05));
+            border-color: var(--accent-cyan);
+        }
+
+        .arch-flow-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .flow-line {
+            width: 2px;
+            height: 16px;
+            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-blue));
+            border-radius: 1px;
+        }
+
+        .flow-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .arch-core-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(59, 130, 246, 0.05));
+            border: 1px solid var(--accent-cyan);
+            border-radius: 14px;
+            padding: 16px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .core-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .core-logo {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .core-logo .accent {
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: 20px;
-            font-weight: 800;
-            padding: 20px 40px;
         }
 
-        .flow-particles {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            margin-left: -20px;
-            overflow: hidden;
-            pointer-events: none;
+        .core-version {
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--accent-emerald);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .core-internals {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .core-module {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-deep);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .module-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .module-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        .module-status .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .core-metrics {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+        }
+
+        .metric-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
 
         .particle {
@@ -828,22 +955,92 @@
                     </div>
                 </div>
                 <div class="hero-visual animate-in delay-3">
-                    <div class="arch-diagram">
-                        <div class="arch-label">Your Models</div>
-                        <div class="arch-layer">
-                            <div class="arch-item">ONNX</div>
-                            <div class="arch-item">PyTorch</div>
-                            <div class="arch-item">GGUF/LLM</div>
+                    <div class="arch-diagram-v2">
+                        <!-- Input Layer -->
+                        <div class="arch-input-layer">
+                            <div class="arch-input-item">
+                                <span class="input-icon">📦</span>
+                                <span class="input-label">.onnx</span>
+                            </div>
+                            <div class="arch-input-item">
+                                <span class="input-icon">🔥</span>
+                                <span class="input-label">.pt</span>
+                            </div>
+                            <div class="arch-input-item">
+                                <span class="input-icon">🦙</span>
+                                <span class="input-label">.gguf</span>
+                            </div>
                         </div>
-                        <div class="arch-label" style="margin-top: 24px;">Runtime Layer</div>
-                        <div class="arch-layer">
-                            <div class="arch-item highlight arch-mlos">mlOS Core</div>
+
+                        <div class="arch-flow-arrow">
+                            <div class="flow-line"></div>
+                            <div class="flow-dot"></div>
                         </div>
-                        <div class="arch-label" style="margin-top: 24px;">Hardware</div>
-                        <div class="arch-layer" style="padding-bottom: 0;">
-                            <div class="arch-item">CPU</div>
-                            <div class="arch-item">GPU</div>
-                            <div class="arch-item">Memory</div>
+
+                        <!-- Core Box -->
+                        <div class="arch-core-box">
+                            <div class="core-header">
+                                <span class="core-logo">ml<span class="accent">OS</span> Core</span>
+                                <span class="core-version">v6.2.0</span>
+                            </div>
+                            <div class="core-internals">
+                                <div class="core-module">
+                                    <div class="module-name">Plugin Registry</div>
+                                    <div class="module-status active">
+                                        <span class="status-dot"></span>
+                                        ONNX • GGUF
+                                    </div>
+                                </div>
+                                <div class="core-module">
+                                    <div class="module-name">Kernel Scheduler</div>
+                                    <div class="module-status active">
+                                        <span class="status-dot"></span>
+                                        Priority Queue
+                                    </div>
+                                </div>
+                                <div class="core-module">
+                                    <div class="module-name">Memory Manager</div>
+                                    <div class="module-status active">
+                                        <span class="status-dot"></span>
+                                        NUMA-aware
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="core-metrics">
+                                <div class="metric">
+                                    <span class="metric-value">0.8ms</span>
+                                    <span class="metric-label">p99 latency</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">42</span>
+                                    <span class="metric-label">models</span>
+                                </div>
+                                <div class="metric">
+                                    <span class="metric-value">3</span>
+                                    <span class="metric-label">APIs</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="arch-flow-arrow">
+                            <div class="flow-line"></div>
+                            <div class="flow-dot"></div>
+                        </div>
+
+                        <!-- Output Layer -->
+                        <div class="arch-output-layer">
+                            <div class="arch-output-item">
+                                <span class="output-port">:8080</span>
+                                <span class="output-label">REST</span>
+                            </div>
+                            <div class="arch-output-item highlight">
+                                <span class="output-port">:8081</span>
+                                <span class="output-label">gRPC</span>
+                            </div>
+                            <div class="arch-output-item">
+                                <span class="output-port">sock</span>
+                                <span class="output-label">IPC</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1049,9 +1246,9 @@
                 <div class="footer-section">
                     <h4>Legal</h4>
                     <ul>
-                        <li><span class="footer-text">Privacy Policy</span></li>
-                        <li><span class="footer-text">Terms of Use</span></li>
-                        <li><span class="footer-text">Patents Pending</span></li>
+                        <li><a href="legal.html#privacy">Privacy Policy</a></li>
+                        <li><a href="legal.html#terms">Terms of Use</a></li>
+                        <li><a href="legal.html#patents">Patents</a></li>
                     </ul>
                 </div>
             </div>

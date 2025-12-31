@@ -3,478 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLOS Ecosystem - MLOS Foundation</title>
-    <meta name="description" content="Explore the MLOS ecosystem: Axon package manager, MLOS Core runtime, SMI specification, and the complete toolchain for ML infrastructure.">
+    <title>Ecosystem | mlOS</title>
+    <meta name="description" content="The mlOS ecosystem: Core runtime, Axon CLI, system tests, and more. Components that work together for ML infrastructure.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --color-primary: #0f172a;
-            --color-secondary: #3b82f6;
-            --color-accent: #06b6d4;
-            --color-text: #1e293b;
-            --color-text-muted: #64748b;
+            --bg-deep: #030712;
+            --bg-base: #0a0f1a;
+            --bg-elevated: #111827;
+            --bg-surface: #1f2937;
+            --border: #374151;
+            --border-subtle: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-orange: #f97316;
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: var(--font-sans);
+            background: var(--bg-base);
+            color: var(--text-secondary);
             line-height: 1.6;
-            color: #1a202c;
-            background: #ffffff;
-            margin: 0;
-            padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation - Consistent with index.html */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
         .nav {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #e2e8f0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 15, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .nav-content {
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 24px;
             font-weight: 800;
-            color: var(--color-primary);
+            color: var(--text-primary);
             text-decoration: none;
         }
 
-        .logo span { color: var(--color-accent); }
+        .logo span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
         .nav-links {
             display: flex;
-            list-style: none;
-            gap: 2rem;
+            gap: 32px;
             align-items: center;
+            list-style: none;
         }
 
         .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            color: var(--color-text);
+            font-size: 14px;
             font-weight: 500;
-            font-size: 0.95rem;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover { color: var(--color-secondary); }
+        .nav-links a:hover { color: var(--text-primary); }
 
         .nav-cta {
-            background: var(--color-secondary);
-            color: white !important;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
-        .nav-cta:hover { background: #2563eb; }
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .container {
-            max-width: 1200px;
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow-cyan), transparent);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* Content */
+        .content {
+            padding: 60px 0;
+        }
+
+        /* Ecosystem Overview */
+        .ecosystem-diagram {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .ecosystem-diagram h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+        }
+
+        .ecosystem-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .eco-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 20px 32px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .eco-item.primary {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(59, 130, 246, 0.1));
+            border-color: var(--accent-cyan);
+        }
+
+        .eco-item-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .eco-item-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .eco-arrow {
+            font-size: 24px;
+            color: var(--accent-cyan);
+        }
+
+        /* Component Cards */
+        .components-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .component-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.2s;
+        }
+
+        .component-card:hover {
+            border-color: var(--border);
+            transform: translateY(-2px);
+        }
+
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .component-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .component-title-group h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .component-version {
+            font-size: 12px;
+            color: var(--accent-emerald);
+            font-family: var(--font-mono);
+        }
+
+        .component-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .component-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .component-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .component-features li::before {
+            content: '→';
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .component-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .component-link:hover {
+            opacity: 0.8;
+        }
+
+        /* Repository Table */
+        .repos-section {
+            margin-bottom: 60px;
+        }
+
+        .table-container {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 12px;
+            text-align: left;
+            padding: 16px 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        td a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+
+        td a:hover { text-decoration: underline; }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-dot.active { background: var(--accent-emerald); }
+        .status-dot.dev { background: var(--accent-orange); }
+        .status-dot.planned { background: var(--text-dim); }
+
+        /* Integration Diagram */
+        .integration-section {
+            margin-bottom: 60px;
+        }
+
+        .integration-flow {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+        }
+
+        .flow-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 20px;
+        }
+
+        .flow-row:last-child { margin-bottom: 0; }
+
+        .flow-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 16px 24px;
+            border-radius: 10px;
+            text-align: center;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .flow-box.highlight {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(59, 130, 246, 0.1));
+            border-color: var(--accent-cyan);
+        }
+
+        .flow-box h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .flow-box p {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .flow-connector {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-cyan), transparent);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-deep);
+            border-top: 1px solid var(--border-subtle);
+            padding: 48px 0 32px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        .footer p {
+            color: var(--text-dim);
+            font-size: 13px;
         }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-        }
-
-        .hero {
-            text-align: center;
-            padding: 8rem 0 4rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        
-        .content {
-            padding: 4rem 0;
-        }
-        
-        .component {
-            margin-bottom: 5rem;
-            padding: 3rem;
-            background: #f8f9fa;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .component h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            color: #1a202c;
-        }
-        
-        .component h3 {
-            font-size: 1.5rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: #1a202c;
-        }
-        
-        .component p {
-            color: #4a5568;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-        
-        .component ul {
-            margin-left: 2rem;
-            color: #4a5568;
-            line-height: 1.8;
-        }
-        
-        .component li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .code-block {
-            background: #1e1e1e;
-            border: 1px solid #3c3c3c;
-            border-radius: 8px;
-            margin: 1.5rem 0;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .code-block-header {
-            background: #2d2d2d;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #3c3c3c;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .code-block-header h4 {
-            color: #e8e8e8;
-            margin: 0;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        
-        .code-copy-btn {
-            background: #3c3c3c;
-            color: #e8e8e8;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-        
-        .code-copy-btn:hover {
-            background: #4c4c4c;
-            color: #ffffff;
-        }
-        
-        .code-copy-btn.copied {
-            background: #10b981;
-            color: #ffffff;
-        }
-        
-        .code-block pre {
-            background: #1e1e1e;
-            color: #e8e8e8;
-            padding: 1.5rem;
-            margin: 0;
-            overflow-x: auto;
-            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
-            font-size: 0.875rem;
-            line-height: 1.6;
-            white-space: pre;
-            tab-size: 4;
-        }
-        
-        .code-block pre code {
-            background: transparent;
-            color: inherit;
-            padding: 0;
-            border-radius: 0;
-            font-family: inherit;
-            font-size: inherit;
-        }
-        
-        code:not(.code-block code) {
-            background: #f1f3f5;
-            color: #667eea;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'SF Mono', 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
-            font-size: 0.9em;
-        }
-        
-        .feature-highlight {
-            background: #ffffff;
-            border: 2px solid #667eea;
-            border-left: 6px solid #667eea;
-            color: #1a202c;
-            padding: 2rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-        }
-        
-        .feature-highlight h3 {
-            margin-top: 0;
-            color: #667eea;
-            font-size: 1.5rem;
-        }
-        
-        .feature-highlight ul {
-            margin: 1rem 0;
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .feature-highlight li {
-            margin: 1rem 0;
-            padding: 0.75rem 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .feature-highlight li strong {
-            color: #1a202c;
-        }
-        
-        .adapter-status {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        
-        .adapter-status.available {
-            background: #10b981;
-            color: white;
-        }
-        
-        .adapter-status.coming {
-            background: #f59e0b;
-            color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        
-        .stat-highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff !important;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-            text-shadow: 0 3px 8px rgba(0, 0, 0, 0.8), 0 1px 4px rgba(0, 0, 0, 0.6);
-            letter-spacing: 0.02em;
-            position: relative;
-            display: block;
-            z-index: 1;
-        }
-        
-        .stat-highlight::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .architecture-note {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .architecture-note h4 {
-            margin-top: 0;
-            color: #667eea;
-            font-size: 1.2rem;
-        }
-        
-        .architecture-note ol {
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-        }
-        
-        .architecture-note ol li {
-            margin: 0.75rem 0;
-            color: #1a202c;
-            line-height: 1.7;
-        }
-        
-        .architecture-note ol li strong {
-            color: #1a202c;
-        }
-        
-        .highlight-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .integration-flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-            padding: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .flow-step {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .step-number {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        
-        .step-content {
-            color: #333;
-        }
-        
-        .step-content code {
-            background: #f4f4f4;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-            display: block;
-            margin: 0.5rem 0;
-        }
-        
-        .step-content small {
-            color: #666;
-            font-size: 0.85em;
-        }
-        
-        .flow-arrow {
-            font-size: 2rem;
-            color: white;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 768px) {
-            .integration-flow {
-                flex-direction: column;
-            }
-            .flow-arrow {
-                transform: rotate(90deg);
-            }
-        }
-        
-        .feature-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #e8ecef;
-        }
-        
-        .feature-item h4 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            opacity: 0.9;
-        }
-        
-        .footer-links a:hover {
-            opacity: 1;
-            color: #667eea;
+            .hero { padding: 120px 0 60px; }
+            .hero h1 { font-size: 32px; }
+            .components-grid { grid-template-columns: 1fr; }
+            .ecosystem-flow { flex-direction: column; }
+            .eco-arrow { transform: rotate(90deg); }
+            .flow-row { flex-direction: column; }
+            .flow-connector { width: 2px; height: 30px; background: linear-gradient(to bottom, var(--accent-cyan), transparent); }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="nav">
         <div class="container">
-            <div class="nav-content">
+            <div class="nav-inner">
                 <a href="index.html" class="logo">ml<span>OS</span></a>
                 <ul class="nav-links">
                     <li><a href="architecture.html">Architecture</a></li>
@@ -489,533 +476,244 @@
     </nav>
 
     <section class="hero">
+        <div class="hero-bg"></div>
         <div class="container">
-            <h1>MLOS Ecosystem</h1>
-            <p>Complete toolchain for machine learning infrastructure</p>
+            <h1>Ecosystem</h1>
+            <p>Components that work together to power the mlOS ML infrastructure platform</p>
         </div>
     </section>
 
-    <main class="content">
+    <section class="content">
         <div class="container">
-            <div class="component" id="axon">
-                <h2>Axon - Universal Model Installer</h2>
-                <p>
-                    Axon is a universal CLI tool with a <strong>pluggable adapter architecture</strong> that enables installation from any model repository. No vendor lock-in, no configuration needed.
-                </p>
-                
-                <div class="feature-highlight">
-                    <h3>🔄 Plug-and-Play Repository Adapters</h3>
-                    <p style="color: #4a5568; margin-bottom: 1.5rem; line-height: 1.7;">Axon automatically detects and uses the right adapter for each model. No configuration needed - just install from any supported repository!</p>
-                    <ul>
-                        <li>
-                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
-                            <strong>Hugging Face Hub</strong>
-                            <span class="adapter-status available">Available</span>
-                            <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">100,000+ models • 60%+ of ML practitioners</div>
-                        </li>
-                        <li>
-                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
-                            <strong>PyTorch Hub</strong>
-                            <span class="adapter-status available">v1.1.0+</span>
-                            <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">PyTorch pre-trained models • 5%+ coverage • Research focus</div>
-                        </li>
-                        <li>
-                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
-                            <strong>ModelScope</strong>
-                            <span class="adapter-status available">v1.4.0+</span>
-                            <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">5,000+ models • 8%+ coverage • Multimodal & enterprise</div>
-                        </li>
-                        <li>
-                            <span style="font-size: 1.2em; color: #10b981;">✓</span>
-                            <strong>TensorFlow Hub</strong>
-                            <span class="adapter-status available">v1.2.0+</span>
-                            <div style="font-size: 0.9em; color: #4a5568; margin-top: 0.25rem;">1,000+ models • 7%+ coverage • Production deployments</div>
-                        </li>
-                    </ul>
-                    <p class="stat-highlight">Total Coverage: 80%+ of ML model user base</p>
-                </div>
-                
-                <div class="code-block">
-                    <div class="code-block-header">
-                        <h4>Install from Any Repository</h4>
-                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+            <!-- Ecosystem Overview -->
+            <div class="ecosystem-diagram">
+                <h2>How It Fits Together</h2>
+                <div class="ecosystem-flow">
+                    <div class="eco-item">
+                        <div class="eco-item-name">Hugging Face</div>
+                        <div class="eco-item-desc">Model Source</div>
                     </div>
-                    <pre><code># Hugging Face (available now)
-axon install hf/bert-base-uncased@latest
-
-# PyTorch Hub (v1.1.0+)
-axon install pytorch/vision/resnet50@latest
-
-# TensorFlow Hub (v1.2.0+)
-axon install tfhub/google/imagenet/resnet_v2_50/classification/5@latest
-axon install tfhub/google/universal-sentence-encoder/4@latest
-
-# ModelScope (v1.4.0+)
-axon install modelscope/damo/cv_resnet50_image-classification@latest
-axon install modelscope/ai/modelscope_damo-text-to-video-synthesis@latest</code></pre>
-                </div>
-                
-                <h3>What is Axon?</h3>
-                <p>
-                    Axon provides model lifecycle management, distribution, versioning, and deployment capabilities. 
-                    It follows a neural metaphor where models are neurons, Axon CLI is the transmission pathway, 
-                    and kernel optimizations are the myelin sheath that speeds up signal propagation.
-                </p>
-                
-                <h3>Key Features</h3>
-                <ul>
-                    <li><strong>Universal Installer</strong> - Works with any model repository via pluggable adapters</li>
-                    <li><strong>Real-time Downloads</strong> - No pre-packaging needed, manifests created on-the-fly</li>
-                    <li><strong>Model Discovery</strong> - Search across all configured repositories</li>
-                    <li><strong>Version Management</strong> - Semantic versioning with latest tag support</li>
-                    <li><strong>Checksum Verification</strong> - Automatic integrity checking</li>
-                    <li><strong>Local Caching</strong> - Intelligent caching for offline access</li>
-                    <li><strong>Zero Configuration</strong> - Works out of the box with Hugging Face</li>
-                </ul>
-                
-                <div class="architecture-note" style="margin-top: 2rem;">
-                    <h4>🏗️ Architecture: Extensible Adapter Framework (v3.1.9)</h4>
-                    <p>Axon's adapter framework provides a <strong>pluggable, extensible architecture</strong> that enables support for any model repository. The framework separates core interfaces from adapter implementations, making it easy to add new repositories without modifying core code. <strong>Latest: v3.1.9</strong> with enhanced seq2seq/multi-encoder support and improved T5 conversion.</p>
-                    
-                    <h5 style="margin-top: 2rem; color: #667eea;">How It Works</h5>
-                    <p>The adapter framework automatically:</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-                        <li><strong>Detects</strong> the model source based on namespace (e.g., <code>hf/</code>, <code>pytorch/</code>, <code>tfhub/</code>)</li>
-                        <li><strong>Selects</strong> the appropriate adapter from the registry</li>
-                        <li><strong>Validates</strong> model existence using shared validation utilities</li>
-                        <li><strong>Downloads</strong> and packages models using common helpers</li>
-                        <li><strong>Caches</strong> packages locally for future use</li>
-                    </ul>
-
-                    <h5 style="margin-top: 2rem; color: #667eea;">Framework Architecture</h5>
-                    <div style="background: #ffffff; padding: 2rem; border-radius: 12px; margin: 1rem 0; border: 2px solid #e2e8f0; overflow-x: auto;">
-                        <svg width="100%" height="640" viewBox="0 0 900 640" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-                            <!-- Axon CLI -->
-                            <rect x="350" y="20" width="200" height="60" rx="8" fill="#667eea" stroke="#5568d3" stroke-width="2"/>
-                            <text x="450" y="45" text-anchor="middle" fill="white" font-size="16" font-weight="600">Axon CLI</text>
-                            <text x="450" y="65" text-anchor="middle" fill="white" font-size="12">commands.go</text>
-                            
-                            <!-- Arrow down -->
-                            <path d="M 450 80 L 450 120" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            
-                            <!-- Adapter Registry -->
-                            <rect x="300" y="120" width="300" height="100" rx="8" fill="#f7fafc" stroke="#667eea" stroke-width="2"/>
-                            <text x="450" y="145" text-anchor="middle" fill="#1a202c" font-size="16" font-weight="600">AdapterRegistry</text>
-                            <text x="450" y="165" text-anchor="middle" fill="#4a5568" font-size="12">RegisterDefaultAdapters()</text>
-                            <line x1="320" y1="180" x2="580" y2="180" stroke="#cbd5e0" stroke-width="1"/>
-                            <text x="450" y="195" text-anchor="middle" fill="#4a5568" font-size="11">Local • PyTorch Hub • TensorFlow Hub • Hugging Face</text>
-                            
-                            <!-- Arrows to adapters -->
-                            <path d="M 350 220 L 200 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            <path d="M 450 220 L 450 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            <path d="M 550 220 L 700 280" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            
-                            <!-- Builtin Adapters -->
-                            <rect x="100" y="280" width="200" height="140" rx="8" fill="#e6f3ff" stroke="#667eea" stroke-width="2"/>
-                            <text x="200" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Builtin Adapters</text>
-                            <text x="200" y="330" text-anchor="middle" fill="#4a5568" font-size="11">Hugging Face</text>
-                            <text x="200" y="350" text-anchor="middle" fill="#4a5568" font-size="11">PyTorch Hub</text>
-                            <text x="200" y="370" text-anchor="middle" fill="#4a5568" font-size="11">TensorFlow Hub</text>
-                            <text x="200" y="390" text-anchor="middle" fill="#4a5568" font-size="11">ModelScope</text>
-                            <text x="200" y="410" text-anchor="middle" fill="#4a5568" font-size="11">Local Registry</text>
-                            
-                            <!-- Examples Adapters -->
-                            <rect x="350" y="280" width="200" height="120" rx="8" fill="#fff4e6" stroke="#f59e0b" stroke-width="2"/>
-                            <text x="450" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Example Adapters</text>
-                            <text x="450" y="330" text-anchor="middle" fill="#4a5568" font-size="11">Replicate</text>
-                            <text x="450" y="350" text-anchor="middle" fill="#4a5568" font-size="11">(Reference)</text>
-                            
-                            <!-- Custom Adapters -->
-                            <rect x="600" y="280" width="200" height="120" rx="8" fill="#f0f9ff" stroke="#667eea" stroke-width="2" stroke-dasharray="5,5"/>
-                            <text x="700" y="305" text-anchor="middle" fill="#1a202c" font-size="14" font-weight="600">Custom Adapters</text>
-                            <text x="700" y="330" text-anchor="middle" fill="#4a5568" font-size="11">User-defined</text>
-                            <text x="700" y="350" text-anchor="middle" fill="#4a5568" font-size="11">Extensions</text>
-                            
-                            <!-- Arrows to core -->
-                            <path d="M 200 420 L 200 500" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            <path d="M 450 400 L 450 500" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            <path d="M 700 400 L 700 500" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
-                            
-                            <!-- Core Framework -->
-                            <rect x="100" y="500" width="700" height="120" rx="8" fill="#f7fafc" stroke="#667eea" stroke-width="2"/>
-                            <text x="450" y="525" text-anchor="middle" fill="#1a202c" font-size="16" font-weight="600">Core Framework Utilities</text>
-                            <text x="450" y="545" text-anchor="middle" fill="#4a5568" font-size="12">internal/registry/core/</text>
-                            <line x1="120" y1="560" x2="780" y2="560" stroke="#cbd5e0" stroke-width="1"/>
-                            
-                            <text x="200" y="580" text-anchor="middle" fill="#4a5568" font-size="11">HTTPClient</text>
-                            <text x="200" y="600" text-anchor="middle" fill="#667eea" font-size="10">HTTP + Auth</text>
-                            
-                            <text x="350" y="580" text-anchor="middle" fill="#4a5568" font-size="11">ModelValidator</text>
-                            <text x="350" y="600" text-anchor="middle" fill="#667eea" font-size="10">Existence Check</text>
-                            
-                            <text x="500" y="580" text-anchor="middle" fill="#4a5568" font-size="11">PackageBuilder</text>
-                            <text x="500" y="600" text-anchor="middle" fill="#667eea" font-size="10">.axon Packages</text>
-                            
-                            <text x="650" y="580" text-anchor="middle" fill="#4a5568" font-size="11">DownloadFile</text>
-                            <text x="650" y="600" text-anchor="middle" fill="#667eea" font-size="10">Progress Tracking</text>
-                            
-                            <!-- Arrowhead marker -->
-                            <defs>
-                                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                    <polygon points="0 0, 10 3, 0 6" fill="#667eea"/>
-                                </marker>
-                            </defs>
-                        </svg>
+                    <span class="eco-arrow">→</span>
+                    <div class="eco-item">
+                        <div class="eco-item-name">Axon CLI</div>
+                        <div class="eco-item-desc">Install & Convert</div>
                     </div>
-
-                    <h5 style="margin-top: 2rem; color: #667eea;">Example: Replicate Adapter</h5>
-                    <p>The Replicate adapter demonstrates how to implement a new adapter using the framework. It shows:</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.5rem;">
-                        <li>How to implement the <code>RepositoryAdapter</code> interface</li>
-                        <li>API-based model access patterns (vs file-based downloads)</li>
-                        <li>Using core utilities for HTTP requests, validation, and packaging</li>
-                        <li>Best practices for adapter development</li>
-                    </ul>
-                    <p style="margin-top: 1rem;">
-                        <strong>See the complete implementation:</strong>
-                        <a href="https://github.com/mlOS-foundation/axon/blob/main/internal/registry/examples/replicate.go" 
-                           style="color: #667eea; text-decoration: none; font-weight: 600;">
-                            Replicate Adapter Example →
-                        </a>
-                    </p>
-                    
-                    <p style="margin-top: 1.5rem;">
-                        <strong>Complete framework documentation:</strong>
-                        <a href="https://github.com/mlOS-foundation/axon/blob/main/docs/ADAPTER_FRAMEWORK.md" 
-                           style="color: #667eea; text-decoration: none; font-weight: 600;">
-                            Adapter Framework Guide →
-                        </a>
-                    </p>
-                </div>
-                
-                <h3>Basic Usage</h3>
-                <div class="code-block">
-                    <div class="code-block-header">
-                        <h4>Quick Start Commands</h4>
-                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
+                    <span class="eco-arrow">→</span>
+                    <div class="eco-item primary">
+                        <div class="eco-item-name">mlOS Core</div>
+                        <div class="eco-item-desc">Runtime Engine</div>
                     </div>
-                    <pre><code># Initialize the axon pathway
-axon init
-
-# Install any model directly from Hugging Face (no setup needed!)
-axon install hf/bert-base-uncased@latest
-axon install hf/gpt2@latest
-
-# Install PyTorch Hub models (v1.1.0+)
-axon install pytorch/vision/resnet50@latest
-
-# Search for models
-axon search resnet
-axon search "image classification"
-
-# Get model information
-axon info hf/bert-base-uncased@latest
-
-# List installed models
-axon list
-
-# Update models
-axon update vision/resnet50
-
-# Remove models
-axon uninstall vision/resnet50</code></pre>
+                    <span class="eco-arrow">→</span>
+                    <div class="eco-item">
+                        <div class="eco-item-name">Your App</div>
+                        <div class="eco-item-desc">REST/gRPC API</div>
+                    </div>
                 </div>
-                
-                <h3>🐳 Axon Converter Image</h3>
-                <p>The <strong>Axon Converter Image</strong> is a Docker container that provides universal ONNX model conversion capabilities. It eliminates the need for Python dependencies on the host machine while enabling seamless conversion of models from any repository to ONNX format.</p>
-                    
-                    <div class="feature-highlight">
-                        <h3>Key Features</h3>
-                        <ul>
-                            <li><strong>Zero Python Installation</strong>: No Python needed on your machine - everything runs in Docker</li>
-                            <li><strong>Multi-Framework Support</strong>: Pre-installed PyTorch, TensorFlow, Transformers, ModelScope, and ONNX Runtime</li>
-                            <li><strong>Universal Conversion</strong>: Convert models from Hugging Face, PyTorch Hub, TensorFlow Hub, and ModelScope</li>
-                            <li><strong>Automatic Usage</strong>: Axon automatically uses the converter image when Docker is available</li>
-                            <li><strong>Cross-Platform</strong>: Works on macOS, Linux, and Windows (with Docker)</li>
+            </div>
+
+            <!-- Core Components -->
+            <div class="components-section">
+                <h2 class="section-title">Core Components</h2>
+                <div class="components-grid">
+                    <div class="component-card">
+                        <div class="component-header">
+                            <div class="component-icon">⚙️</div>
+                            <div class="component-title-group">
+                                <h3>mlOS Core</h3>
+                                <span class="component-version">v6.2.0-alpha</span>
+                            </div>
+                        </div>
+                        <p>
+                            The kernel-level ML runtime engine. Manages model lifecycle, plugin loading,
+                            resource allocation, and provides multi-protocol APIs for inference.
+                        </p>
+                        <ul class="component-features">
+                            <li>Multi-protocol API (HTTP, gRPC, IPC)</li>
+                            <li>Plugin-based architecture</li>
+                            <li>NUMA-aware memory management</li>
+                            <li>Predictive prefetching</li>
+                            <li>Built-in ONNX & GGUF support</li>
                         </ul>
+                        <a href="https://github.com/mlOS-foundation/core" class="component-link">
+                            View Repository →
+                        </a>
                     </div>
 
-                    <h4>How It Works</h4>
-                    <p>When you install a model with Axon, the converter image automatically:</p>
-                    <ol>
-                        <li><strong>Downloads</strong> the model from the repository</li>
-                        <li><strong>Detects</strong> the framework (PyTorch, TensorFlow, Hugging Face, etc.)</li>
-                        <li><strong>Converts</strong> the model to ONNX format using the appropriate conversion script</li>
-                        <li><strong>Saves</strong> the ONNX file to your Axon cache</li>
-                    </ol>
-
-                    <div class="code-block">
-                        <div class="code-block-header">
-                            <h4>Example: Automatic Conversion (v3.1.9)</h4>
-                        </div>
-                        <pre><code># Install NLP model - conversion happens automatically
-axon install hf/distilgpt2@latest
-
-# Install Vision model - automatic task detection!
-axon install hf/microsoft/resnet-50@latest
-axon install hf/google/vit-base-patch16-224@latest
-
-# Output:
-# 📦 Downloading model from Hugging Face...
-# 🐳 Converting model using Docker (ghcr.io/mlos-foundation/axon-converter:latest)...
-# ✅ Model converted to ONNX: model.onnx
-# ✅ Model installed successfully</code></pre>
-                    </div>
-
-                    <h4>Integration with MLOS Core</h4>
-                    <p>The converter image is the bridge between Axon and MLOS Core:</p>
-                    <div class="integration-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <strong>Axon Install</strong>
-                                <code>axon install hf/model</code>
-                                <small>Downloads & converts to ONNX</small>
+                    <div class="component-card">
+                        <div class="component-header">
+                            <div class="component-icon">🔌</div>
+                            <div class="component-title-group">
+                                <h3>Axon CLI</h3>
+                                <span class="component-version">v3.1.9</span>
                             </div>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <strong>MLOS Core Register</strong>
-                                <code>axon register hf/model</code>
-                                <small>Detects ONNX & auto-selects plugin</small>
+                        <p>
+                            Model management CLI. Downloads models from Hugging Face, handles format
+                            detection, ONNX conversion, and registration with mlOS Core.
+                        </p>
+                        <ul class="component-features">
+                            <li>Smart format detection (GGUF, ONNX, SafeTensors)</li>
+                            <li>Automatic ONNX conversion</li>
+                            <li>Hugging Face integration</li>
+                            <li>Model versioning</li>
+                            <li>Batch installation</li>
+                        </ul>
+                        <a href="https://github.com/mlOS-foundation/axon" class="component-link">
+                            View Repository →
+                        </a>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-header">
+                            <div class="component-icon">🧪</div>
+                            <div class="component-title-group">
+                                <h3>System Test</h3>
+                                <span class="component-version">Active</span>
                             </div>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <strong>MLOS Core Execute</strong>
-                                <code>POST /models/hf/model/inference</code>
-                                <small>ONNX Runtime executes inference</small>
+                        <p>
+                            End-to-end testing framework. Validates the entire pipeline from model
+                            download through inference with real models on real hardware.
+                        </p>
+                        <ul class="component-features">
+                            <li>42+ model test suite</li>
+                            <li>Hardware-aware benchmarking</li>
+                            <li>Historical performance tracking</li>
+                            <li>Automated GitHub Actions</li>
+                            <li>Public test reports</li>
+                        </ul>
+                        <a href="https://github.com/mlOS-foundation/system-test" class="component-link">
+                            View Repository →
+                        </a>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-header">
+                            <div class="component-icon">📦</div>
+                            <div class="component-title-group">
+                                <h3>Core Releases</h3>
+                                <span class="component-version">Distribution</span>
                             </div>
                         </div>
+                        <p>
+                            Pre-built binaries for various platforms. Includes mlOS Core daemon,
+                            development headers, and system libraries.
+                        </p>
+                        <ul class="component-features">
+                            <li>Linux x64 binaries</li>
+                            <li>macOS ARM64 (Apple Silicon)</li>
+                            <li>Docker images</li>
+                            <li>Development packages</li>
+                            <li>Automatic updates</li>
+                        </ul>
+                        <a href="https://github.com/mlOS-foundation/core-releases" class="component-link">
+                            View Repository →
+                        </a>
                     </div>
-
-                    <div class="architecture-note">
-                        <h4>Architecture Benefits</h4>
-                        <ol>
-                            <li><strong>Separation of Concerns</strong>: Axon handles conversion, MLOS Core handles execution</li>
-                            <li><strong>No Python in Production</strong>: MLOS Core never needs Python dependencies</li>
-                            <li><strong>Universal Execution</strong>: ONNX Runtime enables all converted models to run</li>
-                            <li><strong>Isolated Environment</strong>: Conversion happens in containers, avoiding conflicts</li>
-                        </ol>
-                    </div>
-
-                    <h4>Image Details</h4>
-                    <ul>
-                        <li><strong>Registry</strong>: <code>ghcr.io/mlos-foundation/axon-converter</code></li>
-                        <li><strong>Tags</strong>: <code>latest</code>, <code>2.1.0</code>, <code>2.1</code>, <code>2</code></li>
-                        <li><strong>Size</strong>: ~4GB (compressed: ~1.2GB)</li>
-                        <li><strong>Platforms</strong>: <code>linux/amd64</code>, <code>linux/arm64</code></li>
-                        <li><strong>Also Available</strong>: OCI artifacts attached to GitHub Releases</li>
-                    </ul>
-
-                <p><strong>Learn More:</strong> See the <a href="https://github.com/mlOS-foundation/axon/blob/main/docs/CONVERTER_IMAGE.md" style="color: #667eea; text-decoration: none; font-weight: 600;">complete converter image documentation</a> for detailed usage, troubleshooting, and technical details.</p>
-
-                <h3>Status</h3>
-                <p>
-                    <strong>MVP Complete</strong> - Axon has achieved MVP status with core functionality implemented:
-                </p>
-                <ul>
-                    <li>✅ Manifest system with YAML parser and validator</li>
-                    <li>✅ Manifest-first architecture with format-agnostic execution</li>
-                    <li>✅ Automatic execution format detection (ONNX, PyTorch, TensorFlow)</li>
-                    <li>✅ Cache manager for local model storage</li>
-                    <li>✅ Registry client for model discovery</li>
-                    <li>✅ CLI commands for model lifecycle management</li>
-                    <li>✅ Comprehensive testing and CI/CD pipeline</li>
-                </ul>
-                
-                <p style="margin-top: 1.5rem;">
-                    <a href="https://github.com/mlOS-foundation/axon" style="color: #667eea; text-decoration: none; font-weight: 600;">
-                        View Axon on GitHub →
-                    </a>
-                </p>
-            </div>
-
-            <div class="component" id="core">
-                <h2>MLOS Core</h2>
-                <p>
-                    MLOS Core is the kernel-level machine learning runtime that provides the foundation for 
-                    high-performance ML inference. It implements a plugin-based architecture supporting multiple 
-                    ML frameworks through the Standard Model Interface (SMI).
-                </p>
-                
-                <h3>🔗 Axon Integration</h3>
-                <p>
-                    MLOS Core integrates seamlessly with <a href="#axon">Axon</a> for complete end-to-end model delivery and execution:
-                </p>
-                <ul>
-                    <li><strong>Model Package Format (MPF)</strong>: MLOS Core relies on Axon packages as specified in patent US-63/861,527</li>
-                    <li><strong>Standardized Metadata</strong>: Reads Axon manifests for model information (framework, resources, I/O schema, execution format)</li>
-                    <li><strong>Format-Agnostic Execution</strong>: Dynamic plugin selection based on manifest's execution format</li>
-                    <li><strong>Universal Delivery</strong>: Works with models from any repository (Hugging Face, PyTorch Hub, TensorFlow Hub, ModelScope) via Axon</li>
-                    <li><strong>Plugin Independence</strong>: Plugins receive path to model files, don't need to know about Axon</li>
-                </ul>
-                <p><strong>Complete E2E Workflow:</strong></p>
-                <div class="code-block">
-                    <div class="code-block-header">
-                        <h4>End-to-End Integration Example</h4>
-                        <button class="code-copy-btn" onclick="copyCode(this)">Copy</button>
-                    </div>
-                    <pre><code># 1. Install model with Axon (NLP or Vision)
-axon install hf/bert-base-uncased@latest
-axon install hf/microsoft/resnet-50@latest
-
-# 2. Register with MLOS Core
-axon register hf/bert-base-uncased@latest
-
-# 3. Run inference via MLOS Core API (v6.2.0-alpha)
-curl -X POST http://localhost:8080/models/hf%2Fbert-base-uncased@latest/inference \
-  -H "Content-Type: application/json" \
-  -d '{"inputs":{"input_ids":[[101,2054,2003,102]]}}'</code></pre>
                 </div>
-                <p><strong>Architecture Details:</strong></p>
-                <ul>
-                    <li><strong>Delivery Layer (Axon)</strong>: Handles all repository interactions, creates standardized `.axon` packages with `manifest.yaml`, provides metadata. Does NOT execute models.</li>
-                    <li><strong>Execution Layer (MLOS Core)</strong>: Reads Axon manifests for metadata, manages model lifecycle, routes to appropriate plugins. Does NOT access repositories directly.</li>
-                    <li><strong>Framework Layer (Plugins)</strong>: Load framework-specific model formats, execute inference. Plugins receive path to model files, don't need to know about Axon.</li>
-                </ul>
-                <p><strong>Patent Alignment:</strong> This integration demonstrates key innovations from MLOS Foundation patents - US-63/861,527 (MLOS System with native lifecycle management) and US-63/865,176 (Kernel-level optimizations for ML workloads). Axon packages ARE the Model Package Format (MPF) implementation.</p>
-                
-                <h3>Architecture</h3>
-                <p>
-                    MLOS Core consists of several key components:
-                </p>
-                <ul>
-                    <li><strong>Core Engine</strong>: Plugin registry, model registry, and resource manager</li>
-                    <li><strong>API Layer</strong>: Multi-protocol support (HTTP, gRPC, IPC)</li>
-                    <li><strong>SMI Interface</strong>: Standardized interface for ML framework plugins</li>
-                    <li><strong>Resource Management</strong>: Intelligent allocation and sharing of compute resources</li>
-                    <li><strong>Axon Manifest Reader</strong>: Reads standardized Axon packages (MPF) for model metadata</li>
-                </ul>
-                
-                <h3>Performance</h3>
-                <p>
-                    Kernel-level optimizations enable ultra-low latency inference:
-                </p>
-                <ul>
-                    <li>Sub-millisecond inference for small models (IPC API)</li>
-                    <li>Zero-copy operations for large tensors</li>
-                    <li>Efficient GPU memory and compute sharing</li>
-                    <li>Automatic batching for throughput optimization</li>
-                </ul>
-                
-                <p style="margin-top: 1.5rem;">
-                    <a href="architecture.html" style="color: #667eea; text-decoration: none; font-weight: 600;">
-                        View Architecture Details →
-                    </a>
-                </p>
             </div>
 
-            <div class="component" id="distro">
-                <h2>MLOS Linux Distributions</h2>
-                <p>
-                    Complete Linux distributions optimized for machine learning workloads, with MLOS Core, Axon, 
-                    and kernel-level ML optimizations pre-installed. Currently in <strong>planning phase</strong> 
-                    (target: v1.0.0 - Q2-Q3 2026).
-                </p>
-                
-                <h3>Distribution Variants</h3>
-                <ul>
-                    <li><strong>MLOS Linux (Ubuntu)</strong>: Based on Ubuntu 22.04/24.04 LTS with .deb packages, traditional installer, and cloud images</li>
-                    <li><strong>MLOS Linux (Flatcar)</strong>: Based on Flatcar Linux with container-first architecture, Ignition-based provisioning, and immutable filesystem</li>
-                    <li><strong>Shared Kernel Patches</strong>: ML-aware scheduler, tensor memory management, and GPU orchestration (US-63/865,176)</li>
-                </ul>
-                
-                <h3>Key Features (Planned)</h3>
-                <ul>
-                    <li><strong>ML-Aware Kernel</strong>: Priority-based ML task scheduling with tensor operation awareness</li>
-                    <li><strong>Pre-Installed Stack</strong>: MLOS Core, Axon, and ML development toolchain out of the box</li>
-                    <li><strong>Standards Compliant</strong>: LSB, FHS, systemd, Debian Policy (Ubuntu) / Ignition (Flatcar)</li>
-                    <li><strong>IP Protection</strong>: Binary artifacts from private repositories with GPG signature verification</li>
-                    <li><strong>Universal Model Support</strong>: Works with models from Hugging Face, PyTorch Hub, TensorFlow Hub, ModelScope via Axon</li>
-                </ul>
-                
-                <h3>Architecture</h3>
-                <p>
-                    Both distributions include:
-                </p>
-                <ul>
-                    <li><strong>Kernel Modifications</strong>: ML-aware scheduler, tensor memory management, GPU resource orchestration</li>
-                    <li><strong>MLOS Core</strong>: Kernel-level ML runtime with HTTP, gRPC, and IPC APIs</li>
-                    <li><strong>Axon</strong>: Universal model installer with 80%+ repository coverage</li>
-                    <li><strong>ML Toolchain</strong>: Python, PyTorch, TensorFlow, ONNX Runtime pre-installed</li>
-                </ul>
-                
-                <h3>Status & Repositories</h3>
-                <p>
-                    <strong>Status:</strong> 🔄 Planning Phase (Repository structure created, build infrastructure pending)
-                </p>
-                <ul>
-                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-ubuntu" style="color: #667eea;">MLOS Linux (Ubuntu)</a> - Ubuntu-based distribution</li>
-                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-flatcar" style="color: #667eea;">MLOS Linux (Flatcar)</a> - Flatcar-based distribution</li>
-                    <li><a href="https://github.com/mlOS-foundation/mlos-linux-kernel" style="color: #667eea;">MLOS Kernel Patches</a> - Shared kernel patches</li>
-                </ul>
-                
-                <p style="margin-top: 1.5rem;">
-                    <strong>Note:</strong> Distribution repositories are public and contain build scripts, configuration, and documentation. 
-                    MLOS Core binaries and kernel patches are downloaded from private registries during build time with GPG signature verification. 
-                    See <a href="https://github.com/mlOS-foundation/core/blob/main/docs/DISTRO_IP_PROTECTION_PLAN.md" style="color: #667eea;">IP Protection Plan</a> for details.
-                </p>
+            <!-- Repository Overview -->
+            <div class="repos-section">
+                <h2 class="section-title">All Repositories</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Repository</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://github.com/mlOS-foundation/core">mlOS-foundation/core</a></td>
+                                <td>Kernel-level ML runtime engine</td>
+                                <td><span class="status-dot active"></span>Active</td>
+                                <td>v6.2.0-alpha</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://github.com/mlOS-foundation/axon">mlOS-foundation/axon</a></td>
+                                <td>Model management CLI</td>
+                                <td><span class="status-dot active"></span>Active</td>
+                                <td>v3.1.9</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://github.com/mlOS-foundation/system-test">mlOS-foundation/system-test</a></td>
+                                <td>E2E testing & benchmarking</td>
+                                <td><span class="status-dot active"></span>Active</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://github.com/mlOS-foundation/core-releases">mlOS-foundation/core-releases</a></td>
+                                <td>Pre-built binaries & Docker images</td>
+                                <td><span class="status-dot active"></span>Active</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://github.com/mlOS-foundation/mlosfoundation.org">mlOS-foundation/mlosfoundation.org</a></td>
+                                <td>This website</td>
+                                <td><span class="status-dot active"></span>Active</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>mlOS-foundation/sdk-python</td>
+                                <td>Python SDK for mlOS Core</td>
+                                <td><span class="status-dot planned"></span>Planned</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>mlOS-foundation/sdk-js</td>
+                                <td>JavaScript/TypeScript SDK</td>
+                                <td><span class="status-dot planned"></span>Planned</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="component" id="smi">
-                <h2>Standard Model Interface (SMI)</h2>
-                <p>
-                    The Standard Model Interface specification provides a unified interface for ML frameworks, 
-                    enabling framework-agnostic model deployment and management.
-                </p>
-                
-                <h3>Benefits</h3>
-                <ul>
-                    <li><strong>Framework Interoperability</strong>: Deploy models from any supported framework</li>
-                    <li><strong>Plugin System</strong>: Hot-swappable framework plugins</li>
-                    <li><strong>Resource Declaration</strong>: Declarative resource requirements</li>
-                    <li><strong>Multi-language Support</strong>: C, Python, Go, JavaScript bindings</li>
-                </ul>
-                
-                <h3>Supported Frameworks</h3>
-                <p>
-                    SMI enables plugins for:
-                </p>
-                <ul>
-                    <li>PyTorch</li>
-                    <li>TensorFlow</li>
-                    <li>ONNX Runtime</li>
-                    <li>Custom frameworks (via plugin API)</li>
-                </ul>
-            </div>
-
-            <div class="component" id="future">
-                <h2>Future Components</h2>
-                <p>
-                    The MLOS ecosystem continues to evolve with additional components planned:
-                </p>
-                <ul>
-                    <li><strong>MLOS Kernel</strong>: Kernel-level ML runtime optimizations</li>
-                    <li><strong>MLOS Scheduler</strong>: ML workload scheduling and orchestration</li>
-                    <li><strong>Axon Registry</strong>: Model registry and discovery service</li>
-                    <li><strong>Axon Hub</strong>: Web UI for model discovery and management</li>
-                    <li><strong>Axon SDK</strong>: Python SDK for model packaging</li>
-                </ul>
+            <!-- Integration Flow -->
+            <div class="integration-section">
+                <h2 class="section-title">Typical Integration</h2>
+                <div class="integration-flow">
+                    <div class="flow-row">
+                        <div class="flow-box">
+                            <h4>1. Install Axon</h4>
+                            <p>curl -sSL axon.mlosfoundation.org | sh</p>
+                        </div>
+                        <div class="flow-connector"></div>
+                        <div class="flow-box">
+                            <h4>2. Download Model</h4>
+                            <p>axon install hf/bert-base</p>
+                        </div>
+                        <div class="flow-connector"></div>
+                        <div class="flow-box highlight">
+                            <h4>3. Start Core</h4>
+                            <p>mlos_core --config prod.yaml</p>
+                        </div>
+                        <div class="flow-connector"></div>
+                        <div class="flow-box">
+                            <h4>4. Run Inference</h4>
+                            <p>POST /models/bert/inference</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </main>
+    </section>
 
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="https://github.com/mlOS-foundation">GitHub</a>
                 <a href="index.html">Home</a>
                 <a href="architecture.html">Architecture</a>
-                <a href="mailto:info@mlosfoundation.org">Contact</a>
+                <a href="models.html">Models</a>
+                <a href="https://github.com/mlOS-foundation">GitHub</a>
             </div>
-            <p>&copy; 2025 MLOS Foundation. Building the future of ML infrastructure.</p>
+            <p>&copy; 2025 mlOS Foundation. Open source under MIT License.</p>
         </div>
     </footer>
 </body>
 </html>
-

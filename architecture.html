@@ -3,351 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLOS Architecture - MLOS Foundation</title>
-    <meta name="description" content="Detailed architecture of MLOS Core: kernel-level ML runtime, plugin system, multi-protocol APIs, and resource management.">
+    <title>Architecture | mlOS</title>
+    <meta name="description" content="Detailed architecture of mlOS Core: kernel-level ML runtime, plugin system, multi-protocol APIs, and resource management.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --color-primary: #0f172a;
-            --color-secondary: #3b82f6;
-            --color-accent: #06b6d4;
-            --color-text: #1e293b;
-            --color-text-muted: #64748b;
+            --bg-deep: #030712;
+            --bg-base: #0a0f1a;
+            --bg-elevated: #111827;
+            --bg-surface: #1f2937;
+            --border: #374151;
+            --border-subtle: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-orange: #f97316;
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --glow-blue: rgba(59, 130, 246, 0.1);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: var(--font-sans);
+            background: var(--bg-base);
+            color: var(--text-secondary);
             line-height: 1.6;
-            color: #1a202c;
-            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Navigation - Consistent with index.html */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
         .nav {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 1000;
-            border-bottom: 1px solid #e2e8f0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 15, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .nav-content {
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 24px;
             font-weight: 800;
-            color: var(--color-primary);
+            color: var(--text-primary);
             text-decoration: none;
         }
 
-        .logo span { color: var(--color-accent); }
+        .logo span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
         .nav-links {
             display: flex;
-            list-style: none;
-            gap: 2rem;
+            gap: 32px;
             align-items: center;
+            list-style: none;
         }
 
         .nav-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            color: var(--color-text);
+            font-size: 14px;
             font-weight: 500;
-            font-size: 0.95rem;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover { color: var(--color-secondary); }
+        .nav-links a:hover { color: var(--text-primary); }
 
         .nav-cta {
-            background: var(--color-secondary);
-            color: white !important;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
         }
 
-        .nav-cta:hover { background: #2563eb; }
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .container {
-            max-width: 1200px;
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, var(--glow-cyan), transparent);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 2rem;
+            position: relative;
+        }
+
+        /* Content */
+        .content {
+            padding: 80px 0;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .section > p {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            max-width: 800px;
+        }
+
+        /* Architecture Diagram */
+        .arch-container {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 32px 0;
+        }
+
+        .arch-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .arch-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .arch-label {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .arch-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-align: center;
+            min-width: 120px;
+            transition: all 0.2s;
+        }
+
+        .arch-box:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .arch-box.api {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border-color: var(--accent-emerald);
+            color: var(--accent-emerald);
+        }
+
+        .arch-box.core {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(59, 130, 246, 0.1));
+            border-color: var(--accent-cyan);
+            padding: 20px 40px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .arch-box.core span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .arch-box.plugin {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .arch-box.kernel {
+            background: var(--bg-deep);
+            border-color: var(--border);
+            min-width: 100%;
+        }
+
+        .arch-connector {
+            width: 2px;
+            height: 24px;
+            background: linear-gradient(to bottom, var(--accent-cyan), transparent);
+            margin: 0 auto;
+        }
+
+        /* Component Cards */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .component-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.2s;
+        }
+
+        .component-card:hover {
+            border-color: var(--border);
+            transform: translateY(-2px);
+        }
+
+        .component-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .component-card h3::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 2px;
+        }
+
+        .component-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .component-card ul {
+            list-style: none;
+        }
+
+        .component-card li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            gap: 8px;
+        }
+
+        .component-card li:last-child { border-bottom: none; }
+
+        .component-card li strong {
+            color: var(--text-primary);
+        }
+
+        /* Flow Steps */
+        .flow-container {
+            margin-top: 32px;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+            transition: all 0.2s;
+        }
+
+        .flow-step:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .step-content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Performance Table */
+        .table-container {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 13px;
+            text-align: left;
+            padding: 16px 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        code {
+            background: var(--bg-surface);
+            color: var(--accent-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-deep);
+            border-top: 1px solid var(--border-subtle);
+            padding: 48px 0 32px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--text-secondary); }
+
+        .footer p {
+            color: var(--text-dim);
+            font-size: 13px;
         }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-        }
-
-        .hero {
-            text-align: center;
-            padding: 8rem 0 4rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-            color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        
-        .content {
-            padding: 4rem 0;
-        }
-        
-        .section {
-            margin-bottom: 5rem;
-        }
-        
-        .section h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-            color: #1a202c;
-        }
-        
-        .section p {
-            color: #4a5568;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-        
-        .diagram-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin: 2rem 0;
-            overflow-x: auto;
-        }
-        
-        .diagram {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .component-box {
-            fill: #667eea;
-            stroke: #5568d3;
-            stroke-width: 2;
-            rx: 8;
-        }
-        
-        .api-box {
-            fill: #48bb78;
-            stroke: #38a169;
-            stroke-width: 2;
-            rx: 8;
-        }
-        
-        .plugin-box {
-            fill: #ed8936;
-            stroke: #dd6b20;
-            stroke-width: 2;
-            rx: 8;
-        }
-        
-        .text {
-            fill: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            text-anchor: middle;
-            dominant-baseline: middle;
-        }
-        
-        .arrow {
-            stroke: #667eea;
-            stroke-width: 2;
-            fill: none;
-            marker-end: url(#arrowhead);
-        }
-        
-        .component-details {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-top: 2rem;
-        }
-        
-        .component-details h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #1a202c;
-        }
-        
-        .component-details ul {
-            margin-left: 2rem;
-            color: #4a5568;
-            line-height: 1.8;
-        }
-        
-        .component-details li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .flow-diagram {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin: 2rem 0;
-        }
-        
-        .flow-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .step-number {
-            background: #667eea;
-            color: #ffffff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            margin-right: 1.5rem;
-            flex-shrink: 0;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        
-        .step-content {
-            flex: 1;
-        }
-        
-        .step-content h4 {
-            color: #1a202c;
-            margin-bottom: 0.5rem;
-        }
-        
-        .step-content p {
-            color: #4a5568;
-            margin: 0;
-        }
-        
-        .performance-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        
-        .performance-table th {
-            background: #667eea;
-            color: #ffffff;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        
-        .performance-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #e8ecef;
-            color: #4a5568;
-        }
-        
-        .performance-table tr:hover {
-            background: #f8f9fa;
-        }
-        
-        code {
-            background: #f1f3f5;
-            color: #667eea;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: 'Courier New', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            font-size: 0.9em;
-        }
-        
-        .footer {
-            background: #1a202c;
-            color: #ffffff;
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        .footer p {
-            color: #e2e8f0;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: #a0aec0;
-        }
-        
-        @media (max-width: 768px) {
-            .diagram-container {
-                padding: 1rem;
-            }
-            
-            .flow-step {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .step-number {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
+            .hero { padding: 120px 0 60px; }
+            .hero h1 { font-size: 32px; }
+            .components-grid { grid-template-columns: 1fr; }
+            .arch-container { padding: 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="nav">
         <div class="container">
-            <div class="nav-content">
+            <div class="nav-inner">
                 <a href="index.html" class="logo">ml<span>OS</span></a>
                 <ul class="nav-links">
                     <li><a href="architecture.html">Architecture</a></li>
@@ -362,8 +469,9 @@
     </nav>
 
     <section class="hero">
+        <div class="hero-bg"></div>
         <div class="container">
-            <h1>MLOS Architecture</h1>
+            <h1>Architecture</h1>
             <p>Kernel-level machine learning runtime with plugin-based design</p>
         </div>
     </section>
@@ -373,173 +481,142 @@
             <div class="section">
                 <h2>System Overview</h2>
                 <p>
-                    MLOS Core implements a kernel-level machine learning operating system with a plugin-based 
-                    architecture. The system provides standardized interfaces for ML frameworks while maintaining 
+                    mlOS Core implements a kernel-level machine learning operating system with a plugin-based
+                    architecture. The system provides standardized interfaces for ML frameworks while maintaining
                     high performance and resource efficiency through direct OS integration.
                 </p>
-                
-                <div class="diagram-container">
-                    <svg class="diagram" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
-                            </marker>
-                        </defs>
-                        
-                        <!-- Client Applications -->
-                        <rect x="50" y="50" width="200" height="80" class="component-box" />
-                        <text x="150" y="90" class="text">Client Applications</text>
-                        
-                        <!-- API Layer - centered with proper spacing -->
-                        <rect x="350" y="50" width="500" height="80" class="api-box" />
-                        <text x="600" y="75" class="text">API Layer</text>
-                        <text x="450" y="100" class="text" style="font-size: 12px;">HTTP REST</text>
-                        <text x="600" y="100" class="text" style="font-size: 12px;">gRPC</text>
-                        <text x="750" y="100" class="text" style="font-size: 12px;">IPC (Unix Socket)</text>
-                        
-                        <!-- MLOS Core Engine - aligned with API Layer -->
-                        <rect x="350" y="180" width="500" height="120" class="component-box" />
-                        <text x="600" y="210" class="text">MLOS Core Engine</text>
-                        <text x="450" y="240" class="text" style="font-size: 11px;">Plugin Registry</text>
-                        <text x="600" y="240" class="text" style="font-size: 11px;">Model Registry</text>
-                        <text x="750" y="240" class="text" style="font-size: 11px;">Resource Manager</text>
-                        <text x="600" y="270" class="text" style="font-size: 11px;">SMI Interface</text>
-                        
-                        <!-- Plugins - evenly spaced and aligned -->
-                        <rect x="100" y="360" width="200" height="80" class="plugin-box" />
-                        <text x="200" y="400" class="text">PyTorch Plugin</text>
-                        
-                        <rect x="350" y="360" width="200" height="80" class="plugin-box" />
-                        <text x="450" y="400" class="text">TensorFlow Plugin</text>
-                        
-                        <rect x="600" y="360" width="200" height="80" class="plugin-box" />
-                        <text x="700" y="400" class="text">ONNX Plugin</text>
-                        
-                        <rect x="850" y="360" width="200" height="80" class="plugin-box" />
-                        <text x="950" y="400" class="text">Custom Plugin</text>
-                        
-                        <!-- Kernel Layer - full width, aligned -->
-                        <rect x="50" y="500" width="1100" height="60" class="component-box" style="fill: #2c3e50; stroke: #1a202c;" />
-                        <text x="600" y="530" class="text">Operating System Kernel</text>
-                        
-                        <!-- Arrows - properly aligned -->
-                        <line x1="250" y1="90" x2="350" y2="90" class="arrow" />
-                        
-                        <!-- API Layer to Core Engine -->
-                        <line x1="600" y1="130" x2="600" y2="180" class="arrow" />
-                        
-                        <!-- Core Engine to Plugins - centered -->
-                        <line x1="600" y1="300" x2="200" y2="360" class="arrow" />
-                        <line x1="600" y1="300" x2="450" y2="360" class="arrow" />
-                        <line x1="600" y1="300" x2="700" y2="360" class="arrow" />
-                        <line x1="600" y1="300" x2="950" y2="360" class="arrow" />
-                        
-                        <!-- Plugins to Kernel - centered on each plugin -->
-                        <line x1="200" y1="440" x2="200" y2="500" class="arrow" />
-                        <line x1="450" y1="440" x2="450" y2="500" class="arrow" />
-                        <line x1="700" y1="440" x2="700" y2="500" class="arrow" />
-                        <line x1="950" y1="440" x2="950" y2="500" class="arrow" />
-                    </svg>
+
+                <div class="arch-container">
+                    <div class="arch-diagram">
+                        <div>
+                            <div class="arch-label">Client Applications</div>
+                            <div class="arch-row">
+                                <div class="arch-box">Your App</div>
+                                <div class="arch-box">API Clients</div>
+                                <div class="arch-box">SDKs</div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector"></div>
+
+                        <div>
+                            <div class="arch-label">API Layer</div>
+                            <div class="arch-row">
+                                <div class="arch-box api">HTTP REST</div>
+                                <div class="arch-box api">gRPC</div>
+                                <div class="arch-box api">IPC (Unix Socket)</div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector"></div>
+
+                        <div>
+                            <div class="arch-label">Runtime Layer</div>
+                            <div class="arch-row">
+                                <div class="arch-box core"><span>mlOS Core Engine</span></div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector"></div>
+
+                        <div>
+                            <div class="arch-label">Plugins</div>
+                            <div class="arch-row">
+                                <div class="arch-box plugin">ONNX Runtime</div>
+                                <div class="arch-box plugin">llama.cpp</div>
+                                <div class="arch-box plugin">PyTorch</div>
+                                <div class="arch-box plugin">Custom</div>
+                            </div>
+                        </div>
+
+                        <div class="arch-connector"></div>
+
+                        <div>
+                            <div class="arch-label">Hardware</div>
+                            <div class="arch-row">
+                                <div class="arch-box kernel">CPU • GPU (CUDA/ROCm/Metal) • Memory • Storage</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="section">
                 <h2>Core Components</h2>
-                
-                <div class="component-details">
-                    <h3>1. MLOS Core Engine</h3>
-                    <p>The central orchestrator that manages the entire MLOS system:</p>
-                    <ul>
-                        <li><strong>Plugin Registry</strong>: Manages loaded ML framework plugins with lifecycle tracking</li>
-                        <li><strong>Model Registry</strong>: Tracks registered models, their versions, and metadata</li>
-                        <li><strong>Resource Manager</strong>: Allocates and manages compute resources (CPU, GPU, memory)</li>
-                        <li><strong>SMI Interface</strong>: Implements Standard Model Interface specification for plugin communication</li>
-                    </ul>
-                </div>
-                
-                <div class="component-details">
-                    <h3>2. Multi-Protocol API Layer</h3>
-                    <p>Three API protocols for different use cases:</p>
-                    <ul>
-                        <li><strong>HTTP REST API</strong>: Management operations and easy integration (port 8080)</li>
-                        <li><strong>gRPC API</strong>: High-performance binary protocol for production workloads (port 8081)</li>
-                        <li><strong>IPC API</strong>: Ultra-low latency Unix domain sockets for local applications</li>
-                    </ul>
-                </div>
-                
-                <div class="component-details">
-                    <h3>3. Plugin Architecture</h3>
-                    <p>Framework-agnostic plugin system:</p>
-                    <ul>
-                        <li><strong>Dynamic Loading</strong>: Load/unload plugins without system restart</li>
-                        <li><strong>Process Isolation</strong>: Each plugin runs in separate process for fault tolerance</li>
-                        <li><strong>Version Support</strong>: Multiple plugin versions can run simultaneously</li>
-                        <li><strong>Hot-Swapping</strong>: Update plugins without downtime</li>
-                    </ul>
+
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>mlOS Core Engine</h3>
+                        <p>The central orchestrator that manages the entire mlOS system.</p>
+                        <ul>
+                            <li><strong>Plugin Registry</strong> — Manages loaded ML framework plugins with lifecycle tracking</li>
+                            <li><strong>Model Registry</strong> — Tracks registered models, versions, and metadata</li>
+                            <li><strong>Resource Manager</strong> — Allocates and manages compute resources (CPU, GPU, memory)</li>
+                            <li><strong>SMI Interface</strong> — Standard Model Interface for plugin communication</li>
+                        </ul>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Multi-Protocol API Layer</h3>
+                        <p>Three API protocols for different use cases.</p>
+                        <ul>
+                            <li><strong>HTTP REST</strong> — Management operations, easy integration (port 8080)</li>
+                            <li><strong>gRPC</strong> — High-performance binary protocol for production (port 8081)</li>
+                            <li><strong>IPC</strong> — Ultra-low latency Unix sockets for local apps</li>
+                        </ul>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Plugin Architecture</h3>
+                        <p>Framework-agnostic plugin system for maximum flexibility.</p>
+                        <ul>
+                            <li><strong>Dynamic Loading</strong> — Load/unload plugins without restart</li>
+                            <li><strong>Process Isolation</strong> — Each plugin runs in separate process</li>
+                            <li><strong>Version Support</strong> — Multiple versions can run simultaneously</li>
+                            <li><strong>Hot-Swapping</strong> — Update plugins without downtime</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
             <div class="section">
                 <h2>System Flow</h2>
-                <p>
-                    The following diagram illustrates the typical flow of operations in MLOS:
-                </p>
-                
-                <div class="flow-diagram">
+                <p>The typical flow of operations in mlOS from registration to inference.</p>
+
+                <div class="flow-container">
                     <div class="flow-step">
                         <div class="step-number">1</div>
                         <div class="step-content">
                             <h4>Register Plugin</h4>
-                            <p>Client application registers an ML framework plugin with MLOS Core</p>
+                            <p>Client application registers an ML framework plugin with mlOS Core</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="step-number">2</div>
                         <div class="step-content">
                             <h4>Load Plugin</h4>
-                            <p>MLOS Core dynamically loads the plugin and initializes it</p>
+                            <p>mlOS Core dynamically loads and initializes the plugin</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="step-number">3</div>
                         <div class="step-content">
                             <h4>Register Model</h4>
-                            <p>Client registers a model with MLOS Core, which forwards to the plugin</p>
+                            <p>Client registers a model with mlOS Core, which forwards to the plugin</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="step-number">4</div>
                         <div class="step-content">
-                            <h4>Model Registration Complete</h4>
-                            <p>Plugin confirms model registration and returns model metadata</p>
+                            <h4>Inference Request</h4>
+                            <p>Client sends inference request to mlOS Core via any API protocol</p>
                         </div>
                     </div>
                     <div class="flow-step">
                         <div class="step-number">5</div>
                         <div class="step-content">
-                            <h4>Inference Request</h4>
-                            <p>Client sends inference request to MLOS Core via API</p>
-                        </div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="step-number">6</div>
-                        <div class="step-content">
-                            <h4>Execute Inference</h4>
-                            <p>MLOS Core routes request to appropriate plugin for execution</p>
-                        </div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="step-number">7</div>
-                        <div class="step-content">
-                            <h4>Return Results</h4>
-                            <p>Plugin returns inference results to MLOS Core</p>
-                        </div>
-                    </div>
-                    <div class="flow-step">
-                        <div class="step-number">8</div>
-                        <div class="step-content">
-                            <h4>Response to Client</h4>
-                            <p>MLOS Core returns results to client application</p>
+                            <h4>Execute & Return</h4>
+                            <p>mlOS routes to appropriate plugin, executes inference, returns results</p>
                         </div>
                     </div>
                 </div>
@@ -547,225 +624,94 @@
 
             <div class="section">
                 <h2>Performance Characteristics</h2>
-                <p>
-                    MLOS achieves high performance through kernel-level optimizations and efficient resource management:
-                </p>
-                
-                <table class="performance-table">
-                    <thead>
-                        <tr>
-                            <th>Operation</th>
-                            <th>HTTP API</th>
-                            <th>gRPC API</th>
-                            <th>IPC API</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Plugin Registration</td>
-                            <td>~5ms</td>
-                            <td>~2ms</td>
-                            <td>~0.5ms</td>
-                        </tr>
-                        <tr>
-                            <td>Model Registration</td>
-                            <td>~10ms</td>
-                            <td>~5ms</td>
-                            <td>~1ms</td>
-                        </tr>
-                        <tr>
-                            <td>Inference (small model)</td>
-                            <td>~2ms</td>
-                            <td>~1ms</td>
-                            <td>~0.1ms</td>
-                        </tr>
-                        <tr>
-                            <td>Inference (large model)</td>
-                            <td>~50ms</td>
-                            <td>~25ms</td>
-                            <td>~10ms</td>
-                        </tr>
-                        <tr>
-                            <td>Health Check</td>
-                            <td>~1ms</td>
-                            <td>~0.5ms</td>
-                            <td>~0.05ms</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <p>mlOS achieves high performance through kernel-level optimizations and efficient resource management.</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operation</th>
+                                <th>HTTP API</th>
+                                <th>gRPC API</th>
+                                <th>IPC API</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Plugin Registration</td>
+                                <td>~5ms</td>
+                                <td>~2ms</td>
+                                <td>~0.5ms</td>
+                            </tr>
+                            <tr>
+                                <td>Model Registration</td>
+                                <td>~10ms</td>
+                                <td>~5ms</td>
+                                <td>~1ms</td>
+                            </tr>
+                            <tr>
+                                <td>Inference (small model)</td>
+                                <td>~2ms</td>
+                                <td>~1ms</td>
+                                <td>~0.1ms</td>
+                            </tr>
+                            <tr>
+                                <td>Inference (large model)</td>
+                                <td>~50ms</td>
+                                <td>~25ms</td>
+                                <td>~10ms</td>
+                            </tr>
+                            <tr>
+                                <td>Health Check</td>
+                                <td>~1ms</td>
+                                <td>~0.5ms</td>
+                                <td>~0.05ms</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="section">
                 <h2>Deployment Patterns</h2>
-                
-                <div class="component-details">
-                    <h3>Single Node Deployment</h3>
-                    <p>
-                        MLOS Core runs on a single node with multiple plugins. Ideal for development, 
-                        testing, and small-scale deployments.
-                    </p>
-                </div>
-                
-                <div class="component-details">
-                    <h3>Distributed Deployment</h3>
-                    <p>
-                        Multiple MLOS Core nodes can be deployed behind a load balancer or service mesh. 
-                        Enables horizontal scaling and high availability for production workloads.
-                    </p>
-                </div>
-            </div>
 
-            <div class="section">
-                <h2>Axon Architecture - Data Flow Diagram</h2>
-                <p>
-                    Axon provides the neural pathway for ML models, managing the complete lifecycle from 
-                    discovery to deployment. The following diagram illustrates the data flow through the Axon system:
-                </p>
-                
-                <div class="diagram-container">
-                    <svg class="diagram" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <marker id="axon-arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                                <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
-                            </marker>
-                        </defs>
-                        
-                        <!-- User/CLI -->
-                        <rect x="50" y="50" width="180" height="70" class="component-box" />
-                        <text x="140" y="85" class="text">User / CLI</text>
-                        
-                        <!-- Axon CLI -->
-                        <rect x="300" y="50" width="200" height="70" class="component-box" style="fill: #764ba2;" />
-                        <text x="400" y="85" class="text">Axon CLI</text>
-                        
-                        <!-- Config Manager -->
-                        <rect x="50" y="180" width="180" height="70" class="api-box" />
-                        <text x="140" y="215" class="text">Config Manager</text>
-                        
-                        <!-- Registry Client -->
-                        <rect x="300" y="180" width="200" height="70" class="api-box" />
-                        <text x="400" y="215" class="text">Registry Client</text>
-                        
-                        <!-- Manifest Parser -->
-                        <rect x="550" y="180" width="200" height="70" class="plugin-box" />
-                        <text x="650" y="215" class="text">Manifest Parser</text>
-                        
-                        <!-- Cache Manager -->
-                        <rect x="800" y="180" width="200" height="70" class="plugin-box" />
-                        <text x="900" y="215" class="text">Cache Manager</text>
-                        
-                        <!-- Model Registry (External) -->
-                        <rect x="550" y="50" width="200" height="70" class="component-box" style="fill: #48bb78; stroke: #38a169;" />
-                        <text x="650" y="85" class="text">Model Registry</text>
-                        <text x="650" y="105" class="text" style="font-size: 11px;">(External)</text>
-                        
-                        <!-- Local Cache -->
-                        <rect x="800" y="50" width="200" height="70" class="component-box" style="fill: #ed8936; stroke: #dd6b20;" />
-                        <text x="900" y="85" class="text">Local Cache</text>
-                        <text x="900" y="105" class="text" style="font-size: 11px;">(~/.axon/cache)</text>
-                        
-                        <!-- File System -->
-                        <rect x="50" y="310" width="950" height="60" class="component-box" style="fill: #2c3e50; stroke: #1a202c;" />
-                        <text x="525" y="340" class="text">Local File System</text>
-                        
-                        <!-- Data Stores -->
-                        <rect x="50" y="420" width="300" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
-                        <text x="200" y="455" class="text">Config Store</text>
-                        <text x="200" y="475" class="text" style="font-size: 11px;">(~/.axon/config.yaml)</text>
-                        
-                        <rect x="400" y="420" width="300" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
-                        <text x="550" y="455" class="text">Manifest Store</text>
-                        <text x="550" y="475" class="text" style="font-size: 11px;">(manifest.yaml files)</text>
-                        
-                        <rect x="750" y="420" width="250" height="70" class="component-box" style="fill: #4299e1; stroke: #3182ce;" />
-                        <text x="875" y="455" class="text">Model Packages</text>
-                        <text x="875" y="475" class="text" style="font-size: 11px;">(.axon packages)</text>
-                        
-                        <!-- Arrows: User to CLI -->
-                        <line x1="230" y1="85" x2="300" y2="85" class="arrow" />
-                        
-                        <!-- CLI to Components -->
-                        <line x1="400" y1="120" x2="140" y2="180" class="arrow" />
-                        <line x1="400" y1="120" x2="400" y2="180" class="arrow" />
-                        <line x1="500" y1="85" x2="550" y2="85" class="arrow" />
-                        <line x1="400" y1="120" x2="650" y2="180" class="arrow" />
-                        <line x1="400" y1="120" x2="900" y2="180" class="arrow" />
-                        
-                        <!-- Registry Client to Model Registry -->
-                        <line x1="500" y1="215" x2="550" y2="120" class="arrow" />
-                        
-                        <!-- Registry Client to Manifest Parser -->
-                        <line x1="500" y1="215" x2="550" y2="215" class="arrow" />
-                        
-                        <!-- Manifest Parser to Cache Manager -->
-                        <line x1="750" y1="215" x2="800" y2="215" class="arrow" />
-                        
-                        <!-- Cache Manager to Local Cache -->
-                        <line x1="900" y1="250" x2="900" y2="120" class="arrow" />
-                        
-                        <!-- Components to File System -->
-                        <line x1="140" y1="250" x2="140" y2="310" class="arrow" />
-                        <line x1="400" y1="250" x2="400" y2="310" class="arrow" />
-                        <line x1="650" y1="250" x2="650" y2="310" class="arrow" />
-                        <line x1="900" y1="250" x2="900" y2="310" class="arrow" />
-                        
-                        <!-- File System to Data Stores -->
-                        <line x1="200" y1="370" x2="200" y2="420" class="arrow" />
-                        <line x1="550" y1="370" x2="550" y2="420" class="arrow" />
-                        <line x1="875" y1="370" x2="875" y2="420" class="arrow" />
-                        
-                        <!-- Labels for data flow -->
-                        <text x="265" y="80" class="text" style="font-size: 10px; fill: #667eea;">Commands</text>
-                        <text x="350" y="100" class="text" style="font-size: 10px; fill: #667eea;">Config</text>
-                        <text x="350" y="145" class="text" style="font-size: 10px; fill: #667eea;">Search/Download</text>
-                        <text x="525" y="145" class="text" style="font-size: 10px; fill: #667eea;">Manifest</text>
-                        <text x="675" y="145" class="text" style="font-size: 10px; fill: #667eea;">Cache</text>
-                        <text x="450" y="160" class="text" style="font-size: 10px; fill: #667eea;">HTTP Request</text>
-                        <text x="525" y="160" class="text" style="font-size: 10px; fill: #667eea;">Parse YAML</text>
-                        <text x="675" y="160" class="text" style="font-size: 10px; fill: #667eea;">Store Model</text>
-                    </svg>
-                </div>
-                
-                <div class="component-details" style="margin-top: 2rem;">
-                    <h3>Data Flow Components</h3>
-                    <ul>
-                        <li><strong>User / CLI</strong>: User interacts with Axon through command-line interface</li>
-                        <li><strong>Axon CLI</strong>: Main command processor that routes operations to appropriate components</li>
-                        <li><strong>Config Manager</strong>: Manages local configuration (registry URLs, cache settings, etc.)</li>
-                        <li><strong>Registry Client</strong>: HTTP client for communicating with remote model registry</li>
-                        <li><strong>Manifest Parser</strong>: Parses and validates YAML manifest files</li>
-                        <li><strong>Cache Manager</strong>: Manages local model storage, metadata, and cache operations</li>
-                        <li><strong>Model Registry</strong>: External service providing model discovery and distribution</li>
-                        <li><strong>Local Cache</strong>: On-disk storage for downloaded models and metadata</li>
-                    </ul>
-                </div>
-                
-                <div class="component-details">
-                    <h3>Typical Data Flow: Model Installation</h3>
-                    <ol style="margin-left: 2rem; color: #4a5568; line-height: 1.8;">
-                        <li>User executes <code>axon install vision/resnet50</code></li>
-                        <li>CLI loads configuration from Config Manager</li>
-                        <li>Registry Client queries Model Registry for manifest</li>
-                        <li>Manifest Parser validates the returned YAML manifest</li>
-                        <li>Cache Manager checks if model already exists locally</li>
-                        <li>If not cached, Registry Client downloads package from registry</li>
-                        <li>Cache Manager stores model package and metadata in Local Cache</li>
-                        <li>Model files are extracted and stored in file system</li>
-                    </ol>
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>Single Node Deployment</h3>
+                        <p>
+                            mlOS Core runs on a single node with multiple plugins. Ideal for development,
+                            testing, and small-scale deployments.
+                        </p>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Distributed Deployment</h3>
+                        <p>
+                            Multiple mlOS Core nodes behind a load balancer or service mesh.
+                            Enables horizontal scaling and high availability for production.
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <div class="section">
                 <h2>Security & Isolation</h2>
-                <p>
-                    MLOS implements comprehensive security measures:
-                </p>
-                <ul>
-                    <li><strong>Plugin Sandboxing</strong>: Each plugin runs in isolated process with resource limits</li>
-                    <li><strong>API Security</strong>: Token-based authentication and role-based access control</li>
-                    <li><strong>Rate Limiting</strong>: Per-client request throttling</li>
-                    <li><strong>Input Validation</strong>: Comprehensive input sanitization for all API requests</li>
-                </ul>
+                <p>mlOS implements comprehensive security measures for production deployments.</p>
+
+                <div class="components-grid">
+                    <div class="component-card">
+                        <h3>Plugin Sandboxing</h3>
+                        <p>Each plugin runs in isolated process with resource limits, preventing cascading failures.</p>
+                    </div>
+                    <div class="component-card">
+                        <h3>API Security</h3>
+                        <p>Token-based authentication and role-based access control for all API endpoints.</p>
+                    </div>
+                    <div class="component-card">
+                        <h3>Rate Limiting</h3>
+                        <p>Per-client request throttling to prevent abuse and ensure fair resource usage.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -773,14 +719,14 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-links">
-                <a href="https://github.com/mlOS-foundation">GitHub</a>
                 <a href="index.html">Home</a>
                 <a href="ecosystem.html">Ecosystem</a>
-                <a href="mailto:info@mlosfoundation.org">Contact</a>
+                <a href="models.html">Models</a>
+                <a href="runtime-modes.html">Runtime</a>
+                <a href="https://github.com/mlOS-foundation">GitHub</a>
             </div>
-            <p>&copy; 2025 MLOS Foundation. Building the future of ML infrastructure.</p>
+            <p>&copy; 2025 mlOS Foundation. Building the future of ML infrastructure.</p>
         </div>
     </footer>
 </body>
 </html>
-

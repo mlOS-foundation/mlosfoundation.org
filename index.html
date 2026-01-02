@@ -161,11 +161,11 @@
 
         /* Hero Section */
         .hero {
-            min-height: 100vh;
+            min-height: auto;
             display: flex;
             align-items: center;
             position: relative;
-            padding: 120px 0 80px;
+            padding: 100px 0 60px;
             overflow: hidden;
         }
 
@@ -316,7 +316,7 @@
             position: relative;
         }
 
-        /* New Impactful Architecture Diagram */
+        /* Animated DFD Architecture Diagram */
         .arch-diagram-v2 {
             background: linear-gradient(145deg, var(--bg-elevated), var(--bg-deep));
             border: 1px solid var(--border);
@@ -336,6 +336,22 @@
             background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
         }
 
+        /* Staged build animation */
+        .arch-layer {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: layerFadeIn 0.6s ease-out forwards;
+        }
+        .arch-layer:nth-child(1) { animation-delay: 0.2s; }
+        .arch-layer:nth-child(2) { animation-delay: 0.5s; }
+        .arch-layer:nth-child(3) { animation-delay: 0.8s; }
+        .arch-layer:nth-child(4) { animation-delay: 1.1s; }
+        .arch-layer:nth-child(5) { animation-delay: 1.4s; }
+
+        @keyframes layerFadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .arch-input-layer, .arch-output-layer {
             display: flex;
             justify-content: center;
@@ -352,12 +368,20 @@
             align-items: center;
             gap: 4px;
             min-width: 70px;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            position: relative;
         }
 
         .arch-input-item:hover, .arch-output-item:hover {
             border-color: var(--accent-cyan);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Glowing active state */
+        .arch-input-item.active {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
         }
 
         .input-icon { font-size: 20px; }
@@ -386,33 +410,49 @@
             border-color: var(--accent-cyan);
         }
 
-        .arch-flow-arrow {
+        /* Animated flow connector */
+        .arch-flow-connector {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px 0;
+            padding: 6px 0;
+            position: relative;
+            height: 40px;
         }
 
-        .flow-line {
-            width: 2px;
-            height: 16px;
-            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-blue));
-            border-radius: 1px;
+        .flow-pipe {
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--border), var(--accent-cyan), var(--border));
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .flow-dot {
-            width: 6px;
-            height: 6px;
+        /* Animated data packet */
+        .data-packet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
             background: var(--accent-cyan);
             border-radius: 50%;
-            animation: pulse 1.5s ease-in-out infinite;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+            animation: flowDown 1.5s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.3); }
+        .data-packet:nth-child(2) { animation-delay: 0.5s; }
+        .data-packet:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes flowDown {
+            0% { top: -10px; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { top: calc(100% + 10px); opacity: 0; }
         }
 
+        /* Core box with processing animation */
         .arch-core-box {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(59, 130, 246, 0.05));
             border: 1px solid var(--accent-cyan);
@@ -420,6 +460,23 @@
             padding: 16px;
             position: relative;
             box-shadow: 0 0 30px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        /* Scanning line effect */
+        .arch-core-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            animation: scanLine 3s linear infinite;
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100px); opacity: 0; }
         }
 
         .core-header {
@@ -451,6 +508,12 @@
             background: rgba(16, 185, 129, 0.1);
             padding: 3px 8px;
             border-radius: 4px;
+            animation: versionPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes versionPulse {
+            0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
+            50% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
         }
 
         .core-internals {
@@ -534,16 +597,90 @@
         .particle:nth-child(3) { animation-delay: 1s; left: 20px; }
         .particle:nth-child(4) { animation-delay: 1.5s; left: 30px; }
 
+        /* Ecosystem Strip */
+        .ecosystem-strip {
+            background: var(--bg-deep);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 24px 0;
+        }
+
+        .ecosystem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .eco-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .eco-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .eco-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--glow-cyan), var(--glow-blue));
+            border-radius: 10px;
+            font-size: 22px;
+        }
+
+        .eco-info {
+            flex: 1;
+        }
+
+        .eco-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .eco-desc {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        .eco-badge {
+            font-size: 10px;
+            font-family: var(--font-mono);
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-emerald);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .ecosystem-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
         /* Features Section */
         .features {
-            padding: 120px 0;
+            padding: 70px 0;
             position: relative;
         }
 
         .section-header {
             text-align: center;
             max-width: 600px;
-            margin: 0 auto 64px;
+            margin: 0 auto 40px;
         }
 
         .section-label {
@@ -578,7 +715,7 @@
             background: var(--bg-elevated);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 32px;
+            padding: 24px;
             transition: all 0.3s;
         }
 
@@ -614,7 +751,7 @@
 
         /* Terminal Demo */
         .demo-section {
-            padding: 120px 0;
+            padding: 70px 0;
             background: var(--bg-deep);
         }
 
@@ -720,7 +857,7 @@
 
         /* Models Section */
         .models-section {
-            padding: 120px 0;
+            padding: 70px 0;
         }
 
         .models-grid {
@@ -762,21 +899,21 @@
 
         /* News Section */
         .news-section {
-            padding: 100px 0;
+            padding: 70px 0;
             background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-base) 100%);
         }
 
         .news-grid {
             display: grid;
-            gap: 24px;
-            margin-top: 48px;
+            gap: 20px;
+            margin-top: 32px;
         }
 
         .news-item {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 16px;
-            padding: 32px;
+            padding: 24px;
             position: relative;
             transition: all 0.3s ease;
         }
@@ -893,9 +1030,59 @@
             color: var(--accent-cyan);
         }
 
+        /* Performance Analysis Embed */
+        .perf-analysis {
+            background: var(--bg-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .perf-analysis h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .perf-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .perf-item {
+            padding: 12px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .perf-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .perf-detail {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .perf-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* CTA Section */
         .cta-section {
-            padding: 120px 0;
+            padding: 60px 0;
             background: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 100%);
             text-align: center;
         }
@@ -1090,49 +1277,59 @@
                 </div>
                 <div class="hero-visual animate-in delay-3">
                     <div class="arch-diagram-v2">
-                        <!-- Input Layer -->
-                        <div class="arch-input-layer">
-                            <div class="arch-input-item">
+                        <!-- Layer 1: Input Models -->
+                        <div class="arch-layer arch-input-layer">
+                            <div class="arch-input-item" data-model="onnx">
                                 <span class="input-icon">📦</span>
                                 <span class="input-label">.onnx</span>
                             </div>
-                            <div class="arch-input-item">
+                            <div class="arch-input-item active" data-model="pt">
                                 <span class="input-icon">🔥</span>
                                 <span class="input-label">.pt</span>
                             </div>
-                            <div class="arch-input-item">
+                            <div class="arch-input-item" data-model="gguf">
                                 <span class="input-icon">🦙</span>
                                 <span class="input-label">.gguf</span>
                             </div>
                         </div>
 
-                        <div class="arch-flow-arrow">
-                            <div class="flow-line"></div>
-                            <div class="flow-dot"></div>
+                        <!-- Layer 2: Flow In -->
+                        <div class="arch-layer arch-flow-connector">
+                            <div class="flow-pipe">
+                                <div class="data-packet"></div>
+                                <div class="data-packet"></div>
+                            </div>
                         </div>
 
-                        <!-- Core Box -->
-                        <div class="arch-core-box">
+                        <!-- Layer 3: Core Processing -->
+                        <div class="arch-layer arch-core-box">
                             <div class="core-header">
                                 <span class="core-logo">ml<span class="accent">OS</span> Core</span>
                                 <span class="core-version" data-config="version.core">v7.0.0-beta</span>
                             </div>
                             <div class="core-internals">
-                                <div class="core-module">
+                                <div class="core-module" data-step="1">
                                     <div class="module-name">Plugin Registry</div>
                                     <div class="module-status active">
                                         <span class="status-dot"></span>
                                         ONNX • GGUF
                                     </div>
                                 </div>
-                                <div class="core-module">
+                                <div class="core-module" data-step="2">
                                     <div class="module-name">Kernel Scheduler</div>
                                     <div class="module-status active">
                                         <span class="status-dot"></span>
-                                        Priority Queue
+                                        Batch Queue
                                     </div>
                                 </div>
-                                <div class="core-module">
+                                <div class="core-module" data-step="3">
+                                    <div class="module-name">Tensor Pool</div>
+                                    <div class="module-status active">
+                                        <span class="status-dot"></span>
+                                        3.6M ops/s
+                                    </div>
+                                </div>
+                                <div class="core-module" data-step="4">
                                     <div class="module-name">Memory Manager</div>
                                     <div class="module-status active">
                                         <span class="status-dot"></span>
@@ -1142,27 +1339,30 @@
                             </div>
                             <div class="core-metrics">
                                 <div class="metric">
-                                    <span class="metric-value">0.8ms</span>
-                                    <span class="metric-label">p99 latency</span>
+                                    <span class="metric-value" data-config="performance.p99_latency">&lt;50μs</span>
+                                    <span class="metric-label">overhead</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-value">42</span>
+                                    <span class="metric-value" data-config="performance.models_count">42</span>
                                     <span class="metric-label">models</span>
                                 </div>
                                 <div class="metric">
-                                    <span class="metric-value">3</span>
-                                    <span class="metric-label">APIs</span>
+                                    <span class="metric-value">4×</span>
+                                    <span class="metric-label">faster</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="arch-flow-arrow">
-                            <div class="flow-line"></div>
-                            <div class="flow-dot"></div>
+                        <!-- Layer 4: Flow Out -->
+                        <div class="arch-layer arch-flow-connector">
+                            <div class="flow-pipe">
+                                <div class="data-packet"></div>
+                                <div class="data-packet"></div>
+                            </div>
                         </div>
 
-                        <!-- Output Layer -->
-                        <div class="arch-output-layer">
+                        <!-- Layer 5: Output APIs -->
+                        <div class="arch-layer arch-output-layer">
                             <div class="arch-output-item">
                                 <span class="output-port">:8080</span>
                                 <span class="output-label">REST</span>
@@ -1178,6 +1378,38 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Strip -->
+    <section class="ecosystem-strip">
+        <div class="container">
+            <div class="ecosystem-grid">
+                <a href="https://github.com/mlOS-foundation/core-releases" class="eco-item">
+                    <div class="eco-icon">⚙️</div>
+                    <div class="eco-info">
+                        <div class="eco-name">MLOS Core</div>
+                        <div class="eco-desc">Kernel runtime & inference engine</div>
+                    </div>
+                    <span class="eco-badge">v7.0.0-beta</span>
+                </a>
+                <a href="https://github.com/mlOS-foundation/axon" class="eco-item">
+                    <div class="eco-icon">📦</div>
+                    <div class="eco-info">
+                        <div class="eco-name">Axon CLI</div>
+                        <div class="eco-desc">Model packaging & deployment</div>
+                    </div>
+                    <span class="eco-badge">v3.1.9</span>
+                </a>
+                <a href="https://mlos-foundation.github.io/system-test/" class="eco-item">
+                    <div class="eco-icon">✅</div>
+                    <div class="eco-info">
+                        <div class="eco-name">System Test</div>
+                        <div class="eco-desc">E2E validation pipeline</div>
+                    </div>
+                    <span class="eco-badge">42 models</span>
+                </a>
             </div>
         </div>
     </section>
@@ -1374,15 +1606,31 @@
                         </div>
                     </div>
 
+                    <!-- Embedded Performance Analysis -->
+                    <div class="perf-analysis">
+                        <h4>Performance Analysis Highlights</h4>
+                        <div class="perf-grid">
+                            <div class="perf-item">
+                                <div class="perf-title">Tensor Pool Pre-allocation</div>
+                                <div class="perf-detail">O(1) acquire/release ops via size-bucketed free lists. Eliminates malloc overhead during inference.</div>
+                            </div>
+                            <div class="perf-item">
+                                <div class="perf-title">Batch Inference Scheduling</div>
+                                <div class="perf-detail">Lock-free MPSC queue reduces contention. N× throughput improvement for concurrent requests.</div>
+                            </div>
+                            <div class="perf-item">
+                                <div class="perf-title">NUMA Thread Affinity</div>
+                                <div class="perf-detail">CPU pinning with memory locality. Reduces cross-socket memory access latency.</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="news-links">
-                        <a href="https://github.com/mlOS-foundation/core/releases/tag/v7.0.0-beta" class="news-link primary">
-                            View Release →
+                        <a href="https://github.com/mlOS-foundation/core-releases/releases/tag/v7.0.0-beta" class="news-link primary">
+                            Download Release →
                         </a>
-                        <a href="https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md" class="news-link secondary">
-                            Changelog
-                        </a>
-                        <a href="https://github.com/mlOS-foundation/core/blob/main/docs/KERNEL_PERFORMANCE_ANALYSIS.md" class="news-link secondary">
-                            Performance Analysis
+                        <a href="https://mlos-foundation.github.io/system-test/" class="news-link secondary">
+                            Test Results
                         </a>
                     </div>
                 </article>

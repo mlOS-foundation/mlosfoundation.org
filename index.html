@@ -760,6 +760,139 @@
             color: var(--text-dim);
         }
 
+        /* News Section */
+        .news-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-base) 100%);
+        }
+
+        .news-grid {
+            display: grid;
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .news-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 32px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .news-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .news-item.featured {
+            border-left: 4px solid var(--accent-cyan);
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .news-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+            color: var(--bg-deep);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .news-date {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+        }
+
+        .news-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .news-summary {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .news-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--bg-elevated);
+            border-radius: 12px;
+        }
+
+        .news-metric {
+            text-align: center;
+        }
+
+        .news-metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+        }
+
+        .news-metric-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .news-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .news-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .news-link.primary {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+        }
+
+        .news-link.primary:hover {
+            background: #0891b2;
+            transform: translateY(-2px);
+        }
+
+        .news-link.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .news-link.secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
         /* CTA Section */
         .cta-section {
             padding: 120px 0;
@@ -905,6 +1038,7 @@
                     <li><a href="ecosystem.html">Ecosystem</a></li>
                     <li><a href="models.html">Models</a></li>
                     <li><a href="runtime-modes.html">Runtime</a></li>
+                    <li><a href="#news">News</a></li>
                     <li><a href="https://github.com/mlOS-foundation">GitHub</a></li>
                     <li><a href="#getting-started" class="nav-cta">Get Started</a></li>
                 </ul>
@@ -1196,6 +1330,62 @@
                 <a href="https://mlos-foundation.github.io/system-test/" class="btn btn-secondary">
                     View All Test Results →
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section" id="news">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Announcements</div>
+                <h2 class="section-title">Latest News</h2>
+                <p class="section-subtitle">Updates from the MLOS Foundation</p>
+            </div>
+
+            <div class="news-grid">
+                <!-- Featured: v7.0.0-beta Release -->
+                <article class="news-item featured animate-in">
+                    <div class="news-badge">New Release</div>
+                    <div class="news-date">January 2, 2026</div>
+                    <h3 class="news-title">MLOS Core v7.0.0-beta - First Beta Release</h3>
+                    <p class="news-summary">
+                        We're excited to announce our first beta release! This major milestone brings significant
+                        kernel performance optimizations including tensor pool pre-allocation, batch inference
+                        scheduling, and NUMA thread affinity.
+                    </p>
+
+                    <div class="news-metrics">
+                        <div class="news-metric">
+                            <div class="news-metric-value">4x</div>
+                            <div class="news-metric-label">Faster Inference</div>
+                        </div>
+                        <div class="news-metric">
+                            <div class="news-metric-value">3.6M</div>
+                            <div class="news-metric-label">Ops/Second</div>
+                        </div>
+                        <div class="news-metric">
+                            <div class="news-metric-value">&lt;50μs</div>
+                            <div class="news-metric-label">Overhead</div>
+                        </div>
+                        <div class="news-metric">
+                            <div class="news-metric-value">12/12</div>
+                            <div class="news-metric-label">Tests Passing</div>
+                        </div>
+                    </div>
+
+                    <div class="news-links">
+                        <a href="https://github.com/mlOS-foundation/core/releases/tag/v7.0.0-beta" class="news-link primary">
+                            View Release →
+                        </a>
+                        <a href="https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md" class="news-link secondary">
+                            Changelog
+                        </a>
+                        <a href="https://github.com/mlOS-foundation/core/blob/main/docs/KERNEL_PERFORMANCE_ANALYSIS.md" class="news-link secondary">
+                            Performance Analysis
+                        </a>
+                    </div>
+                </article>
             </div>
         </div>
     </section>

@@ -1,0 +1,353 @@
+name: Receive News Updates
+
+on:
+  repository_dispatch:
+    types: [news-update]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source repo to fetch news from (core, axon, or all)'
+        required: false
+        type: choice
+        options:
+          - all
+          - core
+          - axon
+        default: all
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  receive-news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Process dispatched news
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "📰 Processing news update from ${{ github.event.client_payload.source }}"
+          echo "Commit: ${{ github.event.client_payload.commit }}"
+
+          # Decode the news content
+          echo '${{ github.event.client_payload.news_content_base64 }}' | base64 -d > /tmp/incoming-news.json
+
+          echo "Received news feed:"
+          cat /tmp/incoming-news.json | head -50
+
+          # Create news data directory
+          mkdir -p src/data/news
+
+          # Save news by source
+          SOURCE="${{ github.event.client_payload.source }}"
+          cp /tmp/incoming-news.json "src/data/news/${SOURCE}-news.json"
+
+          echo "✅ News from $SOURCE saved"
+
+      - name: Fetch news from repos (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p src/data/news
+
+          SOURCES="${{ github.event.inputs.source }}"
+
+          fetch_news() {
+            local repo=$1
+            local name=$2
+            echo "📥 Fetching news from $repo..."
+
+            # Check if news entries exist
+            if gh api "repos/$repo/contents/docs/news/entries" --jq '.[].name' 2>/dev/null; then
+              echo '{"source": "'"$name"'", "repo": "'"$repo"'", "entries": [' > "/tmp/${name}-news.json"
+
+              FIRST=true
+              for file in $(gh api "repos/$repo/contents/docs/news/entries" --jq '.[].name' 2>/dev/null | grep '\.json$'); do
+                CONTENT=$(gh api "repos/$repo/contents/docs/news/entries/$file" --jq '.content' | base64 -d)
+                if [ -n "$CONTENT" ]; then
+                  if [ "$FIRST" = "true" ]; then
+                    FIRST=false
+                  else
+                    echo "," >> "/tmp/${name}-news.json"
+                  fi
+                  echo "$CONTENT" >> "/tmp/${name}-news.json"
+                fi
+              done
+
+              echo ']}' >> "/tmp/${name}-news.json"
+              cp "/tmp/${name}-news.json" "src/data/news/${name}-news.json"
+              echo "✅ Fetched news from $name"
+            else
+              echo "⚠️ No news entries found in $repo"
+            fi
+          }
+
+          if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "core" ]; then
+            fetch_news "mlOS-foundation/core" "core"
+          fi
+
+          if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "axon" ]; then
+            fetch_news "mlOS-foundation/axon" "axon"
+          fi
+
+      - name: Aggregate all news feeds
+        run: |
+          echo "📊 Aggregating news feeds..."
+
+          mkdir -p src/data/news
+
+          # Create Node.js script for aggregation
+          cat > /tmp/aggregate.js << 'SCRIPT'
+          const fs = require('fs');
+          const path = require('path');
+
+          const newsDir = 'src/data/news';
+          const allEntries = [];
+
+          // Ensure directory exists
+          if (!fs.existsSync(newsDir)) {
+            fs.mkdirSync(newsDir, { recursive: true });
+          }
+
+          // Read all source-specific news files
+          try {
+            fs.readdirSync(newsDir)
+              .filter(f => f.endsWith('-news.json') && f !== 'all-news.json')
+              .forEach(file => {
+                try {
+                  const data = JSON.parse(fs.readFileSync(path.join(newsDir, file)));
+                  if (data.entries) {
+                    data.entries.forEach(entry => {
+                      entry.source_repo = data.repo;
+                      allEntries.push(entry);
+                    });
+                  }
+                } catch (e) {
+                  console.error(`Error reading ${file}:`, e.message);
+                }
+              });
+          } catch (e) {
+            console.log('No existing news files found');
+          }
+
+          // Sort by date (newest first)
+          allEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+          const output = {
+            generated_at: new Date().toISOString(),
+            count: allEntries.length,
+            entries: allEntries
+          };
+
+          fs.writeFileSync(path.join(newsDir, 'all-news.json'), JSON.stringify(output, null, 2));
+          console.log(`✅ Aggregated ${allEntries.length} news entries`);
+          SCRIPT
+
+          node /tmp/aggregate.js
+
+      - name: Generate news HTML component
+        run: |
+          mkdir -p src/components/generated
+
+          cat > src/components/generated/NewsSection.html << 'EOF'
+          <!-- Auto-generated News Section - Do not edit manually -->
+          <section id="news" class="news-section">
+            <div class="container">
+              <h2 class="section-title">Latest News</h2>
+              <div class="news-items" id="news-items-container">
+                <!-- News items loaded dynamically -->
+              </div>
+            </div>
+          </section>
+
+          <script>
+            (function() {
+              fetch('/src/data/news/all-news.json')
+                .then(r => r.json())
+                .then(data => {
+                  const container = document.getElementById('news-items-container');
+                  if (!container) return;
+
+                  data.entries.slice(0, 5).forEach((entry, i) => {
+                    const featured = i === 0 ? 'featured' : '';
+                    const article = document.createElement('article');
+                    article.className = `news-item ${featured}`;
+
+                    let html = '';
+                    if (entry.badge) {
+                      html += `<div class="news-badge">${entry.badge}</div>`;
+                    }
+                    html += `<div class="news-date">${new Date(entry.date).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</div>`;
+                    html += `<h3 class="news-title">${entry.title}</h3>`;
+                    html += `<div class="news-summary"><p>${entry.summary}</p></div>`;
+
+                    if (entry.links && entry.links.length > 0) {
+                      html += '<div class="news-links">';
+                      entry.links.forEach(link => {
+                        const btnClass = link.primary ? 'btn-primary' : 'btn-secondary';
+                        html += `<a href="${link.url}" class="btn ${btnClass}">${link.text}</a>`;
+                      });
+                      html += '</div>';
+                    }
+
+                    article.innerHTML = html;
+                    container.appendChild(article);
+                  });
+                })
+                .catch(e => console.error('Failed to load news:', e));
+            })();
+          </script>
+
+          <style>
+          .news-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          }
+
+          .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #212529;
+          }
+
+          .news-items {
+            max-width: 900px;
+            margin: 0 auto;
+          }
+
+          .news-item {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+          }
+
+          .news-item.featured {
+            border-left: 4px solid #0d6efd;
+          }
+
+          .news-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #0d6efd;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+          }
+
+          .news-date {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .news-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #212529;
+          }
+
+          .news-summary p {
+            color: #495057;
+            line-height: 1.6;
+          }
+
+          .news-links {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+          }
+
+          .btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+          }
+
+          .btn-primary {
+            background: #0d6efd;
+            color: white;
+          }
+
+          .btn-primary:hover {
+            background: #0b5ed7;
+          }
+
+          .btn-secondary {
+            background: #6c757d;
+            color: white;
+          }
+
+          .btn-secondary:hover {
+            background: #5c636a;
+          }
+
+          @media (max-width: 768px) {
+            .news-section {
+              padding: 2rem 1rem;
+            }
+
+            .news-links {
+              flex-direction: column;
+            }
+          }
+          </style>
+          EOF
+
+          echo "✅ Generated NewsSection.html component"
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changed files:"
+            git status --short
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add src/data/news/ src/components/generated/
+
+          SOURCE="${{ github.event.client_payload.source || github.event.inputs.source || 'manual' }}"
+          git commit -m "chore: Update news feed from ${SOURCE}"
+          git push
+
+          echo "✅ Changes committed and pushed"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📰 News Update Complete"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Event: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "Source: ${{ github.event.client_payload.source }}"
+            echo "Commit: ${{ github.event.client_payload.commit }}"
+          fi
+          echo ""

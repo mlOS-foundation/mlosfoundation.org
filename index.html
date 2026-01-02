@@ -1054,8 +1054,8 @@
             <div class="hero-content">
                 <div class="hero-text">
                     <div class="hero-badge animate-in">
-                        <span class="version">v6.2.0</span>
-                        CPU-first optimizations live
+                        <span class="version" data-config="version.core">v7.0.0-beta</span>
+                        <span data-config="hero.badge_text">First Beta Release - 4× faster inference</span>
                     </div>
                     <h1 class="animate-in delay-1">
                         The <span class="gradient">Runtime Layer</span> Your Models Deserve
@@ -1075,16 +1075,16 @@
                     </div>
                     <div class="hero-stats animate-in delay-4">
                         <div class="stat">
-                            <div class="stat-value">30%</div>
-                            <div class="stat-label">Lower Latency</div>
+                            <div class="stat-value" data-config="stats.latency_reduction">4×</div>
+                            <div class="stat-label" data-config="stats.latency_label">Faster Inference</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-value">42+</div>
-                            <div class="stat-label">Models Tested</div>
+                            <div class="stat-value" data-config="stats.models_tested">42+</div>
+                            <div class="stat-label" data-config="stats.models_label">Models Tested</div>
                         </div>
                         <div class="stat">
-                            <div class="stat-value">100%</div>
-                            <div class="stat-label">Open Source</div>
+                            <div class="stat-value" data-config="stats.open_source">100%</div>
+                            <div class="stat-label" data-config="stats.open_source_label">Open Source</div>
                         </div>
                     </div>
                 </div>
@@ -1115,7 +1115,7 @@
                         <div class="arch-core-box">
                             <div class="core-header">
                                 <span class="core-logo">ml<span class="accent">OS</span> Core</span>
-                                <span class="core-version">v6.2.0</span>
+                                <span class="core-version" data-config="version.core">v7.0.0-beta</span>
                             </div>
                             <div class="core-internals">
                                 <div class="core-module">
@@ -1450,5 +1450,25 @@
             </div>
         </div>
     </footer>
+
+    <!-- Dynamic Config Loader -->
+    <script>
+    (function() {
+        // Load site config and update elements with data-config attributes
+        fetch('/src/data/site-config.json')
+            .then(r => r.json())
+            .then(config => {
+                document.querySelectorAll('[data-config]').forEach(el => {
+                    const path = el.getAttribute('data-config');
+                    const value = path.split('.').reduce((obj, key) => obj?.[key], config);
+                    if (value !== undefined) {
+                        el.textContent = value;
+                    }
+                });
+                console.log('Site config loaded:', config.version.core);
+            })
+            .catch(e => console.log('Using static config values'));
+    })();
+    </script>
 </body>
 </html>

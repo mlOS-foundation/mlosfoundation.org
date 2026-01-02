@@ -1,0 +1,43 @@
+{
+  "version": {
+    "core": "v7.0.0-beta",
+    "axon": "v3.1.9",
+    "release_tag": "First Beta Release"
+  },
+  "hero": {
+    "badge_text": "First Beta Release - 4× faster inference",
+    "tagline": "Kernel-native ML execution. One unified runtime for ONNX, PyTorch, and LLMs. Predictive memory management that cuts latency by 30%."
+  },
+  "stats": {
+    "latency_reduction": "4×",
+    "latency_label": "Faster Inference",
+    "models_tested": "42+",
+    "models_label": "Models Tested",
+    "open_source": "100%",
+    "open_source_label": "Open Source"
+  },
+  "performance": {
+    "p99_latency": "0.8ms",
+    "models_count": "42",
+    "apis_count": "3"
+  },
+  "links": {
+    "github": "https://github.com/mlOS-foundation",
+    "releases": "https://github.com/mlOS-foundation/core-releases",
+    "docs": "https://mlosfoundation.org/architecture.html",
+    "changelog": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md"
+  },
+  "features": {
+    "tensor_pool": {
+      "throughput": "3.6M ops/sec",
+      "overhead": "<50μs"
+    },
+    "batch_scheduling": {
+      "lock_reduction": "4×"
+    },
+    "numa": {
+      "enabled": true
+    }
+  },
+  "updated_at": "2026-01-02T00:00:00Z"
+}

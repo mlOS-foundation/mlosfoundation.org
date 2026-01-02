@@ -311,174 +311,330 @@
             margin-top: 2px;
         }
 
-        /* Architecture Diagram */
+        /* Architecture Diagram - Before/After Animation */
         .hero-visual {
             position: relative;
         }
 
-        /* Animated DFD Architecture Diagram */
-        .arch-diagram-v2 {
+        .arch-showcase {
             background: linear-gradient(145deg, var(--bg-elevated), var(--bg-deep));
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 24px;
+            padding: 20px;
             position: relative;
             overflow: hidden;
+            --total-cycle: 16s;
         }
 
-        .arch-diagram-v2::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-        }
-
-        /* DFD Container for animation coordination */
-        .dfd-container {
-            --cycle-duration: 6s;
-            position: relative;
-        }
-
-        /* Input Layer */
-        .arch-input-layer {
+        /* Phase indicator */
+        .phase-indicator {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .arch-input-item {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            padding: 8px 14px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            min-width: 65px;
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        /* Sequential input activation */
-        .arch-input-item:nth-child(1) { animation: inputPulse var(--cycle-duration) ease-in-out infinite 0s; }
-        .arch-input-item:nth-child(2) { animation: inputPulse var(--cycle-duration) ease-in-out infinite 2s; }
-        .arch-input-item:nth-child(3) { animation: inputPulse var(--cycle-duration) ease-in-out infinite 4s; }
-
-        @keyframes inputPulse {
-            0%, 15% {
-                border-color: var(--accent-cyan);
-                box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
-                transform: scale(1.05);
-            }
-            25%, 100% {
-                border-color: var(--border-subtle);
-                box-shadow: none;
-                transform: scale(1);
-            }
-        }
-
-        .input-icon { font-size: 18px; }
-        .input-label {
-            font-size: 10px;
-            font-family: var(--font-mono);
-            color: var(--text-muted);
-        }
-
-        /* Flow Connector with animated packets */
-        .arch-flow-connector {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 35px;
-            position: relative;
-        }
-
-        .flow-pipe {
-            width: 2px;
-            height: 100%;
-            background: var(--border);
-            position: relative;
-            overflow: visible;
-        }
-
-        /* Multiple data packets with staggered timing */
-        .data-packet {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle, var(--accent-cyan), transparent);
-            border-radius: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 12px var(--accent-cyan), 0 0 24px var(--accent-cyan);
-        }
-
-        .flow-in .data-packet:nth-child(1) { animation: flowIntoCore var(--cycle-duration) ease-in-out infinite 0.3s; }
-        .flow-in .data-packet:nth-child(2) { animation: flowIntoCore var(--cycle-duration) ease-in-out infinite 2.3s; }
-        .flow-in .data-packet:nth-child(3) { animation: flowIntoCore var(--cycle-duration) ease-in-out infinite 4.3s; }
-
-        .flow-out .data-packet:nth-child(1) { animation: flowFromCore var(--cycle-duration) ease-in-out infinite 1.2s; }
-        .flow-out .data-packet:nth-child(2) { animation: flowFromCore var(--cycle-duration) ease-in-out infinite 3.2s; }
-        .flow-out .data-packet:nth-child(3) { animation: flowFromCore var(--cycle-duration) ease-in-out infinite 5.2s; }
-
-        @keyframes flowIntoCore {
-            0%, 5% { top: -5px; opacity: 0; }
-            10% { opacity: 1; }
-            20% { top: 100%; opacity: 0; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        @keyframes flowFromCore {
-            0%, 5% { top: -5px; opacity: 0; }
-            10% { opacity: 1; }
-            20% { top: 100%; opacity: 0; }
-            100% { top: 100%; opacity: 0; }
-        }
-
-        /* Core Processing Box */
-        .arch-core-box {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.06), rgba(59, 130, 246, 0.03));
-            border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-            padding: 14px;
-            position: relative;
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.08);
-            animation: corePulse var(--cycle-duration) ease-in-out infinite;
-        }
-
-        @keyframes corePulse {
-            0%, 20%, 40%, 60%, 80%, 100% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.08); }
-            10%, 30%, 50%, 70%, 90% { box-shadow: 0 0 35px rgba(6, 182, 212, 0.2); }
-        }
-
-        .core-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
+            gap: 24px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
-        .core-logo {
-            font-size: 16px;
+        .phase-tab {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-dim);
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .phase-tab.before {
+            animation: beforePhaseActive var(--total-cycle) ease-in-out infinite;
+        }
+
+        .phase-tab.after {
+            animation: afterPhaseActive var(--total-cycle) ease-in-out infinite;
+        }
+
+        @keyframes beforePhaseActive {
+            0%, 35% { color: var(--accent-cyan); background: rgba(6, 182, 212, 0.1); }
+            45%, 100% { color: var(--text-dim); background: transparent; }
+        }
+
+        @keyframes afterPhaseActive {
+            0%, 40% { color: var(--text-dim); background: transparent; }
+            50%, 95% { color: var(--accent-emerald); background: rgba(16, 185, 129, 0.1); }
+            100% { color: var(--text-dim); background: transparent; }
+        }
+
+        /* Container for both views */
+        .arch-views {
+            position: relative;
+            min-height: 320px;
+        }
+
+        /* === BEFORE MLOS STATE === */
+        .before-mlos {
+            position: absolute;
+            inset: 0;
+            animation: showBefore var(--total-cycle) ease-in-out infinite;
+        }
+
+        @keyframes showBefore {
+            0% { opacity: 0; transform: scale(0.95); }
+            5% { opacity: 1; transform: scale(1); }
+            35% { opacity: 1; transform: scale(1); }
+            45% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 0; transform: scale(0.95); }
+        }
+
+        .chaos-label {
+            text-align: center;
+            font-size: 10px;
+            color: #f87171;
+            font-weight: 600;
+            margin-bottom: 12px;
+            animation: chaosLabelPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes chaosLabelPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Chaotic framework boxes */
+        .chaos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .framework-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 10px 8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .framework-box.pytorch { border-color: #ee4c2c40; }
+        .framework-box.tensorflow { border-color: #ff6f0040; }
+        .framework-box.onnx { border-color: #00599940; }
+
+        .framework-icon { font-size: 20px; margin-bottom: 4px; }
+        .framework-name { font-size: 9px; font-weight: 600; color: var(--text-muted); }
+        .framework-overhead {
+            font-size: 8px;
+            color: #f87171;
+            font-family: var(--font-mono);
+            margin-top: 4px;
+        }
+
+        /* Tangled connections */
+        .chaos-connections {
+            position: relative;
+            height: 60px;
+            margin: 8px 0;
+        }
+
+        .chaos-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #f8717140, #f8717180, #f8717140);
+            transform-origin: left center;
+            animation: chaosLineWiggle 3s ease-in-out infinite;
+        }
+
+        .chaos-line:nth-child(1) { top: 10px; left: 15%; width: 70%; transform: rotate(15deg); animation-delay: 0s; }
+        .chaos-line:nth-child(2) { top: 25px; left: 10%; width: 80%; transform: rotate(-8deg); animation-delay: 0.5s; }
+        .chaos-line:nth-child(3) { top: 35px; left: 20%; width: 60%; transform: rotate(20deg); animation-delay: 1s; }
+        .chaos-line:nth-child(4) { top: 45px; left: 5%; width: 90%; transform: rotate(-12deg); animation-delay: 1.5s; }
+
+        @keyframes chaosLineWiggle {
+            0%, 100% { transform: rotate(var(--rot, 10deg)) scaleY(1); }
+            50% { transform: rotate(calc(var(--rot, 10deg) * -1)) scaleY(1.5); }
+        }
+
+        /* Slow outputs in chaos */
+        .chaos-outputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .chaos-output {
+            background: var(--bg-deep);
+            border: 1px solid #f8717140;
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .chaos-output-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .chaos-output-value {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: #f87171;
+            font-weight: 600;
+        }
+
+        /* Problem indicators */
+        .problem-badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .problem-badge {
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(248, 113, 113, 0.1);
+            color: #f87171;
+            border: 1px solid #f8717130;
+        }
+
+        /* === AFTER MLOS STATE === */
+        .after-mlos {
+            position: absolute;
+            inset: 0;
+            animation: showAfter var(--total-cycle) ease-in-out infinite;
+        }
+
+        @keyframes showAfter {
+            0%, 40% { opacity: 0; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1); }
+            95% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.95); }
+        }
+
+        .clean-label {
+            text-align: center;
+            font-size: 10px;
+            color: var(--accent-emerald);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        /* Clean unified inputs */
+        .unified-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .unified-input {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            min-width: 55px;
+            transition: all 0.6s ease;
+        }
+
+        .unified-input:nth-child(1) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 8s; }
+        .unified-input:nth-child(2) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 9s; }
+        .unified-input:nth-child(3) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 10s; }
+
+        @keyframes unifiedInputGlow {
+            0%, 3% { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
+            8%, 100% { border-color: var(--border-subtle); box-shadow: none; }
+        }
+
+        .unified-input-icon { font-size: 16px; }
+        .unified-input-label { font-size: 9px; font-family: var(--font-mono); color: var(--text-muted); }
+
+        /* Clean flow arrow */
+        .clean-flow {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .flow-arrow {
+            width: 2px;
+            height: 25px;
+            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-emerald));
+            position: relative;
+        }
+
+        .flow-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--accent-emerald);
+        }
+
+        .flow-packet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px var(--accent-cyan);
+            animation: flowPacketMove 2s ease-in-out infinite;
+        }
+
+        @keyframes flowPacketMove {
+            0% { top: -4px; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { top: calc(100% + 4px); opacity: 0; }
+        }
+
+        /* MLOS Core box */
+        .mlos-core-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.05));
+            border: 1px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 12px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+        }
+
+        .mlos-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .mlos-title {
+            font-size: 14px;
             font-weight: 800;
             color: var(--text-primary);
         }
 
-        .core-logo .accent {
+        .mlos-title .accent {
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .core-version {
+        .mlos-version {
             font-size: 9px;
             font-family: var(--font-mono);
             color: var(--accent-emerald);
@@ -487,181 +643,154 @@
             border-radius: 4px;
         }
 
-        /* Core Modules with sequential processing animation */
-        .core-internals {
-            display: flex;
-            flex-direction: column;
+        /* Plugin modules */
+        .plugin-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
             margin-bottom: 10px;
         }
 
-        .core-module {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .plugin-module {
             background: var(--bg-deep);
-            padding: 6px 10px;
             border-radius: 6px;
+            padding: 8px;
             border: 1px solid transparent;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.4s ease;
         }
 
-        /* Sequential module activation - each module lights up as data flows through */
-        .core-module[data-step="1"] { animation: moduleProcess var(--cycle-duration) ease-in-out infinite 0.5s; }
-        .core-module[data-step="2"] { animation: moduleProcess var(--cycle-duration) ease-in-out infinite 0.7s; }
-        .core-module[data-step="3"] { animation: moduleProcess var(--cycle-duration) ease-in-out infinite 0.9s; }
-        .core-module[data-step="4"] { animation: moduleProcess var(--cycle-duration) ease-in-out infinite 1.1s; }
+        .plugin-module:nth-child(1) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 8.5s; }
+        .plugin-module:nth-child(2) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 9s; }
+        .plugin-module:nth-child(3) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 9.5s; }
+        .plugin-module:nth-child(4) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 10s; }
 
-        @keyframes moduleProcess {
-            0%, 5% {
+        @keyframes pluginActivate {
+            0%, 3% {
                 border-color: var(--accent-cyan);
                 background: rgba(6, 182, 212, 0.1);
-                box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.2);
             }
-            15%, 100% {
+            10%, 100% {
                 border-color: transparent;
                 background: var(--bg-deep);
-                box-shadow: none;
             }
         }
 
-        .module-name {
-            font-size: 10px;
+        .plugin-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            background: var(--bg-surface);
+            border-radius: 4px;
+        }
+
+        .plugin-info {
+            flex: 1;
+        }
+
+        .plugin-name {
+            font-size: 9px;
             font-weight: 600;
             color: var(--text-secondary);
         }
 
-        .module-status {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 9px;
-            color: var(--text-dim);
+        .plugin-status {
+            font-size: 8px;
+            color: var(--accent-emerald);
             font-family: var(--font-mono);
         }
 
-        .status-dot {
-            width: 5px;
-            height: 5px;
-            background: var(--accent-emerald);
-            border-radius: 50%;
-            animation: statusBlink 1s ease-in-out infinite;
-        }
-
-        @keyframes statusBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Core Metrics */
-        .core-metrics {
+        /* Performance metrics */
+        .perf-row {
             display: flex;
             justify-content: space-around;
             padding-top: 10px;
             border-top: 1px solid var(--border-subtle);
         }
 
-        .metric {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
+        .perf-metric {
+            text-align: center;
         }
 
-        .metric-value {
+        .perf-value {
             font-size: 14px;
             font-weight: 700;
-            color: var(--accent-cyan);
+            color: var(--accent-emerald);
             font-family: var(--font-mono);
         }
 
-        .metric-label {
+        .perf-label {
             font-size: 8px;
             color: var(--text-dim);
             text-transform: uppercase;
-            letter-spacing: 0.02em;
         }
 
-        /* Output Layer */
-        .arch-output-layer {
+        /* Clean outputs */
+        .clean-outputs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 10px;
         }
 
-        .arch-output-item {
+        .clean-output {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            padding: 8px 14px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            min-width: 60px;
-            transition: all 0.3s;
+            border-radius: 6px;
+            padding: 6px 10px;
+            text-align: center;
+            transition: all 0.4s ease;
         }
 
-        /* Sequential output activation */
-        .arch-output-item:nth-child(1) { animation: outputPulse var(--cycle-duration) ease-in-out infinite 1.3s; }
-        .arch-output-item:nth-child(2) { animation: outputPulse var(--cycle-duration) ease-in-out infinite 3.3s; }
-        .arch-output-item:nth-child(3) { animation: outputPulse var(--cycle-duration) ease-in-out infinite 5.3s; }
+        .clean-output:nth-child(1) { animation: outputActivate var(--total-cycle) ease-in-out infinite 10.5s; }
+        .clean-output:nth-child(2) { animation: outputActivate var(--total-cycle) ease-in-out infinite 11s; }
+        .clean-output:nth-child(3) { animation: outputActivate var(--total-cycle) ease-in-out infinite 11.5s; }
 
-        @keyframes outputPulse {
-            0%, 5% {
+        @keyframes outputActivate {
+            0%, 3% {
                 border-color: var(--accent-emerald);
-                box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-                transform: scale(1.05);
+                box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
             }
-            15%, 100% {
+            10%, 100% {
                 border-color: var(--border-subtle);
                 box-shadow: none;
-                transform: scale(1);
             }
         }
 
-        .output-port {
-            font-size: 12px;
+        .clean-output-port {
+            font-size: 10px;
             font-family: var(--font-mono);
             font-weight: 600;
             color: var(--accent-cyan);
         }
 
-        .output-label {
-            font-size: 9px;
+        .clean-output-label {
+            font-size: 8px;
             color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
         }
 
-        /* DFD Legend */
-        .dfd-legend {
+        /* Benefits badges */
+        .benefit-badges {
             display: flex;
             justify-content: center;
-            gap: 16px;
+            gap: 8px;
             margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
         }
 
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 9px;
-            color: var(--text-dim);
+        .benefit-badge {
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
-
-        .legend-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        .legend-dot.input { background: var(--accent-cyan); }
-        .legend-dot.process { background: var(--accent-blue); }
-        .legend-dot.output { background: var(--accent-emerald); }
 
         /* Ecosystem Strip */
         .ecosystem-strip {
@@ -1342,123 +1471,176 @@
                     </div>
                 </div>
                 <div class="hero-visual animate-in delay-3">
-                    <div class="arch-diagram-v2">
-                        <div class="dfd-container">
-                            <!-- Input Models - each pulses when "selected" -->
-                            <div class="arch-input-layer">
-                                <div class="arch-input-item" data-model="onnx">
-                                    <span class="input-icon">📦</span>
-                                    <span class="input-label">.onnx</span>
+                    <div class="arch-showcase">
+                        <!-- Phase Tabs -->
+                        <div class="phase-indicator">
+                            <span class="phase-tab before">Without MLOS</span>
+                            <span class="phase-tab after">With MLOS</span>
+                        </div>
+
+                        <div class="arch-views">
+                            <!-- BEFORE MLOS: Chaotic State -->
+                            <div class="before-mlos">
+                                <div class="chaos-label">Complex Multi-Framework Setup</div>
+
+                                <!-- Separate framework runtimes -->
+                                <div class="chaos-grid">
+                                    <div class="framework-box pytorch">
+                                        <div class="framework-icon">🔥</div>
+                                        <div class="framework-name">PyTorch</div>
+                                        <div class="framework-overhead">+180ms cold start</div>
+                                    </div>
+                                    <div class="framework-box tensorflow">
+                                        <div class="framework-icon">📊</div>
+                                        <div class="framework-name">TensorFlow</div>
+                                        <div class="framework-overhead">+220ms cold start</div>
+                                    </div>
+                                    <div class="framework-box onnx">
+                                        <div class="framework-icon">📦</div>
+                                        <div class="framework-name">ONNX Runtime</div>
+                                        <div class="framework-overhead">+95ms cold start</div>
+                                    </div>
                                 </div>
-                                <div class="arch-input-item" data-model="pt">
-                                    <span class="input-icon">🔥</span>
-                                    <span class="input-label">.pt</span>
+
+                                <!-- Tangled connections -->
+                                <div class="chaos-connections">
+                                    <div class="chaos-line" style="--rot: 15deg"></div>
+                                    <div class="chaos-line" style="--rot: -8deg"></div>
+                                    <div class="chaos-line" style="--rot: 20deg"></div>
+                                    <div class="chaos-line" style="--rot: -12deg"></div>
                                 </div>
-                                <div class="arch-input-item" data-model="gguf">
-                                    <span class="input-icon">🦙</span>
-                                    <span class="input-label">.gguf</span>
+
+                                <!-- Slow outputs -->
+                                <div class="chaos-outputs">
+                                    <div class="chaos-output">
+                                        <div class="chaos-output-label">Latency</div>
+                                        <div class="chaos-output-value">~200ms</div>
+                                    </div>
+                                    <div class="chaos-output">
+                                        <div class="chaos-output-label">Memory</div>
+                                        <div class="chaos-output-value">3× overhead</div>
+                                    </div>
+                                    <div class="chaos-output">
+                                        <div class="chaos-output-label">Integration</div>
+                                        <div class="chaos-output-value">Per-framework</div>
+                                    </div>
+                                </div>
+
+                                <div class="problem-badges">
+                                    <span class="problem-badge">Memory fragmentation</span>
+                                    <span class="problem-badge">No batching</span>
+                                    <span class="problem-badge">Manual NUMA</span>
                                 </div>
                             </div>
 
-                            <!-- Data Flow Into Core -->
-                            <div class="arch-flow-connector flow-in">
-                                <div class="flow-pipe">
-                                    <div class="data-packet"></div>
-                                    <div class="data-packet"></div>
-                                    <div class="data-packet"></div>
-                                </div>
-                            </div>
+                            <!-- AFTER MLOS: Clean State -->
+                            <div class="after-mlos">
+                                <div class="clean-label">Unified Runtime Layer</div>
 
-                            <!-- Core Processing - modules light up sequentially -->
-                            <div class="arch-core-box">
-                                <div class="core-header">
-                                    <span class="core-logo">ml<span class="accent">OS</span> Core</span>
-                                    <span class="core-version" data-config="version.core">v7.0.0-beta</span>
+                                <!-- Unified inputs -->
+                                <div class="unified-inputs">
+                                    <div class="unified-input">
+                                        <span class="unified-input-icon">📦</span>
+                                        <span class="unified-input-label">.onnx</span>
+                                    </div>
+                                    <div class="unified-input">
+                                        <span class="unified-input-icon">🔥</span>
+                                        <span class="unified-input-label">.pt</span>
+                                    </div>
+                                    <div class="unified-input">
+                                        <span class="unified-input-icon">🦙</span>
+                                        <span class="unified-input-label">.gguf</span>
+                                    </div>
                                 </div>
-                                <div class="core-internals">
-                                    <div class="core-module" data-step="1">
-                                        <div class="module-name">Plugin Registry</div>
-                                        <div class="module-status">
-                                            <span class="status-dot"></span>
-                                            ONNX • GGUF
+
+                                <!-- Clean flow -->
+                                <div class="clean-flow">
+                                    <div class="flow-arrow">
+                                        <div class="flow-packet"></div>
+                                    </div>
+                                </div>
+
+                                <!-- MLOS Core -->
+                                <div class="mlos-core-box">
+                                    <div class="mlos-header">
+                                        <span class="mlos-title">ml<span class="accent">OS</span> Core</span>
+                                        <span class="mlos-version">v7.0.0-beta</span>
+                                    </div>
+
+                                    <div class="plugin-grid">
+                                        <div class="plugin-module">
+                                            <div class="plugin-icon">🔌</div>
+                                            <div class="plugin-info">
+                                                <div class="plugin-name">ONNX Plugin</div>
+                                                <div class="plugin-status">Hot-reload</div>
+                                            </div>
+                                        </div>
+                                        <div class="plugin-module">
+                                            <div class="plugin-icon">🦙</div>
+                                            <div class="plugin-info">
+                                                <div class="plugin-name">GGUF Plugin</div>
+                                                <div class="plugin-status">Streaming</div>
+                                            </div>
+                                        </div>
+                                        <div class="plugin-module">
+                                            <div class="plugin-icon">⚡</div>
+                                            <div class="plugin-info">
+                                                <div class="plugin-name">Tensor Pool</div>
+                                                <div class="plugin-status">3.6M ops/s</div>
+                                            </div>
+                                        </div>
+                                        <div class="plugin-module">
+                                            <div class="plugin-icon">🧠</div>
+                                            <div class="plugin-info">
+                                                <div class="plugin-name">NUMA Manager</div>
+                                                <div class="plugin-status">Auto-pinned</div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="core-module" data-step="2">
-                                        <div class="module-name">Kernel Scheduler</div>
-                                        <div class="module-status">
-                                            <span class="status-dot"></span>
-                                            Batch Queue
+
+                                    <div class="perf-row">
+                                        <div class="perf-metric">
+                                            <div class="perf-value">&lt;50μs</div>
+                                            <div class="perf-label">overhead</div>
                                         </div>
-                                    </div>
-                                    <div class="core-module" data-step="3">
-                                        <div class="module-name">Tensor Pool</div>
-                                        <div class="module-status">
-                                            <span class="status-dot"></span>
-                                            3.6M ops/s
+                                        <div class="perf-metric">
+                                            <div class="perf-value">4×</div>
+                                            <div class="perf-label">faster</div>
                                         </div>
-                                    </div>
-                                    <div class="core-module" data-step="4">
-                                        <div class="module-name">Memory Manager</div>
-                                        <div class="module-status">
-                                            <span class="status-dot"></span>
-                                            NUMA-aware
+                                        <div class="perf-metric">
+                                            <div class="perf-value">42</div>
+                                            <div class="perf-label">models</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="core-metrics">
-                                    <div class="metric">
-                                        <span class="metric-value">&lt;50μs</span>
-                                        <span class="metric-label">overhead</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-value">42</span>
-                                        <span class="metric-label">models</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-value">4×</span>
-                                        <span class="metric-label">faster</span>
+
+                                <!-- Clean flow out -->
+                                <div class="clean-flow">
+                                    <div class="flow-arrow">
+                                        <div class="flow-packet"></div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Data Flow Out of Core -->
-                            <div class="arch-flow-connector flow-out">
-                                <div class="flow-pipe">
-                                    <div class="data-packet"></div>
-                                    <div class="data-packet"></div>
-                                    <div class="data-packet"></div>
+                                <!-- Clean outputs -->
+                                <div class="clean-outputs">
+                                    <div class="clean-output">
+                                        <div class="clean-output-port">:8080</div>
+                                        <div class="clean-output-label">REST</div>
+                                    </div>
+                                    <div class="clean-output">
+                                        <div class="clean-output-port">:8081</div>
+                                        <div class="clean-output-label">gRPC</div>
+                                    </div>
+                                    <div class="clean-output">
+                                        <div class="clean-output-port">sock</div>
+                                        <div class="clean-output-label">IPC</div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Output APIs - pulse when receiving data -->
-                            <div class="arch-output-layer">
-                                <div class="arch-output-item">
-                                    <span class="output-port">:8080</span>
-                                    <span class="output-label">REST</span>
-                                </div>
-                                <div class="arch-output-item">
-                                    <span class="output-port">:8081</span>
-                                    <span class="output-label">gRPC</span>
-                                </div>
-                                <div class="arch-output-item">
-                                    <span class="output-port">sock</span>
-                                    <span class="output-label">IPC</span>
-                                </div>
-                            </div>
-
-                            <!-- Legend -->
-                            <div class="dfd-legend">
-                                <div class="legend-item">
-                                    <span class="legend-dot input"></span>
-                                    <span>Input</span>
-                                </div>
-                                <div class="legend-item">
-                                    <span class="legend-dot process"></span>
-                                    <span>Processing</span>
-                                </div>
-                                <div class="legend-item">
-                                    <span class="legend-dot output"></span>
-                                    <span>Output</span>
+                                <div class="benefit-badges">
+                                    <span class="benefit-badge">One API</span>
+                                    <span class="benefit-badge">Auto-batching</span>
+                                    <span class="benefit-badge">Zero-copy</span>
                                 </div>
                             </div>
                         </div>

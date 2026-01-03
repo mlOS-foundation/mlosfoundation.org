@@ -320,12 +320,13 @@
             background: linear-gradient(145deg, var(--bg-elevated), var(--bg-deep));
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 16px;
+            padding: 24px;
             position: relative;
             overflow: hidden;
             --total-cycle: 20s;
             --before-duration: 8s;
             --after-duration: 10s;
+            min-width: 480px;
         }
 
         /* Phase indicator */
@@ -339,10 +340,10 @@
         }
 
         .phase-tab {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-dim);
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 8px;
             transition: all 0.5s ease;
             text-transform: uppercase;
@@ -371,7 +372,7 @@
         /* Container for both views */
         .arch-views {
             position: relative;
-            min-height: 420px;
+            min-height: 520px;
         }
 
         /* === BEFORE MLOS STATE === */
@@ -393,10 +394,10 @@
 
         .chaos-label {
             text-align: center;
-            font-size: 13px;
+            font-size: 15px;
             color: #f87171;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             letter-spacing: 0.02em;
         }
 
@@ -412,8 +413,8 @@
         .framework-box {
             background: var(--bg-surface);
             border: 2px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 12px 10px;
+            border-radius: 12px;
+            padding: 16px 12px;
             text-align: center;
             position: relative;
             transition: all 0.4s ease;
@@ -438,15 +439,15 @@
             10%, 100% { transform: scale(1); box-shadow: none; }
         }
 
-        .framework-icon { font-size: 24px; margin-bottom: 6px; }
+        .framework-icon { font-size: 28px; margin-bottom: 8px; }
         .framework-name {
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         .framework-overhead {
-            font-size: 10px;
+            font-size: 11px;
             color: #f87171;
             font-family: var(--font-mono);
             font-weight: 600;
@@ -569,7 +570,7 @@
             background: var(--bg-deep);
             border: 2px solid #f8717140;
             border-radius: 10px;
-            padding: 10px 8px;
+            padding: 14px 10px;
             text-align: center;
             transition: all 0.4s ease;
         }
@@ -586,14 +587,14 @@
         }
 
         .chaos-output-label {
-            font-size: 10px;
+            font-size: 11px;
             color: var(--text-dim);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-weight: 500;
         }
 
         .chaos-output-value {
-            font-size: 13px;
+            font-size: 15px;
             font-family: var(--font-mono);
             color: #f87171;
             font-weight: 700;
@@ -603,14 +604,14 @@
         .problem-badges {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-top: 12px;
+            gap: 10px;
+            margin-top: 16px;
             flex-wrap: wrap;
         }
 
         .problem-badge {
-            font-size: 9px;
-            padding: 5px 10px;
+            font-size: 11px;
+            padding: 6px 12px;
             border-radius: 6px;
             background: rgba(248, 113, 113, 0.15);
             color: #f87171;
@@ -646,10 +647,10 @@
 
         .clean-label {
             text-align: center;
-            font-size: 13px;
+            font-size: 15px;
             color: var(--accent-emerald);
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             letter-spacing: 0.02em;
         }
 
@@ -665,13 +666,13 @@
         .unified-input {
             background: var(--bg-surface);
             border: 2px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 10px 14px;
+            border-radius: 12px;
+            padding: 12px 18px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            min-width: 70px;
+            gap: 6px;
+            min-width: 80px;
             transition: all 0.5s ease;
         }
 
@@ -692,9 +693,9 @@
             }
         }
 
-        .unified-input-icon { font-size: 22px; }
+        .unified-input-icon { font-size: 26px; }
         .unified-input-label {
-            font-size: 11px;
+            font-size: 13px;
             font-family: var(--font-mono);
             color: var(--text-secondary);
             font-weight: 600;
@@ -787,8 +788,8 @@
         .mlos-core-box {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(16, 185, 129, 0.08));
             border: 2px solid var(--accent-cyan);
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 14px;
+            padding: 16px;
             position: relative;
             box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
             animation: coreBoxGlow var(--total-cycle) ease-in-out infinite 10s;
@@ -813,13 +814,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .mlos-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 800;
             color: var(--text-primary);
         }
@@ -832,11 +833,11 @@
         }
 
         .mlos-version {
-            font-size: 10px;
+            font-size: 11px;
             font-family: var(--font-mono);
             color: var(--accent-emerald);
             background: rgba(16, 185, 129, 0.15);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 6px;
             font-weight: 600;
         }
@@ -845,18 +846,18 @@
         .plugin-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .plugin-module {
             background: var(--bg-deep);
-            border-radius: 8px;
-            padding: 8px 10px;
+            border-radius: 10px;
+            padding: 10px 12px;
             border: 2px solid transparent;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             transition: all 0.4s ease;
         }
 
@@ -879,14 +880,14 @@
         }
 
         .plugin-icon {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             background: var(--bg-surface);
-            border-radius: 6px;
+            border-radius: 8px;
         }
 
         .plugin-info {
@@ -894,13 +895,13 @@
         }
 
         .plugin-name {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .plugin-status {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--accent-emerald);
             font-family: var(--font-mono);
             font-weight: 500;
@@ -910,7 +911,7 @@
         .perf-row {
             display: flex;
             justify-content: space-around;
-            padding-top: 10px;
+            padding-top: 12px;
             border-top: 1px solid var(--border-subtle);
         }
 
@@ -929,14 +930,14 @@
         }
 
         .perf-value {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             color: var(--accent-emerald);
             font-family: var(--font-mono);
         }
 
         .perf-label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
             font-weight: 500;
@@ -998,18 +999,18 @@
         .clean-outputs {
             display: flex;
             justify-content: center;
-            gap: 12px;
+            gap: 14px;
             padding: 0 8px;
         }
 
         .clean-output {
             background: var(--bg-surface);
             border: 2px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 8px 14px;
+            border-radius: 10px;
+            padding: 10px 16px;
             text-align: center;
             transition: all 0.4s ease;
-            min-width: 60px;
+            min-width: 70px;
         }
 
         .clean-output:nth-child(1) { animation: outputActivate var(--total-cycle) ease-in-out infinite 16s; }
@@ -1030,14 +1031,14 @@
         }
 
         .clean-output-port {
-            font-size: 11px;
+            font-size: 13px;
             font-family: var(--font-mono);
             font-weight: 700;
             color: var(--accent-cyan);
         }
 
         .clean-output-label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-muted);
             font-weight: 500;
         }
@@ -1046,14 +1047,15 @@
         .benefit-badges {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 12px;
+            margin-bottom: 4px;
             flex-wrap: wrap;
         }
 
         .benefit-badge {
-            font-size: 9px;
-            padding: 5px 10px;
+            font-size: 11px;
+            padding: 6px 12px;
             border-radius: 6px;
             background: rgba(16, 185, 129, 0.15);
             color: var(--accent-emerald);

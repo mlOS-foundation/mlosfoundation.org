@@ -311,7 +311,7 @@
             margin-top: 2px;
         }
 
-        /* Architecture Diagram - Before/After Animation */
+        /* Architecture Diagram - Before/After Animation V2 */
         .hero-visual {
             position: relative;
         }
@@ -320,31 +320,33 @@
             background: linear-gradient(145deg, var(--bg-elevated), var(--bg-deep));
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 20px;
+            padding: 16px;
             position: relative;
             overflow: hidden;
-            --total-cycle: 16s;
+            --total-cycle: 20s;
+            --before-duration: 8s;
+            --after-duration: 10s;
         }
 
         /* Phase indicator */
         .phase-indicator {
             display: flex;
             justify-content: center;
-            gap: 24px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
+            gap: 32px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .phase-tab {
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             color: var(--text-dim);
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             transition: all 0.5s ease;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
         }
 
         .phase-tab.before {
@@ -356,20 +358,20 @@
         }
 
         @keyframes beforePhaseActive {
-            0%, 35% { color: var(--accent-cyan); background: rgba(6, 182, 212, 0.1); }
-            45%, 100% { color: var(--text-dim); background: transparent; }
+            0%, 35% { color: #f87171; background: rgba(248, 113, 113, 0.15); box-shadow: 0 0 15px rgba(248, 113, 113, 0.2); }
+            45%, 100% { color: var(--text-dim); background: transparent; box-shadow: none; }
         }
 
         @keyframes afterPhaseActive {
-            0%, 40% { color: var(--text-dim); background: transparent; }
-            50%, 95% { color: var(--accent-emerald); background: rgba(16, 185, 129, 0.1); }
-            100% { color: var(--text-dim); background: transparent; }
+            0%, 42% { color: var(--text-dim); background: transparent; box-shadow: none; }
+            52%, 95% { color: var(--accent-emerald); background: rgba(16, 185, 129, 0.15); box-shadow: 0 0 15px rgba(16, 185, 129, 0.2); }
+            100% { color: var(--text-dim); background: transparent; box-shadow: none; }
         }
 
         /* Container for both views */
         .arch-views {
             position: relative;
-            min-height: 380px;
+            min-height: 420px;
         }
 
         /* === BEFORE MLOS STATE === */
@@ -377,125 +379,253 @@
             position: absolute;
             inset: 0;
             animation: showBefore var(--total-cycle) ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes showBefore {
-            0% { opacity: 0; transform: scale(0.95); }
-            5% { opacity: 1; transform: scale(1); }
-            35% { opacity: 1; transform: scale(1); }
-            45% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 0; transform: scale(0.95); }
+            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            5% { opacity: 1; transform: scale(1) translateY(0); }
+            38% { opacity: 1; transform: scale(1) translateY(0); }
+            45% { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            100% { opacity: 0; transform: scale(0.95) translateY(-10px); }
         }
 
         .chaos-label {
             text-align: center;
-            font-size: 10px;
+            font-size: 13px;
             color: #f87171;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 12px;
-            animation: chaosLabelPulse 2s ease-in-out infinite;
+            letter-spacing: 0.02em;
         }
 
-        @keyframes chaosLabelPulse {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
-        }
-
-        /* Chaotic framework boxes */
+        /* Chaotic framework boxes - 3 columns top row */
         .chaos-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 0;
+            padding: 0 8px;
         }
 
         .framework-box {
             background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 10px 8px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 12px 10px;
             text-align: center;
             position: relative;
+            transition: all 0.4s ease;
         }
 
-        .framework-box.pytorch { border-color: #ee4c2c40; }
-        .framework-box.tensorflow { border-color: #ff6f0040; }
-        .framework-box.onnx { border-color: #00599940; }
+        .framework-box.pytorch {
+            border-color: #ee4c2c50;
+            animation: frameworkPulse var(--total-cycle) ease-in-out infinite 0.5s;
+        }
+        .framework-box.tensorflow {
+            border-color: #ff6f0050;
+            animation: frameworkPulse var(--total-cycle) ease-in-out infinite 1.5s;
+        }
+        .framework-box.onnx {
+            border-color: #00599950;
+            animation: frameworkPulse var(--total-cycle) ease-in-out infinite 2.5s;
+        }
 
-        .framework-icon { font-size: 20px; margin-bottom: 4px; }
-        .framework-name { font-size: 9px; font-weight: 600; color: var(--text-muted); }
+        @keyframes frameworkPulse {
+            0%, 2% { transform: scale(1); box-shadow: none; }
+            4%, 8% { transform: scale(1.02); box-shadow: 0 0 20px rgba(248, 113, 113, 0.3); }
+            10%, 100% { transform: scale(1); box-shadow: none; }
+        }
+
+        .framework-icon { font-size: 24px; margin-bottom: 6px; }
+        .framework-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
         .framework-overhead {
-            font-size: 8px;
+            font-size: 10px;
             color: #f87171;
             font-family: var(--font-mono);
-            margin-top: 4px;
+            font-weight: 600;
         }
 
-        /* Tangled connections - SVG-like contained lines */
-        .chaos-connections {
+        /* SVG Chaos Connections Container */
+        .chaos-svg-container {
             position: relative;
-            height: 50px;
-            margin: 8px 0;
-            overflow: hidden;
+            height: 80px;
+            margin: 4px 0;
         }
 
-        .chaos-line {
+        .chaos-svg {
+            width: 100%;
+            height: 100%;
             position: absolute;
-            height: 2px;
-            background: #f8717160;
-            border-radius: 1px;
+            top: 0;
+            left: 0;
         }
 
-        /* Shorter, contained diagonal lines */
-        .chaos-line:nth-child(1) { top: 8px; left: 10%; width: 35%; transform: rotate(25deg); }
-        .chaos-line:nth-child(2) { top: 18px; left: 55%; width: 35%; transform: rotate(-20deg); }
-        .chaos-line:nth-child(3) { top: 28px; left: 20%; width: 30%; transform: rotate(-15deg); }
-        .chaos-line:nth-child(4) { top: 38px; left: 45%; width: 40%; transform: rotate(18deg); }
+        /* Animated chaos paths */
+        .chaos-path {
+            fill: none;
+            stroke: #f87171;
+            stroke-width: 2;
+            stroke-linecap: round;
+            opacity: 0.4;
+        }
+
+        .chaos-path-glow {
+            fill: none;
+            stroke: #f87171;
+            stroke-width: 4;
+            stroke-linecap: round;
+            opacity: 0;
+            filter: blur(3px);
+        }
+
+        /* Animate each path sequentially */
+        .chaos-path:nth-child(1), .chaos-path-glow:nth-child(2) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 0.8s;
+        }
+        .chaos-path:nth-child(3), .chaos-path-glow:nth-child(4) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 1.3s;
+        }
+        .chaos-path:nth-child(5), .chaos-path-glow:nth-child(6) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 1.8s;
+        }
+        .chaos-path:nth-child(7), .chaos-path-glow:nth-child(8) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 2.3s;
+        }
+        .chaos-path:nth-child(9), .chaos-path-glow:nth-child(10) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 2.8s;
+        }
+        .chaos-path:nth-child(11), .chaos-path-glow:nth-child(12) {
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            animation: chaosPathDraw var(--total-cycle) ease-in-out infinite 3.3s;
+        }
+
+        @keyframes chaosPathDraw {
+            0% { stroke-dashoffset: 200; opacity: 0; }
+            3% { stroke-dashoffset: 200; opacity: 0.6; }
+            8% { stroke-dashoffset: 0; opacity: 0.8; }
+            12% { stroke-dashoffset: 0; opacity: 0.4; }
+            35% { stroke-dashoffset: 0; opacity: 0.4; }
+            40%, 100% { stroke-dashoffset: 0; opacity: 0; }
+        }
+
+        /* Data packet on chaos paths */
+        .chaos-packet {
+            fill: #f87171;
+            filter: drop-shadow(0 0 4px #f87171);
+        }
+
+        .chaos-packet:nth-child(13) { animation: chaosPacketMove1 var(--total-cycle) ease-in-out infinite 1s; }
+        .chaos-packet:nth-child(14) { animation: chaosPacketMove2 var(--total-cycle) ease-in-out infinite 1.5s; }
+        .chaos-packet:nth-child(15) { animation: chaosPacketMove3 var(--total-cycle) ease-in-out infinite 2s; }
+
+        @keyframes chaosPacketMove1 {
+            0%, 3% { opacity: 0; offset-distance: 0%; }
+            5% { opacity: 1; }
+            15% { opacity: 1; offset-distance: 100%; }
+            18%, 100% { opacity: 0; offset-distance: 100%; }
+        }
+
+        @keyframes chaosPacketMove2 {
+            0%, 5% { opacity: 0; offset-distance: 0%; }
+            8% { opacity: 1; }
+            18% { opacity: 1; offset-distance: 100%; }
+            21%, 100% { opacity: 0; offset-distance: 100%; }
+        }
+
+        @keyframes chaosPacketMove3 {
+            0%, 8% { opacity: 0; offset-distance: 0%; }
+            11% { opacity: 1; }
+            21% { opacity: 1; offset-distance: 100%; }
+            24%, 100% { opacity: 0; offset-distance: 100%; }
+        }
 
         /* Slow outputs in chaos */
         .chaos-outputs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
+            padding: 0 8px;
         }
 
         .chaos-output {
             background: var(--bg-deep);
-            border: 1px solid #f8717140;
-            border-radius: 6px;
-            padding: 8px;
+            border: 2px solid #f8717140;
+            border-radius: 10px;
+            padding: 10px 8px;
             text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .chaos-output:nth-child(1) { animation: chaosOutputAppear var(--total-cycle) ease-in-out infinite 3s; }
+        .chaos-output:nth-child(2) { animation: chaosOutputAppear var(--total-cycle) ease-in-out infinite 3.5s; }
+        .chaos-output:nth-child(3) { animation: chaosOutputAppear var(--total-cycle) ease-in-out infinite 4s; }
+
+        @keyframes chaosOutputAppear {
+            0%, 3% { opacity: 0.3; transform: scale(0.95); }
+            6%, 8% { opacity: 1; transform: scale(1.02); border-color: #f87171; }
+            12%, 35% { opacity: 1; transform: scale(1); border-color: #f8717140; }
+            40%, 100% { opacity: 0.3; transform: scale(0.95); }
         }
 
         .chaos-output-label {
-            font-size: 9px;
+            font-size: 10px;
             color: var(--text-dim);
             margin-bottom: 4px;
+            font-weight: 500;
         }
 
         .chaos-output-value {
-            font-size: 11px;
+            font-size: 13px;
             font-family: var(--font-mono);
             color: #f87171;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         /* Problem indicators */
         .problem-badges {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
 
         .problem-badge {
-            font-size: 7px;
-            padding: 3px 6px;
-            border-radius: 3px;
-            background: rgba(248, 113, 113, 0.1);
+            font-size: 9px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(248, 113, 113, 0.15);
             color: #f87171;
-            border: 1px solid #f8717130;
+            border: 1px solid #f8717140;
+            font-weight: 600;
+        }
+
+        .problem-badge:nth-child(1) { animation: badgeFade var(--total-cycle) ease-in-out infinite 4.5s; }
+        .problem-badge:nth-child(2) { animation: badgeFade var(--total-cycle) ease-in-out infinite 5s; }
+        .problem-badge:nth-child(3) { animation: badgeFade var(--total-cycle) ease-in-out infinite 5.5s; }
+
+        @keyframes badgeFade {
+            0%, 2% { opacity: 0; transform: translateY(5px); }
+            5%, 30% { opacity: 1; transform: translateY(0); }
+            35%, 100% { opacity: 0; transform: translateY(-5px); }
         }
 
         /* === AFTER MLOS STATE === */
@@ -503,122 +633,193 @@
             position: absolute;
             inset: 0;
             animation: showAfter var(--total-cycle) ease-in-out infinite;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes showAfter {
-            0%, 40% { opacity: 0; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1); }
-            95% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.95); }
+            0%, 42% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            50% { opacity: 1; transform: scale(1) translateY(0); }
+            95% { opacity: 1; transform: scale(1) translateY(0); }
+            100% { opacity: 0; transform: scale(0.95) translateY(-10px); }
         }
 
         .clean-label {
             text-align: center;
-            font-size: 10px;
+            font-size: 13px;
             color: var(--accent-emerald);
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.02em;
         }
 
         /* Clean unified inputs */
         .unified-inputs {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin-bottom: 6px;
+            gap: 12px;
+            margin-bottom: 0;
+            padding: 0 8px;
         }
 
         .unified-input {
             background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            padding: 6px 10px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 10px 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 2px;
-            min-width: 50px;
-            transition: all 0.6s ease;
+            gap: 4px;
+            min-width: 70px;
+            transition: all 0.5s ease;
         }
 
-        .unified-input:nth-child(1) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 8s; }
-        .unified-input:nth-child(2) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 9s; }
-        .unified-input:nth-child(3) { animation: unifiedInputGlow var(--total-cycle) ease-in-out infinite 10s; }
+        .unified-input:nth-child(1) { animation: inputActivate var(--total-cycle) ease-in-out infinite 10.5s; }
+        .unified-input:nth-child(2) { animation: inputActivate var(--total-cycle) ease-in-out infinite 11s; }
+        .unified-input:nth-child(3) { animation: inputActivate var(--total-cycle) ease-in-out infinite 11.5s; }
 
-        @keyframes unifiedInputGlow {
-            0%, 3% { border-color: var(--accent-cyan); box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
-            8%, 100% { border-color: var(--border-subtle); box-shadow: none; }
+        @keyframes inputActivate {
+            0%, 2% {
+                border-color: var(--accent-cyan);
+                box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+                transform: scale(1.05);
+            }
+            8%, 100% {
+                border-color: var(--border-subtle);
+                box-shadow: none;
+                transform: scale(1);
+            }
         }
 
-        .unified-input-icon { font-size: 16px; }
-        .unified-input-label { font-size: 9px; font-family: var(--font-mono); color: var(--text-muted); }
+        .unified-input-icon { font-size: 22px; }
+        .unified-input-label {
+            font-size: 11px;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
 
-        /* Clean flow arrow */
-        .clean-flow {
-            display: flex;
-            justify-content: center;
-            padding: 4px 0;
+        /* SVG Clean Flow Container */
+        .clean-svg-container {
             position: relative;
+            height: 50px;
+            margin: 2px 0;
         }
 
-        .flow-arrow {
-            width: 2px;
-            height: 18px;
-            background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-emerald));
-            position: relative;
-        }
-
-        .flow-arrow::after {
-            content: '';
+        .clean-svg {
+            width: 100%;
+            height: 100%;
             position: absolute;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--accent-emerald);
+            top: 0;
+            left: 0;
         }
 
+        /* Clean flow paths - converging to center */
+        .flow-path {
+            fill: none;
+            stroke: url(#flowGradient);
+            stroke-width: 2;
+            stroke-linecap: round;
+            opacity: 0.6;
+        }
+
+        .flow-path-glow {
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 6;
+            stroke-linecap: round;
+            opacity: 0;
+            filter: blur(4px);
+        }
+
+        /* Sequential path activation */
+        .flow-path:nth-child(1), .flow-path-glow:nth-child(2) {
+            animation: flowPathLight var(--total-cycle) ease-in-out infinite 10.5s;
+        }
+        .flow-path:nth-child(3), .flow-path-glow:nth-child(4) {
+            animation: flowPathLight var(--total-cycle) ease-in-out infinite 11s;
+        }
+        .flow-path:nth-child(5), .flow-path-glow:nth-child(6) {
+            animation: flowPathLight var(--total-cycle) ease-in-out infinite 11.5s;
+        }
+
+        @keyframes flowPathLight {
+            0%, 2% { opacity: 0; stroke-dasharray: 100; stroke-dashoffset: 100; }
+            4% { opacity: 0.8; stroke-dashoffset: 50; }
+            8% { opacity: 1; stroke-dashoffset: 0; }
+            12% { opacity: 0.6; }
+            45%, 100% { opacity: 0.6; }
+        }
+
+        /* Data packets on clean flow */
         .flow-packet {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px var(--accent-cyan);
-            animation: flowPacketMove 2s ease-in-out infinite;
+            fill: var(--accent-cyan);
+            filter: drop-shadow(0 0 6px var(--accent-cyan));
         }
 
-        @keyframes flowPacketMove {
-            0% { top: -4px; opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { top: calc(100% + 4px); opacity: 0; }
+        .flow-packet:nth-child(7) { animation: packetFlow1 var(--total-cycle) linear infinite 10.6s; }
+        .flow-packet:nth-child(8) { animation: packetFlow2 var(--total-cycle) linear infinite 11.1s; }
+        .flow-packet:nth-child(9) { animation: packetFlow3 var(--total-cycle) linear infinite 11.6s; }
+
+        @keyframes packetFlow1 {
+            0%, 1% { opacity: 0; offset-distance: 0%; }
+            3% { opacity: 1; }
+            10% { opacity: 1; offset-distance: 100%; }
+            12%, 100% { opacity: 0; offset-distance: 100%; }
+        }
+
+        @keyframes packetFlow2 {
+            0%, 1% { opacity: 0; offset-distance: 0%; }
+            3% { opacity: 1; }
+            10% { opacity: 1; offset-distance: 100%; }
+            12%, 100% { opacity: 0; offset-distance: 100%; }
+        }
+
+        @keyframes packetFlow3 {
+            0%, 1% { opacity: 0; offset-distance: 0%; }
+            3% { opacity: 1; }
+            10% { opacity: 1; offset-distance: 100%; }
+            12%, 100% { opacity: 0; offset-distance: 100%; }
         }
 
         /* MLOS Core box */
         .mlos-core-box {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.05));
-            border: 1px solid var(--accent-cyan);
-            border-radius: 10px;
-            padding: 10px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(16, 185, 129, 0.08));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 12px;
             position: relative;
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+            animation: coreBoxGlow var(--total-cycle) ease-in-out infinite 10s;
+        }
+
+        @keyframes coreBoxGlow {
+            0%, 3% {
+                box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+                border-color: var(--accent-cyan);
+            }
+            8%, 12% {
+                box-shadow: 0 0 40px rgba(6, 182, 212, 0.3), inset 0 0 20px rgba(6, 182, 212, 0.1);
+                border-color: var(--accent-emerald);
+            }
+            20%, 100% {
+                box-shadow: 0 0 30px rgba(6, 182, 212, 0.15);
+                border-color: var(--accent-cyan);
+            }
         }
 
         .mlos-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-            padding-bottom: 6px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .mlos-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             color: var(--text-primary);
         }
@@ -631,58 +832,61 @@
         }
 
         .mlos-version {
-            font-size: 9px;
+            font-size: 10px;
             font-family: var(--font-mono);
             color: var(--accent-emerald);
-            background: rgba(16, 185, 129, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.15);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
         }
 
-        /* Plugin modules */
+        /* Plugin modules - 2x2 grid */
         .plugin-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 4px;
-            margin-bottom: 8px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
         .plugin-module {
             background: var(--bg-deep);
-            border-radius: 5px;
-            padding: 6px;
-            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 8px 10px;
+            border: 2px solid transparent;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.4s ease;
         }
 
-        .plugin-module:nth-child(1) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 8.5s; }
-        .plugin-module:nth-child(2) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 9s; }
-        .plugin-module:nth-child(3) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 9.5s; }
-        .plugin-module:nth-child(4) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 10s; }
+        .plugin-module:nth-child(1) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 12s; }
+        .plugin-module:nth-child(2) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 12.5s; }
+        .plugin-module:nth-child(3) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 13s; }
+        .plugin-module:nth-child(4) { animation: pluginActivate var(--total-cycle) ease-in-out infinite 13.5s; }
 
         @keyframes pluginActivate {
-            0%, 3% {
+            0%, 2% {
                 border-color: var(--accent-cyan);
-                background: rgba(6, 182, 212, 0.1);
+                background: rgba(6, 182, 212, 0.15);
+                transform: scale(1.02);
             }
-            10%, 100% {
+            8%, 100% {
                 border-color: transparent;
                 background: var(--bg-deep);
+                transform: scale(1);
             }
         }
 
         .plugin-icon {
-            width: 20px;
-            height: 20px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 14px;
             background: var(--bg-surface);
-            border-radius: 3px;
+            border-radius: 6px;
         }
 
         .plugin-info {
@@ -690,102 +894,181 @@
         }
 
         .plugin-name {
-            font-size: 8px;
-            font-weight: 600;
-            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
         .plugin-status {
-            font-size: 7px;
+            font-size: 9px;
             color: var(--accent-emerald);
             font-family: var(--font-mono);
+            font-weight: 500;
         }
 
-        /* Performance metrics */
+        /* Performance metrics row */
         .perf-row {
             display: flex;
             justify-content: space-around;
-            padding-top: 8px;
+            padding-top: 10px;
             border-top: 1px solid var(--border-subtle);
         }
 
         .perf-metric {
             text-align: center;
+            animation: metricPulse var(--total-cycle) ease-in-out infinite 14s;
+        }
+
+        .perf-metric:nth-child(2) { animation-delay: 14.3s; }
+        .perf-metric:nth-child(3) { animation-delay: 14.6s; }
+
+        @keyframes metricPulse {
+            0%, 2% { transform: scale(1); }
+            4%, 6% { transform: scale(1.1); }
+            8%, 100% { transform: scale(1); }
         }
 
         .perf-value {
-            font-size: 12px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--accent-emerald);
             font-family: var(--font-mono);
         }
 
         .perf-label {
-            font-size: 7px;
-            color: var(--text-dim);
+            font-size: 9px;
+            color: var(--text-muted);
             text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Output flow SVG container */
+        .output-svg-container {
+            position: relative;
+            height: 35px;
+            margin: 2px 0;
+        }
+
+        .output-svg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Output paths - diverging from center */
+        .output-path {
+            fill: none;
+            stroke: url(#outputGradient);
+            stroke-width: 2;
+            stroke-linecap: round;
+            opacity: 0.6;
+        }
+
+        .output-path:nth-child(1) { animation: outputPathLight var(--total-cycle) ease-in-out infinite 15s; }
+        .output-path:nth-child(2) { animation: outputPathLight var(--total-cycle) ease-in-out infinite 15.3s; }
+        .output-path:nth-child(3) { animation: outputPathLight var(--total-cycle) ease-in-out infinite 15.6s; }
+
+        @keyframes outputPathLight {
+            0%, 2% { opacity: 0.3; stroke-dasharray: 100; stroke-dashoffset: 100; }
+            5% { opacity: 0.8; stroke-dashoffset: 50; }
+            10% { opacity: 1; stroke-dashoffset: 0; }
+            15%, 100% { opacity: 0.6; stroke-dashoffset: 0; }
+        }
+
+        /* Output packets */
+        .output-packet {
+            fill: var(--accent-emerald);
+            filter: drop-shadow(0 0 5px var(--accent-emerald));
+        }
+
+        .output-packet:nth-child(4) { animation: outputPacketFlow var(--total-cycle) linear infinite 15.1s; }
+        .output-packet:nth-child(5) { animation: outputPacketFlow var(--total-cycle) linear infinite 15.4s; }
+        .output-packet:nth-child(6) { animation: outputPacketFlow var(--total-cycle) linear infinite 15.7s; }
+
+        @keyframes outputPacketFlow {
+            0%, 1% { opacity: 0; offset-distance: 0%; }
+            3% { opacity: 1; }
+            12% { opacity: 1; offset-distance: 100%; }
+            14%, 100% { opacity: 0; offset-distance: 100%; }
         }
 
         /* Clean outputs */
         .clean-outputs {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 12px;
+            padding: 0 8px;
         }
 
         .clean-output {
             background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 5px;
-            padding: 4px 8px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 8px 14px;
             text-align: center;
             transition: all 0.4s ease;
+            min-width: 60px;
         }
 
-        .clean-output:nth-child(1) { animation: outputActivate var(--total-cycle) ease-in-out infinite 10.5s; }
-        .clean-output:nth-child(2) { animation: outputActivate var(--total-cycle) ease-in-out infinite 11s; }
-        .clean-output:nth-child(3) { animation: outputActivate var(--total-cycle) ease-in-out infinite 11.5s; }
+        .clean-output:nth-child(1) { animation: outputActivate var(--total-cycle) ease-in-out infinite 16s; }
+        .clean-output:nth-child(2) { animation: outputActivate var(--total-cycle) ease-in-out infinite 16.3s; }
+        .clean-output:nth-child(3) { animation: outputActivate var(--total-cycle) ease-in-out infinite 16.6s; }
 
         @keyframes outputActivate {
-            0%, 3% {
+            0%, 2% {
                 border-color: var(--accent-emerald);
-                box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+                transform: scale(1.05);
             }
-            10%, 100% {
+            8%, 100% {
                 border-color: var(--border-subtle);
                 box-shadow: none;
+                transform: scale(1);
             }
         }
 
         .clean-output-port {
-            font-size: 9px;
+            font-size: 11px;
             font-family: var(--font-mono);
-            font-weight: 600;
+            font-weight: 700;
             color: var(--accent-cyan);
         }
 
         .clean-output-label {
-            font-size: 7px;
-            color: var(--text-dim);
+            font-size: 9px;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         /* Benefits badges */
         .benefit-badges {
             display: flex;
             justify-content: center;
-            gap: 6px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-top: 10px;
             flex-wrap: wrap;
         }
 
         .benefit-badge {
-            font-size: 7px;
-            padding: 3px 6px;
-            border-radius: 3px;
-            background: rgba(16, 185, 129, 0.1);
+            font-size: 9px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.15);
             color: var(--accent-emerald);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            font-weight: 600;
+        }
+
+        .benefit-badge:nth-child(1) { animation: benefitAppear var(--total-cycle) ease-in-out infinite 17s; }
+        .benefit-badge:nth-child(2) { animation: benefitAppear var(--total-cycle) ease-in-out infinite 17.3s; }
+        .benefit-badge:nth-child(3) { animation: benefitAppear var(--total-cycle) ease-in-out infinite 17.6s; }
+
+        @keyframes benefitAppear {
+            0%, 2% { opacity: 0; transform: translateY(5px) scale(0.9); }
+            5%, 45% { opacity: 1; transform: translateY(0) scale(1); }
+            48%, 100% { opacity: 0; transform: translateY(-5px) scale(0.9); }
         }
 
         /* Ecosystem Strip */
@@ -1498,12 +1781,33 @@
                                     </div>
                                 </div>
 
-                                <!-- Tangled connections -->
-                                <div class="chaos-connections">
-                                    <div class="chaos-line" style="--rot: 15deg"></div>
-                                    <div class="chaos-line" style="--rot: -8deg"></div>
-                                    <div class="chaos-line" style="--rot: 20deg"></div>
-                                    <div class="chaos-line" style="--rot: -12deg"></div>
+                                <!-- SVG Tangled connections with animated packets -->
+                                <div class="chaos-svg-container">
+                                    <svg class="chaos-svg" viewBox="0 0 400 80" preserveAspectRatio="xMidYMid meet">
+                                        <!-- Chaotic crossing paths from frameworks to outputs -->
+                                        <!-- PyTorch to Latency (crossing) -->
+                                        <path class="chaos-path" d="M65 0 Q120 50 65 80" />
+                                        <path class="chaos-path-glow" d="M65 0 Q120 50 65 80" />
+                                        <!-- PyTorch to Memory -->
+                                        <path class="chaos-path" d="M65 0 Q150 40 200 80" />
+                                        <path class="chaos-path-glow" d="M65 0 Q150 40 200 80" />
+                                        <!-- TensorFlow to Latency (crossing back) -->
+                                        <path class="chaos-path" d="M200 0 Q100 45 65 80" />
+                                        <path class="chaos-path-glow" d="M200 0 Q100 45 65 80" />
+                                        <!-- TensorFlow to Integration -->
+                                        <path class="chaos-path" d="M200 0 Q280 50 335 80" />
+                                        <path class="chaos-path-glow" d="M200 0 Q280 50 335 80" />
+                                        <!-- ONNX to Memory (crossing) -->
+                                        <path class="chaos-path" d="M335 0 Q250 35 200 80" />
+                                        <path class="chaos-path-glow" d="M335 0 Q250 35 200 80" />
+                                        <!-- ONNX to Latency -->
+                                        <path class="chaos-path" d="M335 0 Q180 55 65 80" />
+                                        <path class="chaos-path-glow" d="M335 0 Q180 55 65 80" />
+                                        <!-- Animated data packets -->
+                                        <circle class="chaos-packet" r="4" style="offset-path: path('M65 0 Q150 40 200 80');" />
+                                        <circle class="chaos-packet" r="4" style="offset-path: path('M200 0 Q100 45 65 80');" />
+                                        <circle class="chaos-packet" r="4" style="offset-path: path('M335 0 Q250 35 200 80');" />
+                                    </svg>
                                 </div>
 
                                 <!-- Slow outputs -->
@@ -1549,11 +1853,27 @@
                                     </div>
                                 </div>
 
-                                <!-- Clean flow -->
-                                <div class="clean-flow">
-                                    <div class="flow-arrow">
-                                        <div class="flow-packet"></div>
-                                    </div>
+                                <!-- SVG Clean flow - converging paths -->
+                                <div class="clean-svg-container">
+                                    <svg class="clean-svg" viewBox="0 0 400 50" preserveAspectRatio="xMidYMid meet">
+                                        <defs>
+                                            <linearGradient id="flowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <!-- Converging paths from 3 inputs to center -->
+                                        <path class="flow-path" d="M100 0 Q100 25 200 50" />
+                                        <path class="flow-path-glow" d="M100 0 Q100 25 200 50" />
+                                        <path class="flow-path" d="M200 0 L200 50" />
+                                        <path class="flow-path-glow" d="M200 0 L200 50" />
+                                        <path class="flow-path" d="M300 0 Q300 25 200 50" />
+                                        <path class="flow-path-glow" d="M300 0 Q300 25 200 50" />
+                                        <!-- Animated data packets -->
+                                        <circle class="flow-packet" r="5" style="offset-path: path('M100 0 Q100 25 200 50');" />
+                                        <circle class="flow-packet" r="5" style="offset-path: path('M200 0 L200 50');" />
+                                        <circle class="flow-packet" r="5" style="offset-path: path('M300 0 Q300 25 200 50');" />
+                                    </svg>
                                 </div>
 
                                 <!-- MLOS Core -->
@@ -1568,21 +1888,21 @@
                                             <div class="plugin-icon">🔌</div>
                                             <div class="plugin-info">
                                                 <div class="plugin-name">ONNX Plugin</div>
-                                                <div class="plugin-status">Hot-reload</div>
+                                                <div class="plugin-status">Hot-reload ready</div>
                                             </div>
                                         </div>
                                         <div class="plugin-module">
                                             <div class="plugin-icon">🦙</div>
                                             <div class="plugin-info">
                                                 <div class="plugin-name">GGUF Plugin</div>
-                                                <div class="plugin-status">Streaming</div>
+                                                <div class="plugin-status">Streaming mode</div>
                                             </div>
                                         </div>
                                         <div class="plugin-module">
                                             <div class="plugin-icon">⚡</div>
                                             <div class="plugin-info">
                                                 <div class="plugin-name">Tensor Pool</div>
-                                                <div class="plugin-status">3.6M ops/s</div>
+                                                <div class="plugin-status">3.6M ops/sec</div>
                                             </div>
                                         </div>
                                         <div class="plugin-module">
@@ -1610,33 +1930,46 @@
                                     </div>
                                 </div>
 
-                                <!-- Clean flow out -->
-                                <div class="clean-flow">
-                                    <div class="flow-arrow">
-                                        <div class="flow-packet"></div>
-                                    </div>
+                                <!-- SVG Output flow - diverging paths -->
+                                <div class="output-svg-container">
+                                    <svg class="output-svg" viewBox="0 0 400 35" preserveAspectRatio="xMidYMid meet">
+                                        <defs>
+                                            <linearGradient id="outputGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <!-- Diverging paths from center to 3 outputs -->
+                                        <path class="output-path" d="M200 0 Q150 20 100 35" />
+                                        <path class="output-path" d="M200 0 L200 35" />
+                                        <path class="output-path" d="M200 0 Q250 20 300 35" />
+                                        <!-- Animated data packets -->
+                                        <circle class="output-packet" r="4" style="offset-path: path('M200 0 Q150 20 100 35');" />
+                                        <circle class="output-packet" r="4" style="offset-path: path('M200 0 L200 35');" />
+                                        <circle class="output-packet" r="4" style="offset-path: path('M200 0 Q250 20 300 35');" />
+                                    </svg>
                                 </div>
 
                                 <!-- Clean outputs -->
                                 <div class="clean-outputs">
                                     <div class="clean-output">
                                         <div class="clean-output-port">:8080</div>
-                                        <div class="clean-output-label">REST</div>
+                                        <div class="clean-output-label">REST API</div>
                                     </div>
                                     <div class="clean-output">
                                         <div class="clean-output-port">:8081</div>
                                         <div class="clean-output-label">gRPC</div>
                                     </div>
                                     <div class="clean-output">
-                                        <div class="clean-output-port">sock</div>
+                                        <div class="clean-output-port">unix://</div>
                                         <div class="clean-output-label">IPC</div>
                                     </div>
                                 </div>
 
                                 <div class="benefit-badges">
-                                    <span class="benefit-badge">One API</span>
+                                    <span class="benefit-badge">One Unified API</span>
                                     <span class="benefit-badge">Auto-batching</span>
-                                    <span class="benefit-badge">Zero-copy</span>
+                                    <span class="benefit-badge">Zero-copy Transfer</span>
                                 </div>
                             </div>
                         </div>

@@ -1,33 +1,46 @@
 {
   "version": {
-    "core": "v7.0.0-beta",
+    "core": "v7.0.0",
     "axon": "v3.1.9",
-    "release_tag": "First Beta Release"
+    "release_tag": "Kernel Optimization Release"
   },
   "hero": {
-    "badge_text": "First Beta Release - 4× faster inference",
-    "tagline": "Kernel-native ML execution. One unified runtime for ONNX, PyTorch, and LLMs. Predictive memory management that cuts latency by 30%."
+    "badge_text": "STABLE RELEASE - v7.0.0",
+    "tagline": "Kernel-native ML execution. One unified runtime for ONNX, PyTorch, and LLMs. Memory optimizations that reduce footprint by 25-40%."
   },
   "stats": {
-    "latency_reduction": "4×",
-    "latency_label": "Faster Inference",
-    "models_tested": "42+",
+    "memory_reduction": "25-40%",
+    "memory_label": "Memory Savings",
+    "models_tested": "32+",
     "models_label": "Models Tested",
     "open_source": "100%",
     "open_source_label": "Open Source"
   },
   "performance": {
     "p99_latency": "0.8ms",
-    "models_count": "42",
-    "apis_count": "3"
+    "models_count": "32",
+    "apis_count": "3",
+    "tensor_fusion": "15-25%",
+    "deduplication": "10-20%"
   },
   "links": {
     "github": "https://github.com/mlOS-foundation",
     "releases": "https://github.com/mlOS-foundation/core-releases",
+    "core_release": "https://github.com/mlOS-foundation/core/releases/tag/v7.0.0",
+    "core_download": "https://github.com/mlOS-foundation/core-releases/releases/tag/v7.0.0",
     "docs": "https://mlosfoundation.org/architecture.html",
-    "changelog": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md"
+    "changelog": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md",
+    "test_reports": "https://mlos-foundation.github.io/system-test/"
   },
   "features": {
+    "tensor_fusion": {
+      "savings": "15-25%",
+      "description": "Non-overlapping tensor lifetime detection"
+    },
+    "deduplication": {
+      "savings": "10-20%",
+      "description": "Cross-model tensor deduplication with SHA-256"
+    },
     "tensor_pool": {
       "throughput": "3.6M ops/sec",
       "overhead": "<50μs"
@@ -39,5 +52,5 @@
       "enabled": true
     }
   },
-  "updated_at": "2026-01-02T00:00:00Z"
+  "updated_at": "2026-01-04T06:00:00Z"
 }

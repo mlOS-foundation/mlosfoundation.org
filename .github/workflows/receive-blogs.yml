@@ -92,7 +92,8 @@ jobs:
           }
 
           if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "core" ]; then
-            fetch_blogs "mlOS-foundation/core" "core"
+            # Fetch from public core-releases repo (blogs are published there)
+            fetch_blogs "mlOS-foundation/core-releases" "core"
           fi
 
           if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "axon" ]; then

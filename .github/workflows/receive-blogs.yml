@@ -3,6 +3,9 @@ name: Receive Blog Updates
 on:
   repository_dispatch:
     types: [blog-update]
+  schedule:
+    # Check for new blogs every 6 hours
+    - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
       source:
@@ -52,14 +55,15 @@ jobs:
 
           echo "✅ Blogs from $SOURCE saved"
 
-      - name: Fetch blogs from repos (manual trigger)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Fetch blogs from repos
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p src/data/blogs
 
-          SOURCES="${{ github.event.inputs.source }}"
+          # Default to 'all' for schedule trigger
+          SOURCES="${{ github.event.inputs.source || 'all' }}"
 
           fetch_blogs() {
             local repo=$1
@@ -92,7 +96,8 @@ jobs:
           }
 
           if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "core" ]; then
-            fetch_blogs "mlOS-foundation/core" "core"
+            # Fetch from public core-releases repo (blogs are published there)
+            fetch_blogs "mlOS-foundation/core-releases" "core"
           fi
 
           if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "axon" ]; then

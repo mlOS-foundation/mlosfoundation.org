@@ -1379,6 +1379,75 @@
             background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-base) 100%);
         }
 
+        .news-scroll-container {
+            position: relative;
+            margin-top: 32px;
+        }
+
+        .news-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-cyan) var(--bg-elevated);
+            padding: 8px 4px 24px 4px;
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .news-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .news-scroll::-webkit-scrollbar-track {
+            background: var(--bg-elevated);
+            border-radius: 4px;
+        }
+
+        .news-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 4px;
+        }
+
+        .news-scroll::-webkit-scrollbar-thumb:hover {
+            background: #0891b2;
+        }
+
+        .news-scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 20px;
+        }
+
+        .news-scroll-arrow:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            border-color: var(--accent-cyan);
+        }
+
+        .news-scroll-arrow.left {
+            left: -24px;
+        }
+
+        .news-scroll-arrow.right {
+            right: -24px;
+        }
+
         .news-grid {
             display: grid;
             gap: 20px;
@@ -1392,6 +1461,11 @@
             padding: 24px;
             position: relative;
             transition: all 0.3s ease;
+            flex: 0 0 380px;
+            min-width: 320px;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
         }
 
         .news-item:hover {
@@ -1401,8 +1475,12 @@
         }
 
         .news-item.featured {
-            border-left: 4px solid var(--accent-cyan);
+            border-top: 4px solid var(--accent-cyan);
             background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .news-item .news-content {
+            flex: 1;
         }
 
         .news-badge {
@@ -2174,68 +2252,150 @@
                 <p class="section-subtitle">Updates from the MLOS Foundation</p>
             </div>
 
-            <div class="news-grid">
-                <!-- Featured: v7.0.0-beta Release -->
-                <article class="news-item featured animate-in">
-                    <div class="news-badge">New Release</div>
-                    <div class="news-date">January 2, 2026</div>
-                    <h3 class="news-title">MLOS Core v7.0.0-beta - First Beta Release</h3>
-                    <p class="news-summary">
-                        We're excited to announce our first beta release! This major milestone brings significant
-                        kernel performance optimizations including tensor pool pre-allocation, batch inference
-                        scheduling, and NUMA thread affinity.
-                    </p>
-
-                    <div class="news-metrics">
-                        <div class="news-metric">
-                            <div class="news-metric-value">4x</div>
-                            <div class="news-metric-label">Faster Inference</div>
-                        </div>
-                        <div class="news-metric">
-                            <div class="news-metric-value">3.6M</div>
-                            <div class="news-metric-label">Ops/Second</div>
-                        </div>
-                        <div class="news-metric">
-                            <div class="news-metric-value">&lt;50μs</div>
-                            <div class="news-metric-label">Overhead</div>
-                        </div>
-                        <div class="news-metric">
-                            <div class="news-metric-value">12/12</div>
-                            <div class="news-metric-label">Tests Passing</div>
-                        </div>
+            <div class="news-scroll-container">
+                <button class="news-scroll-arrow left" onclick="scrollNews(-1)" aria-label="Scroll left">←</button>
+                <div class="news-scroll" id="news-scroll">
+                    <!-- News items loaded dynamically -->
+                    <div class="news-loading" style="padding: 40px; text-align: center; color: var(--text-dim);">
+                        Loading announcements...
                     </div>
-
-                    <!-- Embedded Performance Analysis -->
-                    <div class="perf-analysis">
-                        <h4>Performance Analysis Highlights</h4>
-                        <div class="perf-grid">
-                            <div class="perf-item">
-                                <div class="perf-title">Tensor Pool Pre-allocation</div>
-                                <div class="perf-detail">O(1) acquire/release ops via size-bucketed free lists. Eliminates malloc overhead during inference.</div>
-                            </div>
-                            <div class="perf-item">
-                                <div class="perf-title">Batch Inference Scheduling</div>
-                                <div class="perf-detail">Lock-free MPSC queue reduces contention. N× throughput improvement for concurrent requests.</div>
-                            </div>
-                            <div class="perf-item">
-                                <div class="perf-title">NUMA Thread Affinity</div>
-                                <div class="perf-detail">CPU pinning with memory locality. Reduces cross-socket memory access latency.</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="news-links">
-                        <a href="https://github.com/mlOS-foundation/core-releases/releases/tag/v7.0.0-beta" class="news-link primary">
-                            Download Release →
-                        </a>
-                        <a href="https://mlos-foundation.github.io/system-test/" class="news-link secondary">
-                            Test Results
-                        </a>
-                    </div>
-                </article>
+                </div>
+                <button class="news-scroll-arrow right" onclick="scrollNews(1)" aria-label="Scroll right">→</button>
             </div>
         </div>
     </section>
+
+    <script>
+    // News Feed Loader - Loads news dynamically and sorts by date (newest first)
+    (function() {
+        const newsScroll = document.getElementById('news-scroll');
+        if (!newsScroll) return;
+
+        // Fallback news data (used when JSON not available)
+        const fallbackNews = [
+            {
+                id: 'core-v700-release',
+                title: 'MLOS Core v7.0.0 - Kernel Optimization Release',
+                date: '2026-01-03',
+                badge: 'STABLE RELEASE',
+                featured: true,
+                summary: 'MLOS Core v7.0.0 is now available with new kernel-level memory optimizations: Tensor Fusion Detection (15-25% memory reduction) and Cross-Model Tensor Deduplication (10-20% savings). Combined potential of 25-40% memory reduction for multi-model deployments.',
+                version: 'v7.0.0',
+                performance: {
+                    highlights: [
+                        { metric: 'Tensor fusion savings', after: '15-25%' },
+                        { metric: 'Deduplication', after: '10-20%' },
+                        { metric: 'Combined', after: '25-40%' },
+                        { metric: 'Tests', after: '18/18' }
+                    ]
+                },
+                links: [
+                    { text: 'View Release', url: 'https://github.com/mlOS-foundation/core/releases/tag/v7.0.0', primary: true },
+                    { text: 'Changelog', url: 'https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md', primary: false }
+                ]
+            },
+            {
+                id: 'core-v700-beta-release',
+                title: 'MLOS Core v7.0.0-beta - First Beta Release',
+                date: '2026-01-02',
+                badge: 'BETA',
+                featured: false,
+                summary: 'First beta release with significant kernel performance optimizations: 4× faster per-inference overhead, 3.6M ops/sec tensor pool throughput, and lock contention reduction for batch operations.',
+                version: 'v7.0.0-beta',
+                performance: {
+                    highlights: [
+                        { metric: 'Inference', after: '4×' },
+                        { metric: 'Throughput', after: '3.6M ops/s' },
+                        { metric: 'Overhead', after: '<50μs' },
+                        { metric: 'Tests', after: '12/12' }
+                    ]
+                },
+                links: [
+                    { text: 'View Release', url: 'https://github.com/mlOS-foundation/core/releases/tag/v7.0.0-beta', primary: true }
+                ]
+            }
+        ];
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function renderNewsCard(entry, index) {
+            const isFeatured = index === 0 || entry.featured;
+            const metrics = entry.performance?.highlights || [];
+
+            let metricsHtml = '';
+            if (metrics.length > 0) {
+                metricsHtml = '<div class="news-metrics">' +
+                    metrics.slice(0, 4).map(m => `
+                        <div class="news-metric">
+                            <div class="news-metric-value">${m.after || m.improvement || ''}</div>
+                            <div class="news-metric-label">${m.metric}</div>
+                        </div>
+                    `).join('') +
+                    '</div>';
+            }
+
+            let linksHtml = '';
+            if (entry.links && entry.links.length > 0) {
+                linksHtml = '<div class="news-links">' +
+                    entry.links.map(link => `
+                        <a href="${link.url}" class="news-link ${link.primary ? 'primary' : 'secondary'}" target="_blank" rel="noopener">
+                            ${link.text} ${link.primary ? '→' : ''}
+                        </a>
+                    `).join('') +
+                    '</div>';
+            }
+
+            return `
+                <article class="news-item ${isFeatured ? 'featured' : ''} animate-in">
+                    ${entry.badge ? `<div class="news-badge">${entry.badge}</div>` : ''}
+                    <div class="news-content">
+                        <div class="news-date">${formatDate(entry.date)}</div>
+                        <h3 class="news-title">${entry.title}</h3>
+                        <p class="news-summary">${entry.summary}</p>
+                        ${metricsHtml}
+                    </div>
+                    ${linksHtml}
+                </article>
+            `;
+        }
+
+        function renderNews(entries) {
+            // Sort by date (newest first) - ensures no announcement loss
+            const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            newsScroll.innerHTML = sorted.map((entry, i) => renderNewsCard(entry, i)).join('');
+        }
+
+        // Try to load from aggregated news file
+        fetch('/src/data/news/all-news.json')
+            .then(r => {
+                if (!r.ok) throw new Error('News file not found');
+                return r.json();
+            })
+            .then(data => {
+                if (data.entries && data.entries.length > 0) {
+                    renderNews(data.entries);
+                } else {
+                    renderNews(fallbackNews);
+                }
+            })
+            .catch(() => {
+                // Use fallback news data
+                renderNews(fallbackNews);
+            });
+    })();
+
+    function scrollNews(direction) {
+        const container = document.getElementById('news-scroll');
+        if (container) {
+            const scrollAmount = 400;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+    }
+    </script>
 
     <!-- CTA Section -->
     <section class="cta-section">

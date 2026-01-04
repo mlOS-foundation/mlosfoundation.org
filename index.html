@@ -1584,6 +1584,242 @@
             color: var(--accent-cyan);
         }
 
+        /* Blog Section */
+        .blog-section {
+            padding: 70px 0;
+            background: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-elevated) 100%);
+        }
+
+        .blog-scroll-container {
+            position: relative;
+            margin-top: 32px;
+        }
+
+        .blog-scroll {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-purple) var(--bg-elevated);
+            padding: 8px 4px 24px 4px;
+            margin: 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .blog-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .blog-scroll::-webkit-scrollbar-track {
+            background: var(--bg-elevated);
+            border-radius: 4px;
+        }
+
+        .blog-scroll::-webkit-scrollbar-thumb {
+            background: var(--accent-purple);
+            border-radius: 4px;
+        }
+
+        .blog-scroll::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
+        }
+
+        .blog-scroll-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 20px;
+        }
+
+        .blog-scroll-arrow:hover {
+            background: var(--accent-purple);
+            color: var(--bg-deep);
+            border-color: var(--accent-purple);
+        }
+
+        .blog-scroll-arrow.left {
+            left: -24px;
+        }
+
+        .blog-scroll-arrow.right {
+            right: -24px;
+        }
+
+        .blog-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            transition: all 0.3s ease;
+            flex: 0 0 420px;
+            min-width: 360px;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-item:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .blog-item.featured {
+            border-top: 4px solid var(--accent-purple);
+            background: linear-gradient(135deg, var(--bg-surface) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .blog-item .blog-content {
+            flex: 1;
+        }
+
+        .blog-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .blog-date {
+            font-size: 13px;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        .blog-reading-time {
+            font-size: 12px;
+            color: var(--accent-purple);
+            font-weight: 500;
+        }
+
+        .blog-author {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .blog-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+        }
+
+        .blog-summary {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .blog-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .blog-highlight {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .blog-highlight-icon {
+            color: var(--accent-purple);
+        }
+
+        .blog-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .blog-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .blog-link.primary {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .blog-link.primary:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .blog-link.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .blog-link.secondary:hover {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .blog-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .blog-tag {
+            font-size: 10px;
+            color: var(--text-dim);
+            background: var(--bg-deep);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
         /* Performance Analysis Embed */
         .perf-analysis {
             background: var(--bg-deep);
@@ -2392,6 +2628,154 @@
         const container = document.getElementById('news-scroll');
         if (container) {
             const scrollAmount = 400;
+            container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+    }
+    </script>
+
+    <!-- Blog Section -->
+    <section class="blog-section" id="blog">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Technical Insights</div>
+                <h2 class="section-title">Latest Blog Posts</h2>
+                <p class="section-subtitle">Deep dives into MLOS performance and architecture</p>
+            </div>
+
+            <div class="blog-scroll-container">
+                <button class="blog-scroll-arrow left" onclick="scrollBlog(-1)" aria-label="Scroll left">←</button>
+                <div class="blog-scroll" id="blog-scroll">
+                    <!-- Blog items loaded dynamically -->
+                    <div class="blog-loading" style="padding: 40px; text-align: center; color: var(--text-dim);">
+                        Loading blog posts...
+                    </div>
+                </div>
+                <button class="blog-scroll-arrow right" onclick="scrollBlog(1)" aria-label="Scroll right">→</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    // Blog loader
+    (function() {
+        const blogScroll = document.getElementById('blog-scroll');
+        if (!blogScroll) return;
+
+        // Fallback blog data
+        const fallbackBlogs = [
+            {
+                id: "kernel-performance-evolution-v7",
+                title: "MLOS Core Kernel Performance Evolution: A Deep Dive into v6.3.0 to v7.0.0",
+                date: "2026-01-04",
+                author: { name: "MLOS Core Team", role: "Core Development Team" },
+                category: "release-analysis",
+                featured: true,
+                badge: "DEEP DIVE",
+                summary: "A comprehensive analysis of MLOS Core's performance journey from v6.3.0-alpha through v7.0.0-beta to the stable v7.0.0 release. This post examines the kernel-level optimizations that achieved up to 40% memory reduction and 4x throughput improvements.",
+                reading_time: "12 min read",
+                key_highlights: [
+                    { title: "4× Faster", description: "Per-inference overhead reduction" },
+                    { title: "25-40%", description: "Memory savings" },
+                    { title: "3.6M ops/sec", description: "Tensor pool throughput" },
+                    { title: "32 Models", description: "Validated coverage" }
+                ],
+                links: [
+                    { text: "Read Full Post", url: "#", primary: true },
+                    { text: "v7.0.0 Release", url: "https://github.com/mlOS-foundation/core/releases/tag/v7.0.0", primary: false }
+                ],
+                tags: ["performance", "kernel", "memory-optimization", "benchmarks"]
+            }
+        ];
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function renderBlogCard(entry, index) {
+            const isFeatured = entry.featured || index === 0;
+
+            let highlightsHtml = '';
+            if (entry.key_highlights && entry.key_highlights.length > 0) {
+                highlightsHtml = '<div class="blog-highlights">' +
+                    entry.key_highlights.slice(0, 4).map(h => `
+                        <div class="blog-highlight">
+                            <span class="blog-highlight-icon">◆</span>
+                            <span>${h.title}</span>
+                        </div>
+                    `).join('') +
+                    '</div>';
+            }
+
+            let tagsHtml = '';
+            if (entry.tags && entry.tags.length > 0) {
+                tagsHtml = '<div class="blog-tags">' +
+                    entry.tags.slice(0, 5).map(tag => `<span class="blog-tag">${tag}</span>`).join('') +
+                    '</div>';
+            }
+
+            let linksHtml = '';
+            if (entry.links && entry.links.length > 0) {
+                linksHtml = '<div class="blog-links">' +
+                    entry.links.map(link => `
+                        <a href="${link.url}" class="blog-link ${link.primary ? 'primary' : 'secondary'}" target="_blank" rel="noopener">
+                            ${link.text} ${link.primary ? '→' : ''}
+                        </a>
+                    `).join('') +
+                    '</div>';
+            }
+
+            const authorInfo = entry.author ?
+                `<span class="blog-author">by ${entry.author.name}</span>` : '';
+
+            return `
+                <article class="blog-item ${isFeatured ? 'featured' : ''} animate-in">
+                    ${entry.badge ? `<div class="blog-badge">${entry.badge}</div>` : ''}
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">${formatDate(entry.date)}</span>
+                            ${entry.reading_time ? `<span class="blog-reading-time">${entry.reading_time}</span>` : ''}
+                        </div>
+                        <h3 class="blog-title">${entry.title}</h3>
+                        ${authorInfo}
+                        <p class="blog-summary">${entry.summary}</p>
+                        ${tagsHtml}
+                        ${highlightsHtml}
+                    </div>
+                    ${linksHtml}
+                </article>
+            `;
+        }
+
+        function renderBlogs(entries) {
+            // Sort by date (newest first)
+            const sorted = [...entries].sort((a, b) => new Date(b.date) - new Date(a.date));
+            blogScroll.innerHTML = sorted.map((entry, i) => renderBlogCard(entry, i)).join('');
+        }
+
+        // Try to load from aggregated blog file
+        fetch('/src/data/blogs/all-blogs.json')
+            .then(r => {
+                if (!r.ok) throw new Error('Blog file not found');
+                return r.json();
+            })
+            .then(data => {
+                if (data.entries && data.entries.length > 0) {
+                    renderBlogs(data.entries);
+                } else {
+                    renderBlogs(fallbackBlogs);
+                }
+            })
+            .catch(() => {
+                // Use fallback blog data
+                renderBlogs(fallbackBlogs);
+            });
+    })();
+
+    function scrollBlog(direction) {
+        const container = document.getElementById('blog-scroll');
+        if (container) {
+            const scrollAmount = 450;
             container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
         }
     }

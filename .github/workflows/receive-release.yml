@@ -1,0 +1,172 @@
+name: Receive Release Updates
+
+# Receives release updates from Core and Axon repos
+# Automatically updates site-config.json with latest version info
+
+on:
+  repository_dispatch:
+    types: [release-update]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source repo (core, axon)'
+        required: true
+        type: choice
+        options:
+          - core
+          - axon
+        default: core
+      version:
+        description: 'Version (e.g., v7.0.0)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Process release update
+        run: |
+          mkdir -p src/data
+
+          # Determine source and version
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            SOURCE="${{ github.event.client_payload.source }}"
+            VERSION="${{ github.event.client_payload.version }}"
+            RELEASE_TYPE="${{ github.event.client_payload.release_type }}"
+            BADGE="${{ github.event.client_payload.badge }}"
+          else
+            SOURCE="${{ github.event.inputs.source }}"
+            VERSION="${{ github.event.inputs.version }}"
+            # Determine release type from version
+            if [[ "$VERSION" == *"-beta"* ]]; then
+              RELEASE_TYPE="beta"
+              BADGE="BETA RELEASE"
+            elif [[ "$VERSION" == *"-alpha"* ]]; then
+              RELEASE_TYPE="alpha"
+              BADGE="ALPHA RELEASE"
+            else
+              RELEASE_TYPE="stable"
+              BADGE="STABLE RELEASE"
+            fi
+          fi
+
+          echo "📦 Processing release update:"
+          echo "   Source: $SOURCE"
+          echo "   Version: $VERSION"
+          echo "   Type: $RELEASE_TYPE"
+
+          # Read existing config
+          CONFIG_FILE="src/data/site-config.json"
+          if [ -f "$CONFIG_FILE" ]; then
+            EXISTING=$(cat "$CONFIG_FILE")
+          else
+            # Create default config
+            EXISTING='{}'
+          fi
+
+          # Update config using Node.js for proper JSON handling
+          node << 'SCRIPT'
+          const fs = require('fs');
+
+          const configFile = 'src/data/site-config.json';
+          let config = {};
+
+          try {
+            config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
+          } catch (e) {
+            console.log('Creating new config');
+          }
+
+          const source = process.env.SOURCE;
+          const version = process.env.VERSION;
+          const releaseType = process.env.RELEASE_TYPE;
+          const badge = process.env.BADGE;
+
+          // Update version info
+          if (!config.version) config.version = {};
+          config.version[source] = version;
+
+          // Update hero section based on release type
+          if (!config.hero) config.hero = {};
+          if (source === 'core') {
+            if (releaseType === 'stable') {
+              config.hero.badge_text = `${badge} - ${version}`;
+            } else {
+              config.hero.badge_text = `${badge} - ${version}`;
+            }
+          }
+
+          // Update links
+          if (!config.links) config.links = {};
+          if (source === 'core') {
+            config.links.core_release = `https://github.com/mlOS-foundation/core/releases/tag/${version}`;
+            config.links.core_download = `https://github.com/mlOS-foundation/core-releases/releases/tag/${version}`;
+          } else if (source === 'axon') {
+            config.links.axon_release = `https://github.com/mlOS-foundation/axon/releases/tag/${version}`;
+          }
+
+          // Update timestamp
+          config.updated_at = new Date().toISOString();
+
+          // Write updated config
+          fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+          console.log('✅ Config updated:', JSON.stringify(config.version));
+          SCRIPT
+
+          echo "Updated config:"
+          cat "$CONFIG_FILE" | head -30
+        env:
+          SOURCE: ${{ github.event.client_payload.source || github.event.inputs.source }}
+          VERSION: ${{ github.event.client_payload.version || github.event.inputs.version }}
+          RELEASE_TYPE: ${{ github.event.client_payload.release_type || 'stable' }}
+          BADGE: ${{ github.event.client_payload.badge || 'STABLE RELEASE' }}
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          SOURCE="${{ github.event.client_payload.source || github.event.inputs.source }}"
+          VERSION="${{ github.event.client_payload.version || github.event.inputs.version }}"
+
+          git add src/data/site-config.json
+          git commit -m "chore: Update ${SOURCE} version to ${VERSION}"
+          git push
+
+          echo "✅ Changes committed"
+
+      - name: Summary
+        if: always()
+        run: |
+          SOURCE="${{ github.event.client_payload.source || github.event.inputs.source }}"
+          VERSION="${{ github.event.client_payload.version || github.event.inputs.version }}"
+
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Release Update Complete"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Source: $SOURCE"
+          echo "Version: $VERSION"
+          echo ""

@@ -1,0 +1,194 @@
+name: Receive Blog Updates
+
+on:
+  repository_dispatch:
+    types: [blog-update]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Source repo to fetch blogs from (core, axon, or all)'
+        required: false
+        type: choice
+        options:
+          - all
+          - core
+          - axon
+        default: all
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  receive-blogs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout website
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Process dispatched blogs
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "📝 Processing blog update from ${{ github.event.client_payload.source }}"
+          echo "Commit: ${{ github.event.client_payload.commit }}"
+
+          # Decode the blog content
+          echo '${{ github.event.client_payload.blog_content_base64 }}' | base64 -d > /tmp/incoming-blogs.json
+
+          echo "Received blog feed:"
+          cat /tmp/incoming-blogs.json | head -50
+
+          # Create blogs data directory
+          mkdir -p src/data/blogs
+
+          # Save blogs by source
+          SOURCE="${{ github.event.client_payload.source }}"
+          cp /tmp/incoming-blogs.json "src/data/blogs/${SOURCE}-blogs.json"
+
+          echo "✅ Blogs from $SOURCE saved"
+
+      - name: Fetch blogs from repos (manual trigger)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p src/data/blogs
+
+          SOURCES="${{ github.event.inputs.source }}"
+
+          fetch_blogs() {
+            local repo=$1
+            local name=$2
+            echo "📥 Fetching blogs from $repo..."
+
+            # Check if blog entries exist
+            if gh api "repos/$repo/contents/docs/blogs/entries" --jq '.[].name' 2>/dev/null; then
+              echo '{"source": "'"$name"'", "repo": "'"$repo"'", "entries": [' > "/tmp/${name}-blogs.json"
+
+              FIRST=true
+              for file in $(gh api "repos/$repo/contents/docs/blogs/entries" --jq '.[].name' 2>/dev/null | grep '\.json$'); do
+                CONTENT=$(gh api "repos/$repo/contents/docs/blogs/entries/$file" --jq '.content' | base64 -d)
+                if [ -n "$CONTENT" ]; then
+                  if [ "$FIRST" = "true" ]; then
+                    FIRST=false
+                  else
+                    echo "," >> "/tmp/${name}-blogs.json"
+                  fi
+                  echo "$CONTENT" >> "/tmp/${name}-blogs.json"
+                fi
+              done
+
+              echo ']}' >> "/tmp/${name}-blogs.json"
+              cp "/tmp/${name}-blogs.json" "src/data/blogs/${name}-blogs.json"
+              echo "✅ Fetched blogs from $name"
+            else
+              echo "⚠️ No blog entries found in $repo"
+            fi
+          }
+
+          if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "core" ]; then
+            fetch_blogs "mlOS-foundation/core" "core"
+          fi
+
+          if [ "$SOURCES" = "all" ] || [ "$SOURCES" = "axon" ]; then
+            fetch_blogs "mlOS-foundation/axon" "axon"
+          fi
+
+      - name: Aggregate all blog feeds
+        run: |
+          echo "📊 Aggregating blog feeds..."
+
+          mkdir -p src/data/blogs
+
+          # Create Node.js script for aggregation
+          cat > /tmp/aggregate-blogs.js << 'SCRIPT'
+          const fs = require('fs');
+          const path = require('path');
+
+          const blogsDir = 'src/data/blogs';
+          const allEntries = [];
+
+          // Ensure directory exists
+          if (!fs.existsSync(blogsDir)) {
+            fs.mkdirSync(blogsDir, { recursive: true });
+          }
+
+          // Read all source-specific blog files
+          try {
+            fs.readdirSync(blogsDir)
+              .filter(f => f.endsWith('-blogs.json') && f !== 'all-blogs.json')
+              .forEach(file => {
+                try {
+                  const data = JSON.parse(fs.readFileSync(path.join(blogsDir, file)));
+                  if (data.entries) {
+                    data.entries.forEach(entry => {
+                      entry.source_repo = data.repo;
+                      allEntries.push(entry);
+                    });
+                  }
+                } catch (e) {
+                  console.error(`Error reading ${file}:`, e.message);
+                }
+              });
+          } catch (e) {
+            console.log('No existing blog files found');
+          }
+
+          // Sort by date (newest first)
+          allEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+          const output = {
+            generated_at: new Date().toISOString(),
+            count: allEntries.length,
+            entries: allEntries
+          };
+
+          fs.writeFileSync(path.join(blogsDir, 'all-blogs.json'), JSON.stringify(output, null, 2));
+          console.log(`✅ Aggregated ${allEntries.length} blog entries`);
+          SCRIPT
+
+          node /tmp/aggregate-blogs.js
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changed files:"
+            git status --short
+          fi
+
+      - name: Commit and push changes
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add src/data/blogs/
+
+          SOURCE="${{ github.event.client_payload.source || github.event.inputs.source || 'manual' }}"
+          git commit -m "chore: Update blog feed from ${SOURCE}"
+          git push
+
+          echo "✅ Changes committed and pushed"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📝 Blog Update Complete"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "Event: ${{ github.event_name }}"
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "Source: ${{ github.event.client_payload.source }}"
+            echo "Commit: ${{ github.event.client_payload.commit }}"
+          fi
+          echo ""

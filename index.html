@@ -2314,7 +2314,7 @@
                         <div class="eco-name">Axon CLI</div>
                         <div class="eco-desc">Model packaging & deployment</div>
                     </div>
-                    <span class="eco-badge">v3.1.9</span>
+                    <span class="eco-badge">v3.2.0</span>
                 </a>
                 <a href="https://mlos-foundation.github.io/system-test/" class="eco-item">
                     <div class="eco-icon">✅</div>
@@ -2511,11 +2511,32 @@
         // Fallback news data (used when JSON not available)
         const fallbackNews = [
             {
+                id: 'axon-v320-release',
+                title: 'Axon v3.2.0 - Format-Agnostic Installation',
+                date: '2026-01-11',
+                badge: 'NEW RELEASE',
+                featured: true,
+                summary: 'Axon v3.2.0 introduces format-agnostic model installation with the new --format flag, case-insensitive model lookup, YOLO support, and multi-encoder ONNX conversion for CLIP and T5 models.',
+                version: 'v3.2.0',
+                performance: {
+                    highlights: [
+                        { metric: '--format flag', after: 'onnx/pytorch/auto' },
+                        { metric: 'Model lookup', after: 'case-insensitive' },
+                        { metric: 'Multi-encoder', after: 'CLIP, T5' },
+                        { metric: 'YOLO support', after: 'enabled' }
+                    ]
+                },
+                links: [
+                    { text: 'View Release', url: 'https://github.com/mlOS-foundation/axon/releases/tag/v3.2.0', primary: true },
+                    { text: 'Changelog', url: 'https://github.com/mlOS-foundation/axon/blob/main/CHANGELOG.md', primary: false }
+                ]
+            },
+            {
                 id: 'core-v700-release',
                 title: 'MLOS Core v7.0.0 - Kernel Optimization Release',
                 date: '2026-01-03',
                 badge: 'STABLE RELEASE',
-                featured: true,
+                featured: false,
                 summary: 'MLOS Core v7.0.0 is now available with new kernel-level memory optimizations: Tensor Fusion Detection (15-25% memory reduction) and Cross-Model Tensor Deduplication (10-20% savings). Combined potential of 25-40% memory reduction for multi-model deployments.',
                 version: 'v7.0.0',
                 performance: {

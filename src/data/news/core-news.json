@@ -1,4 +1,4 @@
-{"source": "core", "repo": "mlOS-foundation/core", "generated_at": "2026-01-28T09:07:11Z", "entries": [
+{"source": "core", "repo": "mlOS-foundation/core", "generated_at": "2026-01-28T09:33:22Z", "entries": [
 {
   "id": "training-workload-api-v1",
   "title": "MLOS Training Workload Hosting API - Generic ML Training Support",
@@ -68,18 +68,13 @@
   },
   "links": [
     {
-      "text": "Training Workload LLD",
-      "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_LLD.md",
+      "text": "Documentation",
+      "url": "https://mlosfoundation.org/training-workload.html",
       "primary": true
     },
     {
-      "text": "Feasibility Analysis",
-      "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_FEASIBILITY.md",
-      "primary": false
-    },
-    {
-      "text": "API Header",
-      "url": "https://github.com/mlOS-foundation/core/blob/main/include/mlos_training_workload.h",
+      "text": "Architecture",
+      "url": "https://mlosfoundation.org/architecture.html",
       "primary": false
     }
   ],

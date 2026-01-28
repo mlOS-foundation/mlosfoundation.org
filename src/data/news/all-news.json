@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-28T09:10:16.265Z",
+  "generated_at": "2026-01-28T09:33:48.388Z",
   "count": 3,
   "entries": [
     {
@@ -71,18 +71,13 @@
       },
       "links": [
         {
-          "text": "Training Workload LLD",
-          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_LLD.md",
+          "text": "Documentation",
+          "url": "https://mlosfoundation.org/training-workload.html",
           "primary": true
         },
         {
-          "text": "Feasibility Analysis",
-          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_FEASIBILITY.md",
-          "primary": false
-        },
-        {
-          "text": "API Header",
-          "url": "https://github.com/mlOS-foundation/core/blob/main/include/mlos_training_workload.h",
+          "text": "Architecture",
+          "url": "https://mlosfoundation.org/architecture.html",
           "primary": false
         }
       ],

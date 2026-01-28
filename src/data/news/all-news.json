@@ -1,0 +1,268 @@
+{
+  "generated_at": "2026-01-28T09:10:16.265Z",
+  "count": 3,
+  "entries": [
+    {
+      "id": "training-workload-api-v1",
+      "title": "MLOS Training Workload Hosting API - Generic ML Training Support",
+      "date": "2026-01-28",
+      "type": "announcement",
+      "featured": true,
+      "badge": "NEW FEATURE",
+      "summary": "MLOS now supports generic ML training workloads with OS-level optimizations. The new Training Workload API provides 15-30% efficiency gains over traditional Linux through NUMA-aware allocation, CPU affinity management, and training phase-aware scheduling.",
+      "version": "v7.1.0",
+      "performance": {
+        "highlights": [
+          {
+            "metric": "Training efficiency",
+            "before": "Generic Linux",
+            "after": "mlOS optimized",
+            "improvement": "15-30% faster"
+          },
+          {
+            "metric": "NUMA locality",
+            "before": "Random placement",
+            "after": "Optimal node binding",
+            "improvement": "Reduced cross-socket latency"
+          },
+          {
+            "metric": "Concurrent workloads",
+            "before": "Interference issues",
+            "after": "Isolated resources",
+            "improvement": "<15% overhead"
+          },
+          {
+            "metric": "Test coverage",
+            "before": "0 tests",
+            "after": "80 tests",
+            "improvement": "61 unit + 19 integration"
+          }
+        ]
+      },
+      "features": [
+        {
+          "name": "NUMA-Aware Resource Allocation",
+          "description": "Automatic placement of training workloads on optimal NUMA nodes with memory affinity"
+        },
+        {
+          "name": "CPU Affinity Management",
+          "description": "Bind training threads to specific CPUs for consistent cache locality and reduced jitter"
+        },
+        {
+          "name": "Training Phase Scheduling",
+          "description": "Hint-based scheduling for forward pass, backward pass, optimizer, and checkpoint phases"
+        },
+        {
+          "name": "Memory Pressure Handling",
+          "description": "Callbacks for graceful memory pressure response with configurable thresholds"
+        },
+        {
+          "name": "Checkpoint Safety",
+          "description": "mlock'd buffers for reliable checkpoint saves even under memory pressure"
+        },
+        {
+          "name": "Distributed Primitives",
+          "description": "Barrier and all-reduce operations for multi-node distributed training"
+        }
+      ],
+      "tests": {
+        "total": 80,
+        "passing": 80
+      },
+      "links": [
+        {
+          "text": "Training Workload LLD",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_LLD.md",
+          "primary": true
+        },
+        {
+          "text": "Feasibility Analysis",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/TRAINING_WORKLOAD_FEASIBILITY.md",
+          "primary": false
+        },
+        {
+          "text": "API Header",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/include/mlos_training_workload.h",
+          "primary": false
+        }
+      ],
+      "tags": [
+        "feature",
+        "training",
+        "numa",
+        "cpu-affinity",
+        "distributed-training",
+        "ml-workloads"
+      ],
+      "source_repo": "mlOS-foundation/core"
+    },
+    {
+      "id": "core-v700-release",
+      "title": "MLOS Core v7.0.0 - Kernel Optimization Release",
+      "date": "2026-01-03",
+      "type": "release",
+      "featured": true,
+      "badge": "STABLE RELEASE",
+      "summary": "MLOS Core v7.0.0 is now available with new kernel-level memory optimizations: Tensor Fusion Detection (15-25% memory reduction) and Cross-Model Tensor Deduplication (10-20% savings). Combined potential of 25-40% memory reduction for multi-model deployments.",
+      "version": "v7.0.0",
+      "performance": {
+        "highlights": [
+          {
+            "metric": "Tensor fusion savings",
+            "before": "—",
+            "after": "15-25%",
+            "improvement": "Memory reduction"
+          },
+          {
+            "metric": "Cross-model deduplication",
+            "before": "—",
+            "after": "10-20%",
+            "improvement": "Memory savings"
+          },
+          {
+            "metric": "Combined optimization",
+            "before": "—",
+            "after": "25-40%",
+            "improvement": "Total reduction"
+          },
+          {
+            "metric": "Test coverage",
+            "before": "12 tests",
+            "after": "18 tests",
+            "improvement": "6 new tests"
+          }
+        ]
+      },
+      "features": [
+        {
+          "name": "Tensor Fusion Detection",
+          "description": "Identifies tensors with non-overlapping lifetimes that can share memory allocations for 15-25% memory reduction"
+        },
+        {
+          "name": "Cross-Model Tensor Deduplication",
+          "description": "SHA-256 content-addressable hashing detects duplicate tensors across models with copy-on-write semantics"
+        },
+        {
+          "name": "Fusion Analysis API",
+          "description": "New mlos_fusion_analyze(), mlos_fusion_execute(), mlos_fusion_get_stats() functions"
+        },
+        {
+          "name": "Deduplication API",
+          "description": "New mlos_dedup_hash_tensor(), mlos_dedup_enable(), mlos_dedup_analyze_models(), mlos_dedup_get_stats() functions"
+        }
+      ],
+      "tests": {
+        "total": 18,
+        "passing": 18
+      },
+      "links": [
+        {
+          "text": "View Release",
+          "url": "https://github.com/mlOS-foundation/core/releases/tag/v7.0.0",
+          "primary": true
+        },
+        {
+          "text": "Changelog",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md",
+          "primary": false
+        },
+        {
+          "text": "Performance Analysis",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/KERNEL_PERFORMANCE_ANALYSIS.md",
+          "primary": false
+        }
+      ],
+      "tags": [
+        "release",
+        "stable",
+        "kernel",
+        "memory-optimization",
+        "tensor-fusion",
+        "deduplication"
+      ],
+      "source_repo": "mlOS-foundation/core"
+    },
+    {
+      "id": "core-v700-beta-release",
+      "title": "MLOS Core v7.0.0-beta - First Beta Release",
+      "date": "2026-01-02",
+      "type": "release",
+      "featured": true,
+      "badge": "NEW RELEASE",
+      "summary": "We're excited to announce our first beta release! This major milestone brings significant kernel performance optimizations with 4× faster per-inference overhead, 3.6M ops/sec tensor pool throughput, and N× lock contention reduction for batch operations.",
+      "version": "v7.0.0-beta",
+      "performance": {
+        "highlights": [
+          {
+            "metric": "Per-inference overhead",
+            "before": "~200μs",
+            "after": "<50μs",
+            "improvement": "4× faster"
+          },
+          {
+            "metric": "Tensor pool throughput",
+            "before": "—",
+            "after": "3.6M ops/sec",
+            "improvement": "New capability"
+          },
+          {
+            "metric": "Lock acquisitions (batch=4)",
+            "before": "4",
+            "after": "1",
+            "improvement": "4× reduction"
+          },
+          {
+            "metric": "Concurrent operations",
+            "before": "—",
+            "after": "4000/4000 success",
+            "improvement": "100% reliable"
+          }
+        ]
+      },
+      "features": [
+        {
+          "name": "Tensor Pool Pre-allocation",
+          "description": "O(1) tensor acquire/release operations with lock-free fast path"
+        },
+        {
+          "name": "Batch Inference Scheduling",
+          "description": "Single lock acquisition for multiple tasks, reducing contention by N× for batch size N"
+        },
+        {
+          "name": "NUMA Thread Affinity",
+          "description": "Automatic CPU affinity configuration matching inference threads to tensor memory placement"
+        }
+      ],
+      "tests": {
+        "total": 12,
+        "passing": 12
+      },
+      "links": [
+        {
+          "text": "View Release",
+          "url": "https://github.com/mlOS-foundation/core/releases/tag/v7.0.0-beta",
+          "primary": true
+        },
+        {
+          "text": "Changelog",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md",
+          "primary": false
+        },
+        {
+          "text": "Performance Analysis",
+          "url": "https://github.com/mlOS-foundation/core/blob/main/docs/KERNEL_PERFORMANCE_ANALYSIS.md",
+          "primary": false
+        }
+      ],
+      "tags": [
+        "release",
+        "performance",
+        "kernel",
+        "beta",
+        "tensor-pool",
+        "numa"
+      ],
+      "source_repo": "mlOS-foundation/core"
+    }
+  ]
+}

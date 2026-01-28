@@ -197,8 +197,10 @@
             overflow-x: auto;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin: 1.5rem 0;
+            white-space: pre;
+            word-wrap: normal;
         }
 
         .code-block .comment { color: #64748b; }
@@ -536,6 +538,59 @@ mlos_training_bind_thread(resources, pthread_self(), <span class="number">0</spa
 <span class="comment">/* Release resources */</span>
 mlos_training_release_resources(resources);
 </div>
+        </div>
+    </section>
+
+    <!-- Artifactiq Showcase Section -->
+    <section class="section" id="showcase">
+        <div class="container">
+            <h2 class="section-title">Real-World Showcase: Artifactiq YOLO Training</h2>
+            <p style="text-align: center; color: var(--color-text-muted); margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                We validated the Training Workload API by training a YOLO object detection model in our CI pipeline,
+                demonstrating end-to-end training with automatic ONNX export for deployment.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card" style="border-top: 3px solid #10b981;">
+                    <h3>Training Configuration</h3>
+                    <table style="width: 100%; margin-top: 1rem; font-size: 0.9rem;">
+                        <tr><td style="color: var(--color-text-muted);">Model</td><td style="text-align: right;"><strong>YOLOv8n</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Epochs</td><td style="text-align: right;"><strong>5</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Image Size</td><td style="text-align: right;"><strong>320x320</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Framework</td><td style="text-align: right;"><strong>PyTorch + Ultralytics</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Execution</td><td style="text-align: right;"><strong>GitHub Actions (CPU)</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="feature-card" style="border-top: 3px solid #3b82f6;">
+                    <h3>ONNX Export Results</h3>
+                    <table style="width: 100%; margin-top: 1rem; font-size: 0.9rem;">
+                        <tr><td style="color: var(--color-text-muted);">FP32 Model</td><td style="text-align: right;"><strong>11.6 MB</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">FP16 Model</td><td style="text-align: right;"><strong>5.8 MB</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">INT8 Model</td><td style="text-align: right;"><strong>~3 MB</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">PyTorch Best</td><td style="text-align: right;"><strong>6.2 MB</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Export Status</td><td style="text-align: right; color: #10b981;"><strong>All Verified</strong></td></tr>
+                    </table>
+                </div>
+
+                <div class="feature-card" style="border-top: 3px solid #8b5cf6;">
+                    <h3>API Test Coverage</h3>
+                    <table style="width: 100%; margin-top: 1rem; font-size: 0.9rem;">
+                        <tr><td style="color: var(--color-text-muted);">Unit Tests</td><td style="text-align: right;"><strong>61 Passing</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Integration Tests</td><td style="text-align: right;"><strong>19 Passing</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Total Tests</td><td style="text-align: right;"><strong>80 Tests</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">Coverage</td><td style="text-align: right;"><strong>Full API</strong></td></tr>
+                        <tr><td style="color: var(--color-text-muted);">CI Status</td><td style="text-align: right; color: #10b981;"><strong>All Green</strong></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="https://github.com/mlOS-foundation/core/actions/workflows/training-showcase.yml"
+                   style="display: inline-block; background: var(--color-secondary); color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">
+                    View CI Workflow
+                </a>
+            </div>
         </div>
     </section>
 

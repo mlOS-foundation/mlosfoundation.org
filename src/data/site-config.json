@@ -1,12 +1,12 @@
 {
   "version": {
-    "core": "v7.0.0",
+    "core": "v7.1.0",
     "axon": "v3.1.9",
-    "release_tag": "Kernel Optimization Release"
+    "release_tag": "Training API Release"
   },
   "hero": {
-    "badge_text": "STABLE RELEASE - v7.0.0",
-    "tagline": "Kernel-native ML execution. One unified runtime for ONNX, PyTorch, and LLMs. Memory optimizations that reduce footprint by 25-40%."
+    "badge_text": "NEW RELEASE - v7.1.0 Training API",
+    "tagline": "Kernel-native ML execution with Training Workload API. OS-level training optimizations with 15-30% efficiency gains. NUMA-aware, phase-aware scheduling."
   },
   "stats": {
     "memory_reduction": "25-40%",
@@ -26,9 +26,11 @@
   "links": {
     "github": "https://github.com/mlOS-foundation",
     "releases": "https://github.com/mlOS-foundation/core-releases",
-    "core_release": "https://github.com/mlOS-foundation/core/releases/tag/v7.0.0",
-    "core_download": "https://github.com/mlOS-foundation/core-releases/releases/tag/v7.0.0",
+    "core_release": "https://github.com/mlOS-foundation/core/releases/tag/v7.1.0",
+    "core_download": "https://github.com/mlOS-foundation/core-releases/releases/tag/v7.1.0",
     "docs": "https://mlosfoundation.org/architecture.html",
+    "training_guide": "https://mlosfoundation.org/training-guide.html",
+    "training_api": "https://mlosfoundation.org/training-workload.html",
     "changelog": "https://github.com/mlOS-foundation/core/blob/main/CHANGELOG.md",
     "test_reports": "https://mlos-foundation.github.io/system-test/"
   },
@@ -52,5 +54,10 @@
       "enabled": true
     }
   },
-  "updated_at": "2026-01-04T06:00:00Z"
+  "training": {
+    "efficiency_gain": "15-30%",
+    "tests_count": "80",
+    "features": ["NUMA-aware allocation", "CPU affinity", "Phase-aware scheduling", "Checkpoint safety", "Memory pressure handling", "Distributed primitives"]
+  },
+  "updated_at": "2026-01-30T12:00:00Z"
 }

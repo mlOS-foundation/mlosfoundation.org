@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Training with MLOS | Complete Guide | MLOS Foundation</title>
+    <meta name="description" content="Comprehensive guide to training machine learning models with MLOS - featuring real-world examples from Artifactiq's YOLO training pipeline.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #030712;
+            --bg-base: #0a0f1a;
+            --bg-elevated: #111827;
+            --bg-surface: #1f2937;
+            --border: #374151;
+            --border-subtle: #1f2937;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-emerald: #10b981;
+            --accent-orange: #f97316;
+            --glow-cyan: rgba(6, 182, 212, 0.15);
+            --font-sans: 'Inter', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-base);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(10, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--text-primary); }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 140px 0 80px;
+            background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-base) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 400px;
+            background: radial-gradient(ellipse, var(--glow-cyan) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-emerald);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-emerald));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 32px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Article Content */
+        .article-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .article-content h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 60px 0 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .article-content h2:first-of-type {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .article-content h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 40px 0 16px;
+        }
+
+        .article-content h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin: 32px 0 12px;
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            font-size: 17px;
+        }
+
+        .article-content ul, .article-content ol {
+            margin: 0 0 24px 24px;
+        }
+
+        .article-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 24px 0;
+            color: var(--text-secondary);
+        }
+
+        .code-block .comment { color: var(--text-muted); }
+        .code-block .keyword { color: var(--accent-purple); }
+        .code-block .type { color: var(--accent-cyan); }
+        .code-block .string { color: var(--accent-emerald); }
+        .code-block .number { color: var(--accent-orange); }
+        .code-block .function { color: var(--accent-blue); }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .code-header + .code-block {
+            border-radius: 0 0 12px 12px;
+            margin-top: 0;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: var(--bg-elevated);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 20px 24px;
+            margin: 24px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .info-box.warning {
+            border-color: var(--accent-orange);
+        }
+
+        .info-box.success {
+            border-color: var(--accent-emerald);
+        }
+
+        .info-box h5 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-box.warning h5 { color: var(--accent-orange); }
+        .info-box.success h5 { color: var(--accent-emerald); }
+
+        /* Feature cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .feature-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+        }
+
+        .feature-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 12px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 32px 0;
+        }
+
+        .stat-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Architecture diagram */
+        .arch-diagram {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+            overflow-x: auto;
+        }
+
+        .arch-diagram pre {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            white-space: pre;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 15px;
+        }
+
+        .data-table th, .data-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table th {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .data-table tr:hover td {
+            background: var(--bg-elevated);
+        }
+
+        /* TOC */
+        .toc {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin: 40px 0;
+        }
+
+        .toc h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 16px;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-surface) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .cta-section h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: var(--bg-deep);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-deep);
+            padding: 48px 0;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero { padding: 120px 0 60px; }
+            .hero h1 { font-size: 36px; }
+            .article-content { padding: 40px 20px; }
+            .article-content h2 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="logo">ml<span>OS</span></a>
+            <ul class="nav-links">
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="ecosystem.html">Ecosystem</a></li>
+                <li><a href="models.html">Models</a></li>
+                <li><a href="training-workload.html">Training API</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="https://github.com/mlOS-foundation" class="nav-cta">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Complete Training Guide v7.1.0
+            </div>
+            <h1>Training ML Models<br>with <span>MLOS</span></h1>
+            <p class="hero-subtitle">
+                A comprehensive guide to leveraging OS-level optimizations for ML training,
+                featuring real-world examples from Artifactiq's YOLO object detection pipeline.
+            </p>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+                <li><a href="#introduction">Introduction to MLOS Training</a></li>
+                <li><a href="#why-mlos">Why Use MLOS for Training?</a></li>
+                <li><a href="#training-api">The Training Workload API</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#artifactiq-case-study">Case Study: Artifactiq YOLO Training</a></li>
+                <li><a href="#pytorch-integration">PyTorch Integration</a></li>
+                <li><a href="#distributed-training">Distributed Training</a></li>
+                <li><a href="#monitoring">Monitoring with mlgpu</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ol>
+        </div>
+
+        <!-- Introduction -->
+        <h2 id="introduction">Introduction to MLOS Training</h2>
+
+        <p>
+            Machine learning training workloads have unique characteristics that generic operating systems aren't optimized for. Training involves repetitive patterns of computation (forward pass, backward pass, optimizer steps) interleaved with I/O operations (data loading, checkpointing) that benefit enormously from OS-level awareness.
+        </p>
+
+        <p>
+            MLOS (Machine Learning Operating System) introduces the <strong>Training Workload API</strong> in v7.1.0, providing kernel-level optimizations specifically designed for ML training. This guide will walk you through everything you need to know to leverage these optimizations in your training pipelines.
+        </p>
+
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">15-30%</div>
+                <div class="stat-label">Efficiency Gains</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">&lt;15%</div>
+                <div class="stat-label">Concurrent Overhead</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">80</div>
+                <div class="stat-label">API Tests</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Training Phases</div>
+            </div>
+        </div>
+
+        <!-- Why MLOS -->
+        <h2 id="why-mlos">Why Use MLOS for Training?</h2>
+
+        <p>
+            Traditional training setups rely on generic Linux scheduling and memory management. While Linux is an excellent general-purpose OS, it lacks awareness of ML-specific patterns. Here's what MLOS brings to the table:
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#128200;</div>
+                <h4>NUMA-Aware Allocation</h4>
+                <p>Automatic placement of training data and model weights on optimal NUMA nodes, reducing cross-socket memory latency by up to 40%.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <h4>CPU Affinity Management</h4>
+                <p>Bind training threads to specific CPU cores for consistent cache behavior and reduced context switching.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128338;</div>
+                <h4>Phase-Aware Scheduling</h4>
+                <p>The OS understands forward/backward/optimizer phases and adjusts priorities accordingly for optimal throughput.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128190;</div>
+                <h4>Safe Checkpointing</h4>
+                <p>Memory-locked buffers ensure checkpoint saves complete successfully even under memory pressure.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128679;</div>
+                <h4>Memory Pressure Handling</h4>
+                <p>Graceful callbacks when system memory runs low, allowing your training to adapt rather than crash.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#127760;</div>
+                <h4>Distributed Primitives</h4>
+                <p>OS-level barrier and all-reduce operations for multi-node training with lower latency than userspace implementations.</p>
+            </div>
+        </div>
+
+        <!-- Training API Overview -->
+        <h2 id="training-api">The Training Workload API</h2>
+
+        <p>
+            The Training Workload API (<code>libmlos-training</code>) provides a C interface that can be used directly or through language bindings. The API is designed around the concept of <strong>training workloads</strong> - long-running processes that go through predictable phases.
+        </p>
+
+        <h3>Training Phases</h3>
+
+        <p>MLOS recognizes six distinct training phases, each with different resource characteristics:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Phase</th>
+                    <th>Constant</th>
+                    <th>Priority</th>
+                    <th>Characteristics</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Idle</td>
+                    <td><code>MLOS_TRAINING_PHASE_IDLE</code></td>
+                    <td>Lowest</td>
+                    <td>Workload inactive, minimal resources</td>
+                </tr>
+                <tr>
+                    <td>Data Loading</td>
+                    <td><code>MLOS_TRAINING_PHASE_DATA_LOADING</code></td>
+                    <td>Low</td>
+                    <td>I/O bound, prefetch optimization</td>
+                </tr>
+                <tr>
+                    <td>Forward Pass</td>
+                    <td><code>MLOS_TRAINING_PHASE_FORWARD</code></td>
+                    <td>Normal</td>
+                    <td>Compute bound, cache-friendly</td>
+                </tr>
+                <tr>
+                    <td>Backward Pass</td>
+                    <td><code>MLOS_TRAINING_PHASE_BACKWARD</code></td>
+                    <td>High</td>
+                    <td>Compute + memory, gradient pinning</td>
+                </tr>
+                <tr>
+                    <td>Optimizer</td>
+                    <td><code>MLOS_TRAINING_PHASE_OPTIMIZER</code></td>
+                    <td>Normal</td>
+                    <td>Weight updates, bandwidth-sensitive</td>
+                </tr>
+                <tr>
+                    <td>Checkpoint</td>
+                    <td><code>MLOS_TRAINING_PHASE_CHECKPOINT</code></td>
+                    <td>Critical</td>
+                    <td>I/O bound, memory-locked</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Core API Functions</h3>
+
+        <div class="code-header">
+            <span>mlos_training.h</span>
+            <span>C Header</span>
+        </div>
+        <div class="code-block"><span class="comment">/* Resource management */</span>
+<span class="type">int</span> <span class="function">mlos_training_request_resources</span>(
+    <span class="keyword">const</span> <span class="type">mlos_training_resource_request_t</span>* request,
+    <span class="type">mlos_training_resources_t</span>** resources
+);
+
+<span class="type">int</span> <span class="function">mlos_training_release_resources</span>(
+    <span class="type">mlos_training_resources_t</span>* resources
+);
+
+<span class="comment">/* Thread binding */</span>
+<span class="type">int</span> <span class="function">mlos_training_bind_thread</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">pthread_t</span> thread,
+    <span class="type">int</span> cpu_index
+);
+
+<span class="comment">/* Phase hints */</span>
+<span class="type">int</span> <span class="function">mlos_training_set_phase</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">mlos_training_phase_t</span> phase
+);
+
+<span class="comment">/* Memory pressure callbacks */</span>
+<span class="type">int</span> <span class="function">mlos_training_register_memory_callback</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">mlos_memory_callback_t</span> callback,
+    <span class="type">void</span>* user_data
+);
+
+<span class="comment">/* Checkpoint buffers */</span>
+<span class="type">void</span>* <span class="function">mlos_training_alloc_checkpoint_buffer</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">size_t</span> size
+);
+
+<span class="comment">/* Distributed primitives */</span>
+<span class="type">int</span> <span class="function">mlos_training_barrier</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">int</span> rank,
+    <span class="type">int</span> world_size
+);
+
+<span class="type">int</span> <span class="function">mlos_training_allreduce</span>(
+    <span class="type">mlos_training_resources_t</span>* resources,
+    <span class="type">void</span>* data,
+    <span class="type">size_t</span> count,
+    <span class="type">mlos_reduce_op_t</span> op
+);</div>
+
+        <!-- Getting Started -->
+        <h2 id="getting-started">Getting Started</h2>
+
+        <h3>Prerequisites</h3>
+
+        <p>Before you begin, ensure you have:</p>
+        <ul>
+            <li>MLOS Core v7.1.0 or later installed</li>
+            <li>Axon v3.1.9 or later for model management</li>
+            <li>Linux kernel 5.15+ (for full feature support)</li>
+            <li>Your preferred ML framework (PyTorch, TensorFlow, JAX)</li>
+        </ul>
+
+        <h3>Installation</h3>
+
+        <div class="code-header">
+            <span>Terminal</span>
+            <span>Installation</span>
+        </div>
+        <div class="code-block"><span class="comment"># Install MLOS Core</span>
+curl -fsSL https://mlosfoundation.org/install.sh | bash
+
+<span class="comment"># Verify installation</span>
+mlos --version
+<span class="comment"># MLOS Core v7.1.0 (Training API enabled)</span>
+
+<span class="comment"># Install Axon for model management</span>
+curl -fsSL https://github.com/mlOS-foundation/axon/releases/download/v3.1.9/install.sh | bash
+
+<span class="comment"># Verify Axon</span>
+axon --version
+<span class="comment"># Axon v3.1.9</span></div>
+
+        <h3>Basic Usage Example</h3>
+
+        <div class="code-header">
+            <span>train_basic.c</span>
+            <span>C Example</span>
+        </div>
+        <div class="code-block"><span class="keyword">#include</span> <span class="string">&lt;mlos/training.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;pthread.h&gt;</span>
+
+<span class="type">int</span> <span class="function">main</span>() {
+    <span class="comment">// Request resources for training</span>
+    <span class="type">mlos_training_resource_request_t</span> request = {
+        .num_cpus = <span class="number">8</span>,
+        .memory_bytes = <span class="number">16ULL</span> * <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">1024</span>,  <span class="comment">// 16GB</span>
+        .numa_node_preference = -<span class="number">1</span>,  <span class="comment">// Auto-select best node</span>
+        .priority = <span class="number">1</span>,  <span class="comment">// Normal priority</span>
+        .exclusive_cpus = <span class="keyword">true</span>
+    };
+
+    <span class="type">mlos_training_resources_t</span>* resources = <span class="keyword">NULL</span>;
+    <span class="keyword">if</span> (mlos_training_request_resources(&request, &resources) != <span class="number">0</span>) {
+        fprintf(stderr, <span class="string">"Failed to allocate training resources\n"</span>);
+        <span class="keyword">return</span> <span class="number">1</span>;
+    }
+
+    <span class="comment">// Bind current thread to allocated CPUs</span>
+    mlos_training_bind_thread(resources, pthread_self(), <span class="number">0</span>);
+
+    <span class="comment">// Training loop with phase hints</span>
+    <span class="keyword">for</span> (<span class="type">int</span> epoch = <span class="number">0</span>; epoch < num_epochs; epoch++) {
+        <span class="comment">// Data loading phase</span>
+        mlos_training_set_phase(resources, MLOS_TRAINING_PHASE_DATA_LOADING);
+        load_batch(data_loader);
+
+        <span class="comment">// Forward pass</span>
+        mlos_training_set_phase(resources, MLOS_TRAINING_PHASE_FORWARD);
+        outputs = model_forward(inputs);
+
+        <span class="comment">// Backward pass</span>
+        mlos_training_set_phase(resources, MLOS_TRAINING_PHASE_BACKWARD);
+        gradients = compute_gradients(outputs, targets);
+
+        <span class="comment">// Optimizer step</span>
+        mlos_training_set_phase(resources, MLOS_TRAINING_PHASE_OPTIMIZER);
+        update_weights(model, gradients, learning_rate);
+
+        <span class="comment">// Periodic checkpointing</span>
+        <span class="keyword">if</span> (epoch % checkpoint_interval == <span class="number">0</span>) {
+            mlos_training_set_phase(resources, MLOS_TRAINING_PHASE_CHECKPOINT);
+            save_checkpoint(model, epoch);
+        }
+    }
+
+    <span class="comment">// Cleanup</span>
+    mlos_training_release_resources(resources);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</div>
+
+        <!-- Artifactiq Case Study -->
+        <h2 id="artifactiq-case-study">Case Study: Artifactiq YOLO Training</h2>
+
+        <p>
+            <a href="https://artifactiq.app" target="_blank">Artifactiq</a> is a visual intelligence platform that uses YOLO (You Only Look Once) models for real-time object detection. Their training pipeline demonstrates the practical benefits of MLOS optimizations in a production environment.
+        </p>
+
+        <div class="info-box success">
+            <h5>Real Results</h5>
+            <p>Artifactiq reported 22% faster training times and 35% reduction in memory fragmentation after integrating MLOS Training API into their pipeline.</p>
+        </div>
+
+        <h3>Training Configuration</h3>
+
+        <p>Artifactiq trains YOLOv8 variants using the Ultralytics framework with PyTorch. Here's their typical configuration:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Value</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Base Model</td>
+                    <td>YOLOv8n/s/m</td>
+                    <td>Nano for edge, Small/Medium for servers</td>
+                </tr>
+                <tr>
+                    <td>Image Size</td>
+                    <td>320-640px</td>
+                    <td>Varies by deployment target</td>
+                </tr>
+                <tr>
+                    <td>Batch Size</td>
+                    <td>16-64</td>
+                    <td>MLOS enables larger batches via memory optimization</td>
+                </tr>
+                <tr>
+                    <td>Epochs</td>
+                    <td>50-300</td>
+                    <td>With early stopping</td>
+                </tr>
+                <tr>
+                    <td>Framework</td>
+                    <td>PyTorch + Ultralytics</td>
+                    <td>MLOS-aware PyTorch wrapper</td>
+                </tr>
+                <tr>
+                    <td>Export Formats</td>
+                    <td>ONNX (FP32/FP16/INT8)</td>
+                    <td>Via Axon for deployment</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Pipeline Architecture</h3>
+
+        <div class="arch-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        ARTIFACTIQ TRAINING PIPELINE                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  DATA PREPARATION                                                            │
+│  ├── Image Collection (custom datasets + COCO)                              │
+│  ├── Annotation (YOLO format: class x_center y_center width height)         │
+│  └── Augmentation (Albumentations: mosaic, mixup, HSV shifts)               │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  MLOS TRAINING WORKLOAD                                                      │
+│  ├── Resource Allocation (NUMA-aware, CPU affinity)                         │
+│  ├── Phase Tracking (data_load → forward → backward → optimizer)            │
+│  ├── Memory Management (gradient pinning, checkpoint buffers)               │
+│  └── Monitoring (mlgpu for GPU utilization tracking)                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  MODEL EXPORT & DEPLOYMENT                                                   │
+│  ├── PyTorch → ONNX (via Ultralytics export)                               │
+│  ├── ONNX Optimization (FP16 quantization, INT8 calibration)               │
+│  ├── Axon Registration (axon register model.onnx)                           │
+│  └── Deployment (MLOS Core inference with &lt;0.8ms p99 latency)              │
+└─────────────────────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+
+        <h3>MLOS-Integrated Training Script</h3>
+
+        <p>Here's a complete example showing how Artifactiq integrates MLOS with Ultralytics YOLO training:</p>
+
+        <div class="code-header">
+            <span>train_yolo_mlos.py</span>
+            <span>Python</span>
+        </div>
+        <div class="code-block"><span class="string">"""
+YOLO Training with MLOS Optimizations
+Based on Artifactiq's production pipeline
+"""</span>
+
+<span class="keyword">import</span> os
+<span class="keyword">import</span> torch
+<span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO
+<span class="keyword">from</span> pathlib <span class="keyword">import</span> Path
+
+<span class="comment"># MLOS Python bindings (optional but recommended)</span>
+<span class="keyword">try</span>:
+    <span class="keyword">import</span> mlos_training
+    MLOS_AVAILABLE = <span class="keyword">True</span>
+<span class="keyword">except</span> ImportError:
+    MLOS_AVAILABLE = <span class="keyword">False</span>
+    print(<span class="string">"MLOS not available, using standard training"</span>)
+
+
+<span class="keyword">class</span> <span class="type">MLOSYOLOTrainer</span>:
+    <span class="string">"""YOLO trainer with MLOS optimizations"""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, model_size=<span class="string">"n"</span>, num_cpus=<span class="number">8</span>, memory_gb=<span class="number">16</span>):
+        self.model_size = model_size
+        self.model = YOLO(f<span class="string">"yolov8{model_size}.pt"</span>)
+        self.resources = <span class="keyword">None</span>
+
+        <span class="keyword">if</span> MLOS_AVAILABLE:
+            <span class="comment"># Request MLOS training resources</span>
+            self.resources = mlos_training.request_resources(
+                num_cpus=num_cpus,
+                memory_bytes=memory_gb * <span class="number">1024</span>**<span class="number">3</span>,
+                numa_preference=-<span class="number">1</span>,  <span class="comment"># Auto-select</span>
+                exclusive_cpus=<span class="keyword">True</span>
+            )
+
+            <span class="comment"># Bind main thread</span>
+            mlos_training.bind_current_thread(self.resources)
+            print(f<span class="string">"MLOS: Allocated {num_cpus} CPUs, {memory_gb}GB memory"</span>)
+
+    <span class="keyword">def</span> <span class="function">train</span>(self, data_yaml, epochs=<span class="number">100</span>, imgsz=<span class="number">640</span>, batch=<span class="number">16</span>):
+        <span class="string">"""Train YOLO model with MLOS phase hints"""</span>
+
+        <span class="comment"># Configure training callbacks for MLOS phases</span>
+        callbacks = {}
+
+        <span class="keyword">if</span> self.resources:
+            <span class="keyword">def</span> <span class="function">on_train_batch_start</span>(trainer):
+                mlos_training.set_phase(
+                    self.resources,
+                    mlos_training.PHASE_DATA_LOADING
+                )
+
+            <span class="keyword">def</span> <span class="function">on_train_batch_end</span>(trainer):
+                mlos_training.set_phase(
+                    self.resources,
+                    mlos_training.PHASE_OPTIMIZER
+                )
+
+            callbacks = {
+                <span class="string">"on_train_batch_start"</span>: on_train_batch_start,
+                <span class="string">"on_train_batch_end"</span>: on_train_batch_end,
+            }
+
+        <span class="comment"># Start training</span>
+        results = self.model.train(
+            data=data_yaml,
+            epochs=epochs,
+            imgsz=imgsz,
+            batch=batch,
+            device=<span class="string">"0"</span> <span class="keyword">if</span> torch.cuda.is_available() <span class="keyword">else</span> <span class="string">"cpu"</span>,
+            workers=<span class="number">4</span>,
+            project=<span class="string">"runs/train"</span>,
+            name=f<span class="string">"yolov8{self.model_size}_mlos"</span>,
+            exist_ok=<span class="keyword">True</span>,
+            pretrained=<span class="keyword">True</span>,
+            optimizer=<span class="string">"AdamW"</span>,
+            lr0=<span class="number">0.001</span>,
+            lrf=<span class="number">0.01</span>,
+            momentum=<span class="number">0.937</span>,
+            weight_decay=<span class="number">0.0005</span>,
+            warmup_epochs=<span class="number">3.0</span>,
+            warmup_momentum=<span class="number">0.8</span>,
+            warmup_bias_lr=<span class="number">0.1</span>,
+            box=<span class="number">7.5</span>,
+            cls=<span class="number">0.5</span>,
+            dfl=<span class="number">1.5</span>,
+            patience=<span class="number">50</span>,  <span class="comment"># Early stopping patience</span>
+            save=<span class="keyword">True</span>,
+            save_period=<span class="number">10</span>,
+            cache=<span class="keyword">False</span>,
+            amp=<span class="keyword">True</span>,  <span class="comment"># Mixed precision</span>
+        )
+
+        <span class="keyword">return</span> results
+
+    <span class="keyword">def</span> <span class="function">export_onnx</span>(self, output_dir=<span class="string">"exports"</span>):
+        <span class="string">"""Export trained model to ONNX formats"""</span>
+
+        <span class="keyword">if</span> self.resources:
+            mlos_training.set_phase(
+                self.resources,
+                mlos_training.PHASE_CHECKPOINT
+            )
+
+        output_path = Path(output_dir)
+        output_path.mkdir(exist_ok=<span class="keyword">True</span>)
+
+        <span class="comment"># Export FP32</span>
+        self.model.export(
+            format=<span class="string">"onnx"</span>,
+            imgsz=<span class="number">640</span>,
+            simplify=<span class="keyword">True</span>,
+            opset=<span class="number">12</span>,
+        )
+
+        <span class="comment"># Export FP16</span>
+        self.model.export(
+            format=<span class="string">"onnx"</span>,
+            imgsz=<span class="number">640</span>,
+            half=<span class="keyword">True</span>,
+            simplify=<span class="keyword">True</span>,
+        )
+
+        print(f<span class="string">"Exported models to {output_path}"</span>)
+
+    <span class="keyword">def</span> <span class="function">register_with_axon</span>(self, model_path):
+        <span class="string">"""Register exported model with Axon for MLOS deployment"""</span>
+        <span class="keyword">import</span> subprocess
+
+        result = subprocess.run(
+            [<span class="string">"axon"</span>, <span class="string">"register"</span>, str(model_path)],
+            capture_output=<span class="keyword">True</span>,
+            text=<span class="keyword">True</span>
+        )
+
+        <span class="keyword">if</span> result.returncode == <span class="number">0</span>:
+            print(f<span class="string">"Model registered with Axon: {model_path}"</span>)
+        <span class="keyword">else</span>:
+            print(f<span class="string">"Axon registration failed: {result.stderr}"</span>)
+
+    <span class="keyword">def</span> <span class="function">cleanup</span>(self):
+        <span class="string">"""Release MLOS resources"""</span>
+        <span class="keyword">if</span> self.resources:
+            mlos_training.release_resources(self.resources)
+            print(<span class="string">"MLOS resources released"</span>)
+
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    <span class="comment"># Example usage</span>
+    trainer = MLOSYOLOTrainer(
+        model_size=<span class="string">"n"</span>,  <span class="comment"># nano model for this example</span>
+        num_cpus=<span class="number">8</span>,
+        memory_gb=<span class="number">16</span>
+    )
+
+    <span class="keyword">try</span>:
+        <span class="comment"># Train on custom dataset</span>
+        results = trainer.train(
+            data_yaml=<span class="string">"dataset.yaml"</span>,
+            epochs=<span class="number">100</span>,
+            imgsz=<span class="number">640</span>,
+            batch=<span class="number">16</span>
+        )
+
+        <span class="comment"># Export to ONNX</span>
+        trainer.export_onnx()
+
+        <span class="comment"># Register with Axon</span>
+        trainer.register_with_axon(<span class="string">"runs/train/yolov8n_mlos/weights/best.onnx"</span>)
+
+    <span class="keyword">finally</span>:
+        trainer.cleanup()</div>
+
+        <h3>Dataset Configuration</h3>
+
+        <p>Artifactiq uses the standard Ultralytics YAML format for dataset configuration:</p>
+
+        <div class="code-header">
+            <span>dataset.yaml</span>
+            <span>YAML</span>
+        </div>
+        <div class="code-block"><span class="comment"># Artifactiq Custom Object Detection Dataset</span>
+<span class="keyword">path</span>: ./data/artifactiq_detection
+<span class="keyword">train</span>: images/train
+<span class="keyword">val</span>: images/val
+<span class="keyword">test</span>: images/test
+
+<span class="comment"># Classes</span>
+<span class="keyword">names</span>:
+  0: person
+  1: vehicle
+  2: package
+  3: equipment
+  4: hazard
+
+<span class="comment"># Dataset stats (auto-calculated during training)</span>
+<span class="keyword">nc</span>: 5  <span class="comment"># number of classes</span></div>
+
+        <!-- PyTorch Integration -->
+        <h2 id="pytorch-integration">PyTorch Integration</h2>
+
+        <p>
+            For custom PyTorch training loops (not using Ultralytics), MLOS provides deeper integration through a custom DataLoader wrapper and training context manager:
+        </p>
+
+        <div class="code-header">
+            <span>custom_pytorch_training.py</span>
+            <span>Python</span>
+        </div>
+        <div class="code-block"><span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.nn <span class="keyword">as</span> nn
+<span class="keyword">import</span> torch.optim <span class="keyword">as</span> optim
+<span class="keyword">from</span> torch.utils.data <span class="keyword">import</span> DataLoader
+
+<span class="comment"># MLOS PyTorch integration</span>
+<span class="keyword">import</span> mlos_training
+<span class="keyword">from</span> mlos_training.pytorch <span class="keyword">import</span> (
+    MLOSDataLoader,
+    MLOSTrainingContext,
+    mlos_checkpoint
+)
+
+
+<span class="keyword">def</span> <span class="function">train_with_mlos</span>(model, train_dataset, epochs=<span class="number">100</span>, batch_size=<span class="number">32</span>):
+    <span class="string">"""Custom PyTorch training with MLOS optimizations"""</span>
+
+    <span class="comment"># MLOS-aware DataLoader with prefetching optimization</span>
+    train_loader = MLOSDataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=<span class="keyword">True</span>,
+        num_workers=<span class="number">4</span>,
+        pin_memory=<span class="keyword">True</span>,
+        prefetch_factor=<span class="number">2</span>,
+        numa_aware=<span class="keyword">True</span>  <span class="comment"># MLOS: allocate on optimal NUMA node</span>
+    )
+
+    optimizer = optim.AdamW(model.parameters(), lr=<span class="number">0.001</span>)
+    criterion = nn.CrossEntropyLoss()
+
+    <span class="comment"># Training context manager handles resource allocation</span>
+    <span class="keyword">with</span> MLOSTrainingContext(num_cpus=<span class="number">8</span>, memory_gb=<span class="number">16</span>) <span class="keyword">as</span> ctx:
+        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):
+            model.train()
+
+            <span class="keyword">for</span> batch_idx, (data, target) <span class="keyword">in</span> enumerate(train_loader):
+                <span class="comment"># Phase: Data loading (handled by MLOSDataLoader)</span>
+
+                <span class="comment"># Phase: Forward pass</span>
+                ctx.set_phase(mlos_training.PHASE_FORWARD)
+                output = model(data)
+                loss = criterion(output, target)
+
+                <span class="comment"># Phase: Backward pass</span>
+                ctx.set_phase(mlos_training.PHASE_BACKWARD)
+                optimizer.zero_grad()
+                loss.backward()
+
+                <span class="comment"># Phase: Optimizer step</span>
+                ctx.set_phase(mlos_training.PHASE_OPTIMIZER)
+                optimizer.step()
+
+            <span class="comment"># Checkpoint with memory-locked buffer</span>
+            <span class="keyword">if</span> epoch % <span class="number">10</span> == <span class="number">0</span>:
+                <span class="keyword">with</span> mlos_checkpoint(ctx):
+                    torch.save({
+                        <span class="string">'epoch'</span>: epoch,
+                        <span class="string">'model_state'</span>: model.state_dict(),
+                        <span class="string">'optimizer_state'</span>: optimizer.state_dict(),
+                        <span class="string">'loss'</span>: loss.item(),
+                    }, f<span class="string">'checkpoint_epoch_{epoch}.pt'</span>)
+
+            print(f<span class="string">"Epoch {epoch}: Loss = {loss.item():.4f}"</span>)</div>
+
+        <!-- Distributed Training -->
+        <h2 id="distributed-training">Distributed Training</h2>
+
+        <p>
+            MLOS provides OS-level primitives for distributed training that complement frameworks like PyTorch DDP or Horovod. The key advantages are lower-latency barriers and all-reduce operations.
+        </p>
+
+        <div class="info-box">
+            <h5>Performance Note</h5>
+            <p>MLOS distributed primitives show 15-20% latency reduction compared to NCCL for small tensor operations, while being comparable for large tensors. The benefit is most pronounced in communication-bound scenarios.</p>
+        </div>
+
+        <div class="code-header">
+            <span>distributed_training.py</span>
+            <span>Python</span>
+        </div>
+        <div class="code-block"><span class="keyword">import</span> torch
+<span class="keyword">import</span> torch.distributed <span class="keyword">as</span> dist
+<span class="keyword">from</span> torch.nn.parallel <span class="keyword">import</span> DistributedDataParallel <span class="keyword">as</span> DDP
+
+<span class="keyword">import</span> mlos_training
+<span class="keyword">from</span> mlos_training.distributed <span class="keyword">import</span> MLOSProcessGroup
+
+
+<span class="keyword">def</span> <span class="function">setup_distributed</span>(rank, world_size):
+    <span class="string">"""Initialize distributed training with MLOS backend"""</span>
+
+    <span class="comment"># Standard PyTorch distributed init</span>
+    dist.init_process_group(
+        backend=<span class="string">"nccl"</span>,
+        rank=rank,
+        world_size=world_size
+    )
+
+    <span class="comment"># MLOS process group for optimized barriers</span>
+    mlos_pg = MLOSProcessGroup(rank, world_size)
+
+    <span class="keyword">return</span> mlos_pg
+
+
+<span class="keyword">def</span> <span class="function">train_distributed</span>(rank, world_size, model, dataset):
+    <span class="string">"""Distributed training with MLOS optimizations"""</span>
+
+    mlos_pg = setup_distributed(rank, world_size)
+
+    <span class="comment"># Wrap model with DDP</span>
+    model = model.to(rank)
+    model = DDP(model, device_ids=[rank])
+
+    <span class="comment"># MLOS training context for this rank</span>
+    <span class="keyword">with</span> mlos_training.MLOSTrainingContext(
+        num_cpus=<span class="number">8</span>,
+        memory_gb=<span class="number">16</span>,
+        rank=rank,
+        world_size=world_size
+    ) <span class="keyword">as</span> ctx:
+
+        <span class="keyword">for</span> epoch <span class="keyword">in</span> range(num_epochs):
+            <span class="comment"># Training step...</span>
+
+            <span class="comment"># MLOS barrier (lower latency than NCCL barrier)</span>
+            mlos_pg.barrier()
+
+            <span class="comment"># Custom all-reduce for metrics</span>
+            metrics_tensor = torch.tensor([loss, accuracy], device=rank)
+            mlos_pg.all_reduce(metrics_tensor, op=mlos_training.SUM)
+            metrics_tensor /= world_size
+
+            <span class="keyword">if</span> rank == <span class="number">0</span>:
+                print(f<span class="string">"Epoch {epoch}: Avg Loss = {metrics_tensor[0]:.4f}"</span>)
+
+    dist.destroy_process_group()</div>
+
+        <!-- Monitoring -->
+        <h2 id="monitoring">Monitoring with mlgpu</h2>
+
+        <p>
+            Artifactiq uses <code>mlgpu</code>, an open-source GPU monitoring tool, alongside MLOS training. While MLOS handles CPU-side optimizations, mlgpu provides real-time visibility into GPU utilization, memory, and thermal status.
+        </p>
+
+        <div class="code-header">
+            <span>Terminal</span>
+            <span>mlgpu Installation & Usage</span>
+        </div>
+        <div class="code-block"><span class="comment"># Install mlgpu</span>
+curl -fsSL https://raw.githubusercontent.com/ARTIFACTIQ/mlgpu/main/install.sh | bash
+
+<span class="comment"># Basic monitoring</span>
+mlgpu
+
+<span class="comment"># Watch mode with 1-second refresh</span>
+mlgpu --watch
+
+<span class="comment"># JSON output for programmatic use</span>
+mlgpu --json
+
+<span class="comment"># Monitor specific GPU</span>
+mlgpu --gpu 0</div>
+
+        <p>mlgpu displays:</p>
+        <ul>
+            <li>GPU utilization percentage</li>
+            <li>Memory usage (used/total)</li>
+            <li>Temperature and power draw</li>
+            <li>Running processes and their memory consumption</li>
+            <li>Framework detection (PyTorch, TensorFlow, etc.)</li>
+        </ul>
+
+        <h3>Integrating mlgpu with Training Scripts</h3>
+
+        <div class="code-header">
+            <span>monitor_training.py</span>
+            <span>Python</span>
+        </div>
+        <div class="code-block"><span class="keyword">import</span> subprocess
+<span class="keyword">import</span> json
+<span class="keyword">import</span> threading
+<span class="keyword">import</span> time
+
+
+<span class="keyword">class</span> <span class="type">GPUMonitor</span>:
+    <span class="string">"""Background GPU monitoring during training"""</span>
+
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, log_file=<span class="string">"gpu_metrics.jsonl"</span>, interval=<span class="number">5</span>):
+        self.log_file = log_file
+        self.interval = interval
+        self._stop = <span class="keyword">False</span>
+        self._thread = <span class="keyword">None</span>
+
+    <span class="keyword">def</span> <span class="function">_monitor_loop</span>(self):
+        <span class="keyword">with</span> open(self.log_file, <span class="string">"a"</span>) <span class="keyword">as</span> f:
+            <span class="keyword">while</span> <span class="keyword">not</span> self._stop:
+                result = subprocess.run(
+                    [<span class="string">"mlgpu"</span>, <span class="string">"--json"</span>],
+                    capture_output=<span class="keyword">True</span>,
+                    text=<span class="keyword">True</span>
+                )
+                <span class="keyword">if</span> result.returncode == <span class="number">0</span>:
+                    metrics = json.loads(result.stdout)
+                    metrics[<span class="string">"timestamp"</span>] = time.time()
+                    f.write(json.dumps(metrics) + <span class="string">"\n"</span>)
+                    f.flush()
+                time.sleep(self.interval)
+
+    <span class="keyword">def</span> <span class="function">start</span>(self):
+        self._stop = <span class="keyword">False</span>
+        self._thread = threading.Thread(target=self._monitor_loop)
+        self._thread.start()
+
+    <span class="keyword">def</span> <span class="function">stop</span>(self):
+        self._stop = <span class="keyword">True</span>
+        <span class="keyword">if</span> self._thread:
+            self._thread.join()
+
+
+<span class="comment"># Usage with training</span>
+monitor = GPUMonitor()
+monitor.start()
+
+<span class="keyword">try</span>:
+    <span class="comment"># Your training code here</span>
+    train_model()
+<span class="keyword">finally</span>:
+    monitor.stop()</div>
+
+        <!-- Best Practices -->
+        <h2 id="best-practices">Best Practices</h2>
+
+        <h3>1. Resource Allocation</h3>
+
+        <ul>
+            <li><strong>Request resources early</strong>: Allocate MLOS resources at the start of your training script, before loading data or models.</li>
+            <li><strong>Use exclusive CPUs</strong>: For dedicated training servers, set <code>exclusive_cpus=true</code> to prevent interference from other processes.</li>
+            <li><strong>Match NUMA nodes</strong>: If you know your GPU's NUMA topology, specify the matching NUMA node for CPU allocation.</li>
+        </ul>
+
+        <h3>2. Phase Hints</h3>
+
+        <ul>
+            <li><strong>Be granular</strong>: Call <code>set_phase()</code> at the start of each logical phase, not just once per epoch.</li>
+            <li><strong>Include data loading</strong>: Don't forget to mark data loading phases - this enables prefetch optimizations.</li>
+            <li><strong>Mark checkpoints</strong>: Always transition to <code>PHASE_CHECKPOINT</code> before saving, even for quick saves.</li>
+        </ul>
+
+        <h3>3. Memory Management</h3>
+
+        <ul>
+            <li><strong>Register pressure callbacks</strong>: Always register a memory pressure callback to handle OOM gracefully.</li>
+            <li><strong>Use checkpoint buffers</strong>: For critical checkpoints, use <code>alloc_checkpoint_buffer()</code> to ensure saves complete.</li>
+            <li><strong>Monitor with mlgpu</strong>: Keep an eye on GPU memory alongside MLOS CPU memory optimizations.</li>
+        </ul>
+
+        <h3>4. Distributed Training</h3>
+
+        <ul>
+            <li><strong>Use MLOS barriers</strong>: For frequent synchronization points, MLOS barriers are faster than NCCL.</li>
+            <li><strong>Keep NCCL for gradients</strong>: Use standard NCCL all-reduce for gradient synchronization (optimized for large tensors).</li>
+            <li><strong>Consistent resource allocation</strong>: Ensure all ranks request the same resources for predictable behavior.</li>
+        </ul>
+
+        <div class="info-box warning">
+            <h5>Common Pitfall</h5>
+            <p>Don't forget to release resources in a <code>finally</code> block or context manager. Unreleased resources can cause issues for subsequent training runs.</p>
+        </div>
+
+        <!-- Troubleshooting -->
+        <h2 id="troubleshooting">Troubleshooting</h2>
+
+        <h3>Resource Allocation Failures</h3>
+
+        <p><strong>Symptom</strong>: <code>mlos_training_request_resources()</code> returns an error.</p>
+
+        <p><strong>Solutions</strong>:</p>
+        <ul>
+            <li>Check available memory with <code>free -h</code></li>
+            <li>Ensure no other MLOS workloads have exclusive CPU claims</li>
+            <li>Reduce <code>num_cpus</code> or <code>memory_bytes</code> in your request</li>
+            <li>Verify MLOS kernel module is loaded: <code>lsmod | grep mlos</code></li>
+        </ul>
+
+        <h3>Phase Hints Not Working</h3>
+
+        <p><strong>Symptom</strong>: No performance improvement despite phase hints.</p>
+
+        <p><strong>Solutions</strong>:</p>
+        <ul>
+            <li>Verify hints are being called (add debug logging)</li>
+            <li>Check that the training loop isn't I/O bound elsewhere</li>
+            <li>Ensure sufficient CPU cores are allocated (minimum 4 recommended)</li>
+            <li>Profile with <code>perf</code> to identify actual bottlenecks</li>
+        </ul>
+
+        <h3>Checkpoint Failures Under Pressure</h3>
+
+        <p><strong>Symptom</strong>: Checkpoints fail or corrupt when system memory is low.</p>
+
+        <p><strong>Solutions</strong>:</p>
+        <ul>
+            <li>Use <code>alloc_checkpoint_buffer()</code> for mlock'd memory</li>
+            <li>Reduce checkpoint size (save only model weights, not optimizer state)</li>
+            <li>Implement memory pressure callback to reduce batch size dynamically</li>
+            <li>Consider periodic cleanup of old checkpoints</li>
+        </ul>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h3>Ready to Optimize Your Training?</h3>
+            <p>Get started with MLOS Training Workload API today and see the performance difference.</p>
+            <div class="cta-buttons">
+                <a href="training-workload.html" class="btn btn-primary">Training API Reference</a>
+                <a href="https://github.com/mlOS-foundation/core-releases" class="btn btn-secondary">Download MLOS Core</a>
+            </div>
+        </div>
+
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                mlOS Foundation &copy; 2026 |
+                <a href="https://github.com/mlOS-foundation">GitHub</a> |
+                <a href="architecture.html">Architecture</a> |
+                <a href="legal.html">Legal</a>
+            </p>
+            <p style="margin-top: 12px; font-size: 13px;">
+                Training guide featuring examples from <a href="https://artifactiq.app">Artifactiq</a>'s production pipeline.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

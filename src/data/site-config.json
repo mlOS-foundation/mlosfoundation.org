@@ -26,8 +26,8 @@
   "links": {
     "github": "https://github.com/mlOS-foundation",
     "releases": "https://github.com/mlOS-foundation/core-releases",
-    "core_release": "https://github.com/mlOS-foundation/core/releases/tag/v7.1.0",
-    "core_download": "https://github.com/mlOS-foundation/core-releases/releases/tag/v7.1.0",
+    "core_release": "https://github.com/mlOS-foundation/core-releases/releases",
+    "core_download": "https://github.com/mlOS-foundation/core-releases/releases",
     "docs": "https://mlosfoundation.org/architecture.html",
     "training_guide": "https://mlosfoundation.org/training-guide.html",
     "training_api": "https://mlosfoundation.org/training-workload.html",

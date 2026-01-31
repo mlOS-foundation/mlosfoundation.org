@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-28T09:33:48.388Z",
+  "generated_at": "2026-01-31T10:30:00.000Z",
   "count": 3,
   "entries": [
     {
@@ -71,13 +71,23 @@
       },
       "links": [
         {
-          "text": "Documentation",
-          "url": "https://mlosfoundation.org/training-workload.html",
+          "text": "View Release",
+          "url": "https://github.com/mlOS-foundation/core/releases/tag/v7.1.0",
           "primary": true
         },
         {
-          "text": "Architecture",
-          "url": "https://mlosfoundation.org/architecture.html",
+          "text": "Download",
+          "url": "https://github.com/mlOS-foundation/core-releases/releases/tag/v7.1.0",
+          "primary": false
+        },
+        {
+          "text": "Documentation",
+          "url": "https://mlosfoundation.org/training-workload.html",
+          "primary": false
+        },
+        {
+          "text": "Training Guide",
+          "url": "https://mlosfoundation.org/training-guide.html",
           "primary": false
         }
       ],

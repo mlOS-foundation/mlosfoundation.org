@@ -2511,11 +2511,33 @@
         // Fallback news data (used when JSON not available)
         const fallbackNews = [
             {
+                id: 'core-v710-release',
+                title: 'MLOS Core v7.1.0 - Training Workload API Release',
+                date: '2026-01-31',
+                badge: 'NEW RELEASE',
+                featured: true,
+                summary: 'MLOS Core v7.1.0 introduces the Training Workload API with OS-level optimizations for ML training: NUMA-aware allocation, CPU affinity management, and training phase-aware scheduling for 15-30% efficiency gains.',
+                version: 'v7.1.0',
+                performance: {
+                    highlights: [
+                        { metric: 'Training efficiency', after: '15-30% faster' },
+                        { metric: 'NUMA locality', after: 'Optimal binding' },
+                        { metric: 'Concurrent workloads', after: '<15% overhead' },
+                        { metric: 'Test coverage', after: '80 tests' }
+                    ]
+                },
+                links: [
+                    { text: 'View Release', url: 'https://github.com/mlOS-foundation/core/releases/tag/v7.1.0', primary: true },
+                    { text: 'Download', url: 'https://github.com/mlOS-foundation/core-releases/releases/tag/v7.1.0', primary: false },
+                    { text: 'Training Guide', url: 'https://mlosfoundation.org/training-guide.html', primary: false }
+                ]
+            },
+            {
                 id: 'axon-v320-release',
                 title: 'Axon v3.2.0 - Format-Agnostic Installation',
                 date: '2026-01-11',
                 badge: 'NEW RELEASE',
-                featured: true,
+                featured: false,
                 summary: 'Axon v3.2.0 introduces format-agnostic model installation with the new --format flag, case-insensitive model lookup, YOLO support, and multi-encoder ONNX conversion for CLIP and T5 models.',
                 version: 'v3.2.0',
                 performance: {
